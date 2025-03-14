@@ -1,9 +1,0 @@
-SEGFAULT:
-tries to access not allowed memory: dreverence null or invalid pointer
-outside bounds of arr
-write on read only mem
-
-BUS ERROR
-similar to segfault
-
-DOUBLE FREE (self explanatory0

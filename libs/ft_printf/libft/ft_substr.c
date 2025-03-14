@@ -6,15 +6,12 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/10/12 10:03:13 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/01/11 20:22:13 by anonymous     ########   odam.nl         */
+/*   Updated: 2024/10/12 10:08:16 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/**
- * return substr of str from start len chars
-*/
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*mysub;

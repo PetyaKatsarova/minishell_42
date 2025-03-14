@@ -8,7 +8,7 @@ cd ~
 cc -Wall -Wextra -Werror dir_handling.c && ./a.out
 */
 int main() {
-    DIR *dir = opendir(".");
+    DIR *dir = opendir("."); // DIR: directory stream object
     if (!dir) {
         perror("opendir");
         return (1);
@@ -36,9 +36,6 @@ int main() {
 1. Definition of struct dirent
 The struct dirent is defined in <dirent.h> and typically looks like this:
 
-c
-Copy
-Edit
 struct dirent {
     ino_t          d_ino;       // Inode number
     off_t          d_off;       // Offset to next dirent

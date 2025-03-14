@@ -6,15 +6,11 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 11:17:10 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/14 17:01:08 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/03/14 17:46:34 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <unistd.h>
+#include "includes/minishell.h"
 
 // cc -Wall -Wextra -Werror main.c -lreadline && ./a.out
 
@@ -25,5 +21,16 @@ int main() {
         printf("You entered: %s\n", input);
         free(input);
     }
-    return 0;
+	//char *input;
+
+	//while (1)
+	//{
+	//	input = readline("mini_shell>> "); // outputs the prompt
+	//	if (!input) // handle CTR+D
+	//	{
+	//		ft_printf("exit\n");
+	//		break; // need to clear all malloc for later..
+	//	}
+	//}
+    return (0);
 }

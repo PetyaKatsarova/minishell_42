@@ -6,25 +6,25 @@
 #    By: petya <petya@student.42.fr>                  +#+                      #
 #                                                    +#+                       #
 #    Created: 2025/02/04 11:27:44 by pekatsar      #+#    #+#                  #
-#    Updated: 2025/03/14 17:10:42 by pekatsar      ########   odam.nl          #
+#    Updated: 2025/03/14 17:39:30 by pekatsar      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME     := minishell
 CC       := cc
 CFLAGS   := -Wall -Wextra -Werror -g
-LIBFT    := LIBFT
+FT_PRINTF := libs/ft_printf
 
-HEADERS  := -I ./include -I $(LIBFT)
-LIBS     := -L$(LIBFT) -lft -lreadline
+HEADERS  := -I ./include -I $(FT_PRINTF)/include
+LIBS     := -L$(FT_PRINTF) -lftprintf -lreadline
 
 SRCS     := main.c
 OBJS     := $(SRCS:.c=.o)
 
-all: libft $(NAME)
+all: ft_printf $(NAME)
 
-libft:
-	@make -C $(LIBFT)
+ft_printf:
+	@make -C $(FT_PRINTF)
 
 $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME) && echo "Build successful!"
@@ -34,12 +34,12 @@ $(NAME): $(OBJS)
 
 clean:
 	@rm -f $(OBJS)
-	@make -C $(LIBFT) clean
+	@make -C $(FT_PRINTF) clean
 
 fclean: clean
 	@rm -f $(NAME)
-	@make -C $(LIBFT) fclean
+	@make -C $(FT_PRINTF) fclean
 
 re: fclean all
 
-.PHONY: all clean fclean re libft
+.PHONY: all clean fclean re ft_printf
