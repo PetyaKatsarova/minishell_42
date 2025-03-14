@@ -6,17 +6,24 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 11:17:10 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/14 11:20:53 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/03/14 17:01:08 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include <unistd.h>
 
+// cc -Wall -Wextra -Werror main.c -lreadline && ./a.out
 
-// cc -Wall -Wextra -Werror main.c && ./a.out
-int	main(int argc, char **argv)
-{
-	if (argc > 1)
-		printf("Hello world. this is minishell...And you are %s\n", argv[1]);
-	return (0);
+int main() {
+    char *input = readline("tra la la: ");
+    if (input && *input) { // Ensure input is not NULL or empty
+        add_history(input); // Store input in history
+        printf("You entered: %s\n", input);
+        free(input);
+    }
+    return 0;
 }
