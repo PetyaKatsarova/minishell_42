@@ -12,6 +12,8 @@
 
 #include "includes/minishell.h"
 
+// sudo apt-get install libreadline-dev
+
 static int handle_readline()
 {
 	while (1)
@@ -19,7 +21,7 @@ static int handle_readline()
 		char *input = readline("minihell>> "); // outputs the prompt
 		if (!input) // handle CTR+D
 		{
-			ft_printf("exit\n");
+			printf("exit\n");
 			return (-1); 
 			break; // need to clear all malloc for later..
 		}

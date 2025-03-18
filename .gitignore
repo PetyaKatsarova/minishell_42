@@ -1,0 +1,39 @@
+.qodo
+
+# Compiled binary files
+*.o
+*.out
+*.a
+*.so
+*.exe
+
+# Debugging files
+*.dSYM/
+*.gcda
+*.gcno
+*.gcov
+*.gch
+*.swp
+
+# Build directories
+/build/
+/bin/
+/obj/
+
+# Editor & OS files
+*.log
+*.swp
+*.swo
+*.bak
+*.tmp
+*.cache
+*.DS_Store
+Thumbs.db
+
+# Makefile artifacts
+Makefile~
+*.d
+
+# Valgrind output
+valgrind.log
+

@@ -13,33 +13,40 @@
 NAME     := minishell
 CC       := cc
 CFLAGS   := -Wall -Wextra -Werror -g
-FT_PRINTF := libs/ft_printf
+LIBFT    := libs/libft
 
-HEADERS  := -I ./include -I $(FT_PRINTF)/include
-LIBS     := -L$(FT_PRINTF) -lftprintf -lreadline
+HEADERS  := -I ./include -I $(LIBFT)/include
+LIBS     := -L$(LIBFT) -lft -lreadline  # Use -lft instead of -lftprintf
 
 SRCS     := main.c
 OBJS     := $(SRCS:.c=.o)
 
-all: ft_printf $(NAME)
+# Default target to build everything
+all: libft $(NAME)
 
-ft_printf:
-	@make -C $(FT_PRINTF)
+# Build the libft library
+libft:
+	@make -C $(LIBFT)
 
+# Link the object files and create the executable
 $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME) && echo "Build successful!"
 
+# Compile source files to object files
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
+# Clean up object files
 clean:
 	@rm -f $(OBJS)
-	@make -C $(FT_PRINTF) clean
+	@make -C $(LIBFT) clean
 
+# Clean up and remove the executable
 fclean: clean
 	@rm -f $(NAME)
-	@make -C $(FT_PRINTF) fclean
+	@make -C $(LIBFT) fclean
 
+# Rebuild everything (clean + all)
 re: fclean all
 
-.PHONY: all clean fclean re ft_printf
+.PHONY: all clean fclean re libft
