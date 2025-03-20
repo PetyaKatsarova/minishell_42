@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
+/*   cd.c                                               :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2025/03/14 17:28:45 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/20 15:57:08 by pekatsar      ########   odam.nl         */
+/*   Created: 2025/03/20 15:56:22 by pekatsar      #+#    #+#                 */
+/*   Updated: 2025/03/20 16:00:12 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../../includes/minishell.h"
 
-# include "../libs/libft/libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <limits.h> // is it allowed? <limits.h> defines system limits like max values for integers, file paths, and system resources.
+//int chdir(const char *path);
+int	do_cd()
+{
+	
+}
 
-// execution/built_ins/pwd.c
-int	get_pwd();
-int	do_cd();
-
-#endif
-
+/*
+    if (chdir("..") == 0) {
+        getcwd(cwd, sizeof(cwd));
+        printf("Changed directory: %s\n\n", cwd);
+    } else {
+        perror("chdir failed");
+        return 1;
+    }
+*/
