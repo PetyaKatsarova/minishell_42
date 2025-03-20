@@ -63,6 +63,13 @@ echo $PATH
 
 14. cat file.txt | grep bla | more
 
-/mnt/c/Users/pskpe/OneDrive/Desktop/minishell_42$ 
+/mnt/c/Users/pskpe/OneDrive/Desktop/minishell_42$
+
+15. uname not built in: /usr/bin/uname
+uname -a   # Show all system information
+uname -s   # Show only the OS name
+uname -r   # Show the kernel version
+uname -m   # Show machine hardware (e.g., x86_64)
+
 
 

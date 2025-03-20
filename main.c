@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 11:17:10 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/14 19:22:54 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/03/20 11:16:50 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int handle_readline()
 {
 	while (1)
 	{
-		char *input = readline("minihell>> "); // outputs the prompt
+		char *input = readline("minihell$ "); // outputs the prompt
 		if (!input) // handle CTR+D
 		{
 			printf("exit\n");
@@ -30,7 +30,7 @@ static int handle_readline()
 		if (ft_strncmp(input, "exit", 4) == 0)
 		{
 			free(input);
-			return (-1); // maybe exiterr
+			return (0); // free all later
 			break;
 		}
 		else

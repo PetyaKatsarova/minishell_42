@@ -1,4 +1,5 @@
-Built-in commands (echo, cd, pwd, export, unset, env, exit) must not use execve because they don't spawn a new process.
+Built-in commands (echo, cd, pwd, export, unset, env, exit) must not use execve because they don't spawn a new process. A built-in command is part of the shell itself (e.g., cd, echo, export). It runs without needing an external file.How to Check if a Command is Built-in or External?
+type uname
 
 User keyboard signals:
 ctrl-c displays a new prompt line.
@@ -227,3 +228,23 @@ If the handler updates a global variable that the main program reads from time t
 that the main program never updates the variable. For optimization’s sake, the compiler might choose to cache it, 
 which means that the main program might never see the updated value. The keyword volatile tells to the compiler 
 never to cache the variable.
+
+
+---------------------------------------------------------------------------------
+## BUILT IN COMMANDS
+#include <stdio.h>
+#include <unistd.h>
+
+void ft_pwd(void)
+{
+    char cwd[1024];
+
+    if (getcwd(cwd, sizeof(cwd)))
+        printf("%s\n", cwd);
+    else
+        perror("pwd");
+}
+Uses getcwd() to get the current directory.
+Prints the result like the real pwd command.
+No forking (runs directly in the main process).
+-------------------------------------------------------------------------------
