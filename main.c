@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 11:17:10 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/20 11:16:50 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/03/20 15:02:48 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,16 @@ static int handle_readline()
 			break;
 		}
 		else
-			system(input); // handle if not valid command
+		{
+			// handle the entire program....
+			//system(input); // handle if not valid command, no allowed func
+			if (ft_strncmp(input, "pwd", 3) == 0)
+				get_pwd();
+			else
+			{
+				printf("under construction. but unstoppable ....\n");
+			}
+		}
 		free(input);
 	}
 	return (0);

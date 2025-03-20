@@ -228,9 +228,7 @@ If the handler updates a global variable that the main program reads from time t
 that the main program never updates the variable. For optimization’s sake, the compiler might choose to cache it, 
 which means that the main program might never see the updated value. The keyword volatile tells to the compiler 
 never to cache the variable.
-
-
----------------------------------------------------------------------------------
+------------------------------------------------------------------------------
 ## BUILT IN COMMANDS
 #include <stdio.h>
 #include <unistd.h>
@@ -247,4 +245,60 @@ void ft_pwd(void)
 Uses getcwd() to get the current directory.
 Prints the result like the real pwd command.
 No forking (runs directly in the main process).
--------------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+## tcsetattr 
+stands for "Terminal Control Set Attributes" — it is used to configure terminal settings, such as input modes, output processing, and control flags.
+#include <termios.h>
+
+int tcsetattr(int fildes, int optional_actions,
+    const struct termios *termios_p);
+----------------------------------------------------------------------------
+Canonical Mode vs. Non-Canonical Mode in the Terminal
+The terminal operates in two modes:
+
+Canonical Mode (Default)
+
+Input is line-buffered (processed after pressing Enter).
+Supports line editing (Backspace, Ctrl+U, etc.).
+Example: When typing in the shell, you can edit your command before pressing Enter.
+Non-Canonical Mode
+
+Input is character-buffered (processed immediately, without Enter).
+No built-in line editing.
+Used for interactive programs like games or keypress detection (e.g., getch() behavior).
+----------------------------------------------------------------------------
+
+Execution means running the parsed command. This includes:
+
+Built-ins (cd, echo, pwd, export, unset, env, exit)
+Forking processes (ls, grep, cat)
+Handling pipes (|) and redirections (>, <)
+Summary
+Stage	What It Does
+Parsing	Tokenizes input, handles quotes, redirections, pipes, and builds execution structure.
+Execution	Runs built-ins, forks processes, manages pipes and redirections.
+ Parsing
+
+Tokenizing (strtok, malloc)
+Handling operators (|, ;, &&)
+Expanding environment variables ($VAR)
+Checking syntax errors
+Creating a tree structure for command execution
+🔹 Execution
+
+Running built-in functions
+Forking child processes
+Handling file descriptors (dup2())
+
+Environment variables (i.e. $USER or $VAR) that expand to their values.
+$? expands to the exit status of the most recently executed foreground pipeline.
+User keyboard signals:
+ctrl-c displays a new prompt line.
+ctrl-d exits minishell
+ctrl-\ does nothing
+However, Minishell does not support \, ;, &&, ||, or wildcards.
+
+
+
+

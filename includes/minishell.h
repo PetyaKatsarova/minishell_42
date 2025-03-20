@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 17:28:45 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/14 18:48:25 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/03/20 15:50:38 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 # include <readline/history.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h> // is it allowed? <limits.h> defines system limits like max values for integers, file paths, and system resources.
+
+// execution/built_ins/pwd.c
+int	get_pwd();
 
 #endif
 

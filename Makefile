@@ -6,7 +6,7 @@
 #    By: petya <petya@student.42.fr>                  +#+                      #
 #                                                    +#+                       #
 #    Created: 2025/02/04 11:27:44 by pekatsar      #+#    #+#                  #
-#    Updated: 2025/03/14 17:39:30 by pekatsar      ########   odam.nl          #
+#    Updated: 2025/03/20 14:59:39 by pekatsar      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ LIBFT    := libs/libft
 HEADERS  := -I ./include -I $(LIBFT)/include
 LIBS     := -L$(LIBFT) -lft -lreadline  # Use -lft instead of -lftprintf
 
-SRCS     := main.c
+SRCS     := execution/built_ins/pwd.c \
+			main.c
 OBJS     := $(SRCS:.c=.o)
 
 # Default target to build everything
