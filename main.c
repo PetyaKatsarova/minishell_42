@@ -14,7 +14,7 @@
 
 // sudo apt-get install libreadline-dev
 
-static int handle_readline()
+static int handle_readline(char **argv, char **env)
 {
 	while (1)
 	{
@@ -39,6 +39,8 @@ static int handle_readline()
 			//system(input); // handle if not valid command, no allowed func
 			if (ft_strncmp(input, "pwd", 3) == 0)
 				get_pwd();
+			else if (ft_strncmp(input, "cd", 2) == 0)
+				do_cd(argv, env);
 			else
 			{
 				printf("under construction. but unstoppable ....\n");
@@ -51,7 +53,8 @@ static int handle_readline()
 
 // cc -Wall -Wextra -Werror main.c -lreadline && ./a.out
 
-int main() {
-	handle_readline();
+int main(int argc, char **argv, char **env) {
+	(void) argc;
+	handle_readline(argv, env);
     return (0);
 }

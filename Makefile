@@ -19,6 +19,7 @@ HEADERS  := -I ./include -I $(LIBFT)/include
 LIBS     := -L$(LIBFT) -lft -lreadline  # Use -lft instead of -lftprintf
 
 SRCS     := execution/built_ins/pwd.c \
+			execution/built_ins/cd.c \
 			main.c
 OBJS     := $(SRCS:.c=.o)
 

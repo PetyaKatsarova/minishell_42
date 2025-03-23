@@ -298,6 +298,57 @@ ctrl-c displays a new prompt line.
 ctrl-d exits minishell
 ctrl-\ does nothing
 However, Minishell does not support \, ;, &&, ||, or wildcards.
+-------------------------------------------------------
+CHDIR 
+-----------------------------------------------------
+cd	Go to $HOME
+cd ~	Same as above
+cd /path	Go to absolute path
+cd relative/path	Move to relative path
+cd -	Go to previous directory ($OLDPWD)
+cd ..	Go up one directory
+cd .	Stay in the current directory
+cd ~/folder	Go to "folder" inside your home directory
+
+$HOME → Default when you type cd
+$OLDPWD → Used for cd -
+$PWD → Updated to show the new path
+
+
+✅ You only need to handle:
+cd some/folder → relative path
+cd /home/user → absolute path
+❌ You do not need to handle:
+cd (no arguments) → would go to $HOME in real bash
+cd ~ → would expand to $HOME
+cd - → would go to $OLDPWD
+
+Command	Handle?	Why
+cd folder	✅ Yes	relative path
+cd ../dir	✅ Yes	relative path
+cd /usr/bin	✅ Yes	absolute path
+❌ What You Can Skip:
+Command	Handle?	Reason
+cd	❌ No	$HOME not required
+cd ~	❌ No	tilde expansion not required
+cd -	❌ No	$OLDPWD not required
+
+!! todo !! checks on chdir:
+ Run a command such as "$> cd /absolute/path/of/your/choice",
+then run the following command "$> /bin/pwd". /bin/pwd
+must confirm that the current folder was updated.
+- Run a command such as "$> cd relative/path/of/your/choice",
+then run the following command "$> /bin/pwd". /bin/pwd
+must confirm that the current folder was updated.
+- Run the following command "$> cd", then run "$> /bin/pwd".
+/bin/pwd must confirm that the current folder is the
+user's home folder.
+- Run the following command "$> cd -", then run "$> /bin/pwd".
+/bin/pwd must confirm that the current folder is the
+folder relative/path/of/your/choice used before.
+- Run the following command "$> cd ~/path/of/your/choice",
+then run "$> /bin/pwd". "$> /bin/pwd". /bin/pwd must
+confirm that the current folder was updated.
 
 
 

@@ -19,10 +19,13 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h> // is it allowed? <limits.h> defines system limits like max values for integers, file paths, and system resources.
+#include <stdio.h>
+#include <string.h>
+#include <errno.h> // is it allowed?
 
-// execution/built_ins/pwd.c
+// execution/built_ins/*
 int	get_pwd();
-int	do_cd();
+int	do_cd(char **argv, char **env);
 
 #endif
 
