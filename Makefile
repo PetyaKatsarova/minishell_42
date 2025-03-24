@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         ::::::::             #
-#    Makefile                                           :+:    :+:             #
-#                                                      +:+                     #
-#    By: petya <petya@student.42.fr>                  +#+                      #
-#                                                    +#+                       #
-#    Created: 2025/02/04 11:27:44 by pekatsar      #+#    #+#                  #
-#    Updated: 2025/03/20 14:59:39 by pekatsar      ########   odam.nl          #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: petya <petya@student.42.fr>                +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/02/04 11:27:44 by pekatsar          #+#    #+#              #
+#    Updated: 2025/03/24 17:52:16 by petya            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,9 @@ $(NAME): $(OBJS)
 # Compile source files to object files
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
+
+valgrind_cd: $(NAME)
+	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./$(NAME) cd
 
 # Clean up object files
 clean:

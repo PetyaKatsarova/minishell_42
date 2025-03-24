@@ -349,7 +349,17 @@ folder relative/path/of/your/choice used before.
 - Run the following command "$> cd ~/path/of/your/choice",
 then run "$> /bin/pwd". "$> /bin/pwd". /bin/pwd must
 confirm that the current folder was updated.
-
+------------------------------------------------
+!! NB !!
+------------------------------------------------
+Key Directories in Linux (WSL):
+Path	Meaning
+/home	User home folders
+/etc	Config files
+/bin, /usr/bin	System commands
+/var	Logs, temp data, services
+/mnt/c	Access to Windows C:\
+-----------------------------------------------
 
 
 
