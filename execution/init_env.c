@@ -95,3 +95,32 @@ t_env   *copy_env(char **env)
 	env_struct[i].key = NULL; // null-terminate
 	return (env_struct);
 }
+
+void set_export_flag(t_env *env_struct, const char *key)
+{
+    int     i;
+    size_t  key_len;
+
+    i = 0;
+    key_len = ft_strlen(key);
+    while (env_struct[i].key)
+    {
+        if (ft_strncmp(env_struct[i].key, key, key_len) == 0 &&
+		    env_struct[i].key[key_len] == '\0' &&
+		    key[key_len] == '\0')
+		{
+			env_struct[i].exported = 1;
+			return;
+		}
+		i++;
+    }
+
+    // add new key with null val and exported=1
+    i = 0;
+    while (env_struct[i].key)
+        i++;
+    env_struct[i].key = ft_strdup(key);
+    env_struct[i].value = NULL;
+    env_struct[i].exported = 1;
+    env_struct[i+1].key = NULL; // todo: did we add 10 extra spaces, just in case? or is it dynamically allocated?
+}

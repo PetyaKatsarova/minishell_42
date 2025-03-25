@@ -6,7 +6,7 @@
 /*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:28:45 by pekatsar          #+#    #+#             */
-/*   Updated: 2025/03/25 16:50:37 by petya            ###   ########.fr       */
+/*   Updated: 2025/03/25 21:36:36 by petya            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ t_env   *init_env(char **env);
 void    set_env_value(t_env *env, const char *key, const char *val);
 char    *get_env_value(t_env *env, const char *key);
 t_env   *copy_env(char **env);
+void    set_export_flag(t_env *env_struct, const char *key);
 
 #endif
 
