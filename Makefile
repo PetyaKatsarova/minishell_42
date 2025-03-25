@@ -6,7 +6,7 @@
 #    By: petya <petya@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/04 11:27:44 by pekatsar          #+#    #+#              #
-#    Updated: 2025/03/24 17:52:16 by petya            ###   ########.fr        #
+#    Updated: 2025/03/25 16:30:33 by petya            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,10 @@ LIBS     := -L$(LIBFT) -lft -lreadline  # Use -lft instead of -lftprintf
 
 SRCS     := execution/built_ins/pwd.c \
 			execution/built_ins/cd.c \
+			execution/built_ins/echo.c \
+			execution/built_ins/env.c \
+			execution/utils.c \
+			execution/init_env.c \
 			main.c
 OBJS     := $(SRCS:.c=.o)
 

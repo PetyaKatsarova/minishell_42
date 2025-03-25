@@ -359,7 +359,11 @@ Path	Meaning
 /bin, /usr/bin	System commands
 /var	Logs, temp data, services
 /mnt/c	Access to Windows C:\
------------------------------------------------
+-------------------------------------------------------------------
+Type	    Stays in shell?	Passed to programs?	    Shown by env?
+VAR=value	✅ Yes	        ❌ No	                ❌ No
+export VAR	✅ Yes	        ✅ Yes	                ✅ Yes
+-------------------------------------------------------------------
 
 
 

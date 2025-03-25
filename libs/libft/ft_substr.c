@@ -1,17 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_substr.c                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2024/10/12 10:03:13 by pekatsar      #+#    #+#                 */
-/*   Updated: 2024/10/12 10:08:16 by pekatsar      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/12 10:03:13 by pekatsar          #+#    #+#             */
+/*   Updated: 2025/03/25 15:31:26 by petya            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+Returns char *subst from char *s from start, len chars
+*/
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*mysub;

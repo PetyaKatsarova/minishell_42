@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_strchr.c                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2024/10/10 17:17:41 by pekatsar      #+#    #+#                 */
-/*   Updated: 2024/10/10 17:17:53 by pekatsar      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/10 17:17:41 by pekatsar          #+#    #+#             */
+/*   Updated: 2025/03/25 14:57:26 by petya            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/*
+Returns pointer to the first occurence of char c in char *str
+*/
 char	*ft_strchr(const char *s, int c)
 {
-	char	*chr;
+	char	*str;
 
-	chr = (char *)s;
-	while (*chr != (char)c)
+	str = (char *)s;
+	while (*str != (char)c)
 	{
-		if (!*chr)
+		if (!*str)
 			return (0);
-		chr++;
+		str++;
 	}
-	return (chr);
+	return (str);
 }
