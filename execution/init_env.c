@@ -14,7 +14,7 @@ static int env_len(char **env)
 /*
 Returns arr of t_env structs
 */
-t_env   *init_env(char **env)
+t_env   *copy_env(char **env)
 {
     int     i;
     int     len;
@@ -34,6 +34,7 @@ t_env   *init_env(char **env)
         env_struct[i].key = ft_substr(env[i], 0, key_len);
         env_struct[i].value = ft_strdup(delim + 1);
         env_struct[i].exported = 1;
+		//printf("init: %s=%s\n", env_struct[i].key, env_struct->value);
         i++;
     }
     env_struct[i].key = NULL;
@@ -68,32 +69,6 @@ void set_env_value(t_env *env, const char *key, const char *val)
 		i++;
 	}
 	// Key not found — optionally add it if needed: todo...
-}
-
-t_env   *copy_env(char **env)
-{
-	int i = 0;
-	int count = 0;
-
-	while (env[count])
-		count++;
-
-	t_env *env_struct = malloc(sizeof(t_env) * (count + 10)); // reserve extra room
-	if (!env_struct)
-		return NULL;
-
-	for (i = 0; i < count; i++)
-	{
-		char *delim = ft_strchr(env[i], '=');
-		if (!delim)
-			continue;
-		int key_len = delim - env[i];
-		env_struct[i].key = ft_substr(env[i], 0, key_len);
-		env_struct[i].value = ft_strdup(delim + 1);
-		env_struct[i].exported = 1;
-	}
-	env_struct[i].key = NULL; // null-terminate
-	return (env_struct);
 }
 
 void set_export_flag(t_env *env_struct, const char *key)

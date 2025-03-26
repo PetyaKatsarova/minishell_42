@@ -10,45 +10,73 @@ VAR1=hello          # just stored, not exported
 export VAR1         # now it's exported
 env                 # now shows VAR1=hello
 export              # shows declare -x VAR1="hello"
+
+       This  manual  page  is part of the POSIX Programmer's Manual.  The Linux
+       implementation of this interface may differ (consult  the  corresponding
+       Linux  manual  page for details of Linux behavior), or the interface may
+       not be implemented on Linux.
+
+NAME
+       export — set the export attribute for variables
+
+    Export environment variables, create new ones and replace old ones.
+    Check the result with env.
+    Command	Sorted?	Shows vars without values?
 */
 #include "../../includes/minishell.h"
 
-int do_export(char **input_args, t_env *env_struct)
-{
-    int     i;
-    char    *delim;
+// on export cmnd: sort and display all vars with declare -x,
+// export MYVAR is added at the bottom if the list!
 
-    if (!input_args[1])
+
+
+/*
+t_env temp = *el1;
+el1 is a pointer → it points to a t_env struct
+*el1 means: “dereference the pointer → get the actual struct”
+So you're copying the whole struct into temp
+
+Name	What it is	Example (if el1 points to [key=USER])
+el1	pointer (address)	0x123abc
+*el1	the struct itself	{key="USER", value="petya"}
+el1->key	shortcut for (*el1).key	"USER"
+🔸 When you write:
+t_env temp = *el1;
+You're copying the full struct from address el1 into a local variable temp.
+box temp = contents of el1
+el1 = contents of el2
+el2 = temp
+*/
+
+//case 1: call export allone: display sorted env, this is for array, need to change for linked list
+
+static t_env *sort_exported_env(t_env *env_struct)
+{
+    t_env   *result;
+    int     struct_len, i, j;
+
+    struct_len = 0;
+    while (env_struct->key)
+        struct_len++;
+    result = malloc(sizeof(t_env) * (struct_len + 1));
+    if (!result)
     {
-        i = 0;
-        while (env_struct[i].key)
-        {
-            printf("declare -x %s", env_struct[i].key);
-            if (env_struct[i].value)
-                printf("=\"%s\"", env_struct[i].value);
-            printf("\n");
-            i++;
-        }
-        return (0);
+        // clean sth?
+        perror("err alloc export sort memory.\n"); // todo: add err num for later management
+        return (NULL);
     }
-    i = 1;
-    while (input_args[i])
+
+    i = 0;
+    while (i)
     {
-        delim = ft_strchr(input_args[i], '=');
-        if (delim)
+        j = i;
+        while (result[j].key)
         {
-            int     key_len = delim - input_args[i];
-            char    *key = ft_substr(input_args[i], 0, key_len);
-            char    *val = ft_strdup(delim + 1);
-            set_env_value(env_struct, key, val);
-            free(key);
-            free(val); 
-        }
-        else
-        {
-            set_export_flag(env_struct, input_args[i]);
+            //todo
+            j++;
         }
         i++;
     }
-    return (0);
+
+    return (result);
 }

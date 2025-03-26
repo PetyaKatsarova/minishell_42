@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/14 11:17:10 by pekatsar          #+#    #+#             */
-/*   Updated: 2025/03/25 18:47:18 by petya            ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: petya <petya@student.42.fr>                  +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/03/14 11:17:10 by pekatsar      #+#    #+#                 */
+/*   Updated: 2025/03/26 17:41:25 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static int handle_readline(t_env *env_struct)
 		if (!input) // handle CTR+D
 		{
 			printf("exit with no input collected.\n");
+			clear_history(); // for mem leaks
 			return (EXIT_FAILURE); // NEED TO CLEAR ALL MALLOCS 
 		}
 		input_args = ft_split(input, ' ');
@@ -32,31 +33,32 @@ static int handle_readline(t_env *env_struct)
 		{
 			//todo err handle and clear memory
 			perror("failed to split read line input_args\n");
+			free(input);
 			return (EXIT_FAILURE);
 		}
 		if (*input) // DO I NEED hte if? and why *
 			add_history(input);
-		if (ft_strncmp(input, "exit", 4) == 0)
+		if (input_args[0])
 		{
-			free(input);
-			free_t_env(env_struct);
-			return (0); // free all from child/fork/pipe etc.., exit program
-		}
-		else
-		{
-			if (ft_strncmp(input, "pwd", 3) == 0)
+			if (input_args[0] && ft_strncmp(input_args[0], "exit", 5) == 0)
+			{
+				do_exit(input_args, input);
+				return (0);
+			}
+			else if (ft_strncmp(input_args[0], "pwd", 3) == 0)
 				get_pwd();
-			else if (ft_strncmp(input, "cd", 2) == 0)
+			else if (ft_strncmp(input_args[0], "cd", 2) == 0)
 				do_cd(input_args, env_struct);
-			else if (ft_strncmp(input, "env", 3) == 0)
+			else if (ft_strncmp(input_args[0], "env", 3) == 0)
 				get_env(env_struct);
-			else if (ft_strncmp(input, "echo", 4) == 0)
+			else if (ft_strncmp(input_args[0], "echo", 4) == 0)
 				do_echo(input_args);
+			//else if (ft_strncmp(input_args[0], "export", 7) == 0)
+				//do_export(input_args, env_struct);
 			else
 			{
 				printf("under construction. but unstoppable ....\n");
-				system(input); // not allowd funcs: for testing only
-				// export, unset, exit
+				system(input); // just for testing
 			}
 		}
 		free(input);

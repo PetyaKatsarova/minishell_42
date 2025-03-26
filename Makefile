@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: petya <petya@student.42.fr>                +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/02/04 11:27:44 by pekatsar          #+#    #+#              #
-#    Updated: 2025/03/25 16:30:33 by petya            ###   ########.fr        #
+#                                                         ::::::::             #
+#    Makefile                                           :+:    :+:             #
+#                                                      +:+                     #
+#    By: petya <petya@student.42.fr>                  +#+                      #
+#                                                    +#+                       #
+#    Created: 2025/02/04 11:27:44 by pekatsar      #+#    #+#                  #
+#    Updated: 2025/03/26 17:27:19 by pekatsar      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,9 @@ SRCS     := execution/built_ins/pwd.c \
 			execution/built_ins/cd.c \
 			execution/built_ins/echo.c \
 			execution/built_ins/env.c \
-			execution/utils.c \
+			execution/built_ins/exit.c \
+			execution/built_ins/export.c \
+			execution/freeing.c \
 			execution/init_env.c \
 			main.c
 OBJS     := $(SRCS:.c=.o)
