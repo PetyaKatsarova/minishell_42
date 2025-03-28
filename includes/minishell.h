@@ -6,7 +6,7 @@
 /*   By: petya <petya@student.42.fr>                  +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 17:28:45 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/26 17:41:04 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/03/28 20:12:06 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 #include <string.h>
 #include <errno.h> // is it allowed?
 
+#define EXIT_SPECIAL_EXIT 999 // exit status
+
 typedef struct s_env {
     char *key;
     char *value;
@@ -33,20 +35,24 @@ typedef struct s_env {
 int	    get_pwd();
 int     do_cd(char **argv, t_env *env);
 int     do_echo(char **args);
-void    get_env(t_env   *env); // maybe do it int?
+int     get_env(t_env   *env);
+int	    get_env_struct_len(t_env *env_struct);
+t_env   *sort_env(t_env *env_struct);
+void    print_env_export(t_env *sorted_env_struct);
 int     do_export(char  **input_args, t_env *env_struct);
 int     do_exit(char **input_args, char *input);
+int	    handle_builtins(char **input_args, t_env *env_struct, char *input);
 
 // execution/freeing.c
 void    free_arr(char **arr);
 void    free_t_env(t_env *env_struct);
 
 // execution/init.c
-//t_env   *init_env(char **env);
+int     env_len(char **env);
 void    set_env_value(t_env *env, const char *key, const char *val);
 char    *get_env_value(t_env *env, const char *key);
 t_env   *copy_env(char **env);
-void    set_export_flag(t_env *env_struct, const char *key); // do i need it?
+//void    set_export_flag(t_env *env_struct, const char *key); // do i need it?
 
 #endif
 

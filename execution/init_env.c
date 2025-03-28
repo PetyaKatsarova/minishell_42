@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static int env_len(char **env)
+int env_len(char **env)
 {
     int i;
 
@@ -32,7 +32,7 @@ t_env   *copy_env(char **env)
             continue;
         int key_len = delim - env[i];
         env_struct[i].key = ft_substr(env[i], 0, key_len);
-        env_struct[i].value = ft_strdup(delim + 1);
+        env_struct[i].value = ft_strdup(delim + 1); // protect ehre with checks!! TODO and abv too
         env_struct[i].exported = 1;
 		//printf("init: %s=%s\n", env_struct[i].key, env_struct->value);
         i++;
@@ -70,8 +70,8 @@ void set_env_value(t_env *env, const char *key, const char *val)
 	}
 	// Key not found — optionally add it if needed: todo...
 }
-
-void set_export_flag(t_env *env_struct, const char *key)
+// TODO : THE LOGIC IS WRONG, TO FIX
+void unset_export_flag(t_env *env_struct, const char *key)
 {
     int     i;
     size_t  key_len;
@@ -84,7 +84,7 @@ void set_export_flag(t_env *env_struct, const char *key)
 		    env_struct[i].key[key_len] == '\0' &&
 		    key[key_len] == '\0')
 		{
-			env_struct[i].exported = 1;
+			env_struct[i].exported = 0;
 			return;
 		}
 		i++;

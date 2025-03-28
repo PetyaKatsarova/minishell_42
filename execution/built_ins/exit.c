@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/26 11:43:52 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/26 17:42:04 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/03/28 20:00:23 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,24 @@ f0r1s3% echo $?
 42
 In scripts or pipelines, exit codes control logic, retries, error messages, etc.
 todo....
+ls /etc
+echo $?   # 0 → success
+
+ls /no/such/dir
+echo $?   # 2 → error
+Used in scripts or interactive shells to terminate the process with a status:
+
+bash
+Copy
+Edit
+exit          # exits with the last command's status
+exit 0        # success
+exit 1        # failure
+exit 42       # custom error
+ Range of Exit Codes
+Valid: 0–255
+
+exit 256 → wraps to 0 (only 8 bits)
 */
 
 #include "../../includes/minishell.h"
@@ -26,5 +44,9 @@ int	do_exit(char **input_args, char *input)
 	free(input);
 	free_arr(input_args);
 	clear_history();
-	return (0);
+	// ??? TODO: NOT ALLOWED JUST FOR MEMORY LEAK CHECKS
+	rl_clear_history(); // clears readline history
+	rl_cleanup_after_signal(); // optional cleanup
+
+	return (EXIT_SPECIAL_EXIT);
 }

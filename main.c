@@ -6,7 +6,7 @@
 /*   By: petya <petya@student.42.fr>                  +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 11:17:10 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/26 17:41:25 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/03/28 19:49:19 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,16 @@ static int handle_readline(t_env *env_struct)
 {
 	while (1)
 	{
-		char *input;
-		char **input_args;
+		char	*input;
+		char	**input_args;
+		int		exit_status = 1;
 		
 		input = readline("\033[1;34mminihell$\033[0m ");
 		if (!input) // handle CTR+D
 		{
 			printf("exit with no input collected.\n");
 			clear_history(); // for mem leaks
+			free_t_env(env_struct);
 			return (EXIT_FAILURE); // NEED TO CLEAR ALL MALLOCS 
 		}
 		input_args = ft_split(input, ' ');
@@ -40,26 +42,15 @@ static int handle_readline(t_env *env_struct)
 			add_history(input);
 		if (input_args[0])
 		{
-			if (input_args[0] && ft_strncmp(input_args[0], "exit", 5) == 0)
-			{
-				do_exit(input_args, input);
-				return (0);
-			}
-			else if (ft_strncmp(input_args[0], "pwd", 3) == 0)
-				get_pwd();
-			else if (ft_strncmp(input_args[0], "cd", 2) == 0)
-				do_cd(input_args, env_struct);
-			else if (ft_strncmp(input_args[0], "env", 3) == 0)
-				get_env(env_struct);
-			else if (ft_strncmp(input_args[0], "echo", 4) == 0)
-				do_echo(input_args);
-			//else if (ft_strncmp(input_args[0], "export", 7) == 0)
-				//do_export(input_args, env_struct);
-			else
-			{
-				printf("under construction. but unstoppable ....\n");
-				system(input); // just for testing
-			}
+			exit_status = handle_builtins(input_args, env_struct, input);
+			if (exit_status == EXIT_SPECIAL_EXIT)
+				return (exit_status);
+		}
+		if (exit_status)
+		{
+			// under construction: handle command path....
+			 // if not built ins, handle_path commands
+			 printf("under construction: executable commands...\n");
 		}
 		free(input);
 		free_arr(input_args);

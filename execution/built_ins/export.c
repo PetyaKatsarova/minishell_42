@@ -50,33 +50,20 @@ el2 = temp
 
 //case 1: call export allone: display sorted env, this is for array, need to change for linked list
 
-static t_env *sort_exported_env(t_env *env_struct)
+
+int do_export(char **input_args, t_env *env_struct)
 {
-    t_env   *result;
-    int     struct_len, i, j;
+    t_env   *sorted_env;
 
-    struct_len = 0;
-    while (env_struct->key)
-        struct_len++;
-    result = malloc(sizeof(t_env) * (struct_len + 1));
-    if (!result)
+    (void) input_args;
+    sorted_env = sort_env(env_struct);
+    if (!sorted_env)
     {
-        // clean sth?
-        perror("err alloc export sort memory.\n"); // todo: add err num for later management
-        return (NULL);
+        perror("sorted env-struct failed.\n");
+        return (EXIT_FAILURE);
+        // do sth: 
     }
-
-    i = 0;
-    while (i)
-    {
-        j = i;
-        while (result[j].key)
-        {
-            //todo
-            j++;
-        }
-        i++;
-    }
-
-    return (result);
+    print_env_export(sorted_env);
+    free_t_env(sorted_env);
+    return (EXIT_SUCCESS); //0
 }

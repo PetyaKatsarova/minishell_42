@@ -2,6 +2,8 @@
 
 void free_arr(char **arr)
 {
+    if (!arr)
+        return;
     int i = 0;
     while (arr[i])
         free(arr[i++]);
@@ -20,7 +22,8 @@ void    free_t_env(t_env *env_struct)
     while (env_struct[i].key)
     {
         free(env_struct[i].key);
-        free(env_struct[i].value);
+        if (env_struct[i].value)
+            free(env_struct[i].value);
         i++;
     }
     free(env_struct);

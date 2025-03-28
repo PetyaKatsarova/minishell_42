@@ -364,6 +364,36 @@ Type	    Stays in shell?	Passed to programs?	    Shown by env?
 VAR=value	✅ Yes	        ❌ No	                ❌ No
 export VAR	✅ Yes	        ✅ Yes	                ✅ Yes
 -------------------------------------------------------------------
+write vs printf in C:
+
+write (low-level):
+
+Comes from <unistd.h>
+
+Writes raw bytes to a file descriptor.
+
+Syntax: write(fd, buffer, count);
+
+No formatting. Faster. Used in system programming.
+
+printf (high-level):
+
+Comes from <stdio.h>
+
+Writes formatted output to stdout.
+
+Syntax: printf("Value: %d\n", x);
+
+More convenient. Internally uses write.
+
+Example:
+
+c
+Copy
+Edit
+write(1, "Hello\n", 6);          // raw output
+printf("Hello\n");              // formatted output
+==============================================================================
 
 
 
