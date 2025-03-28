@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/26 11:43:52 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/28 20:00:23 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/03/28 20:19:43 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,11 @@ exit 256 → wraps to 0 (only 8 bits)
 
 #include "../../includes/minishell.h"
 
+// TODO: HANDLE THE EXIT STATUS CASES...
 int	do_exit(char **input_args, char *input)
 {
 	free(input);
 	free_arr(input_args);
 	clear_history();
-	// ??? TODO: NOT ALLOWED JUST FOR MEMORY LEAK CHECKS
-	rl_clear_history(); // clears readline history
-	rl_cleanup_after_signal(); // optional cleanup
-
 	return (EXIT_SPECIAL_EXIT);
 }

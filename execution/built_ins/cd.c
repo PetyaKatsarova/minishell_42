@@ -33,7 +33,12 @@ int do_cd(char **argv, t_env *env)
 
 	if (!argv[1])
 		result = ft_strdup(get_env_value(env, "HOME"));
-	else if (argv[1][0] == '~')
+	if (!result)
+	{
+		fprintf(stderr, "minishell: cd: HOME not set\n");
+		return (EXIT_FAILURE);
+	}
+	else if (argv[1] && argv[1][0] == '~')
 	{
 		char *home = get_env_value(env, "HOME");
 		char *rest = argv[1] + 1;
