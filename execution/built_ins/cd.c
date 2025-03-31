@@ -30,19 +30,27 @@ int do_cd(char **argv, t_env *env)
 	char cwd[CWD_MAX];
 	char *result = NULL;
 	char *oldpwd = get_env_value(env, "PWD");
+	printf("OLDPWD:: %s\n", oldpwd);
 
 	if (!argv[1])
-		result = ft_strdup(get_env_value(env, "HOME"));
-	if (!result)
 	{
-		fprintf(stderr, "minishell: cd: HOME not set\n");
-		return (EXIT_FAILURE);
+		result = ft_strdup(get_env_value(env, "HOME"));
+		if (!result)
+		{
+			fprintf(stderr, "minishell: cd: HOME not set\n");
+			return (EXIT_FAILURE);
+		}
+		printf("CD:: %s\n", result);
 	}
-	else if (argv[1] && argv[1][0] == '~')
+	else if (argv[1][0] == '~') // do check for validpathrubbish case
 	{
 		char *home = get_env_value(env, "HOME");
+		if (!home) {
+			fprintf(stderr, "minishell: cd: HOME not set\n");
+			return (EXIT_FAILURE);
+		}
 		char *rest = argv[1] + 1;
-		result = ft_strjoin(home, rest);
+		result = ft_strjoin(home, rest); // malloc check?? TODO
 	}
 	else if (argv[1][0] == '-' && argv[1][1] == '\0')
 	{

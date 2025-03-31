@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   minishell.h                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: petya <petya@student.42.fr>                  +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 17:28:45 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/28 20:12:06 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/03/31 18:39:06 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ typedef struct s_env {
     int exported; // by default set to 1 = exported (visible to env/execve), 0 = local only
 } t_env;
 
+typedef struct s_env_list {
+    t_env   *vars;
+    int     size;
+    int     capacity;
+} t_env_list;
+
 // execution/built_ins/*
 int	    get_pwd();
 int     do_cd(char **argv, t_env *env);
@@ -48,11 +54,11 @@ void    free_arr(char **arr);
 void    free_t_env(t_env *env_struct);
 
 // execution/init.c
-int     env_len(char **env);
-void    set_env_value(t_env *env, const char *key, const char *val);
-char    *get_env_value(t_env *env, const char *key);
-t_env   *copy_env(char **env);
+void        set_env_value(t_env_list *env_list, const char *key, const char *val);
+char        *get_env_value(t_env_list *env_list, const char *key);
+t_env_list  *copy_env(char **env);
+void unset_export_flag(t_env_list *env_list, const char *key);
+
 //void    set_export_flag(t_env *env_struct, const char *key); // do i need it?
 
 #endif
-
