@@ -52,9 +52,9 @@ el2 = temp
 
 
 
-int do_export(char **input_args, t_env *env_struct)
+int do_export(char **input_args, t_env_list *env_struct)
 {
-    t_env   *sorted_env;
+    t_env_list   *sorted_env;
 
     (void) input_args;
     sorted_env = sort_env(env_struct);

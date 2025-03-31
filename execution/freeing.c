@@ -14,17 +14,16 @@ void free_arr(char **arr)
 /*
 Returns arr of t_env structs
 */
-void    free_t_env(t_env *env_struct)
+void free_t_env(t_env_list *env_struct)
 {
-    int i;
-
-    i = 0;
-    while (env_struct[i].key)
+    int i = 0;
+    while (i < env_struct->size)
     {
-        free(env_struct[i].key);
-        if (env_struct[i].value)
-            free(env_struct[i].value);
+        free(env_struct->vars[i].key);
+        if (env_struct->vars[i].value)
+            free(env_struct->vars[i].value);
         i++;
     }
+    free(env_struct->vars);
     free(env_struct);
 }

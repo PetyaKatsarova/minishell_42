@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: petya <petya@student.42.fr>                  +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 11:17:10 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/28 19:49:19 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/03/31 19:02:15 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // sudo apt-get install libreadline-dev
 
-static int handle_readline(t_env *env_struct)
+static int handle_readline(t_env_list *env_struct)
 {
 	while (1)
 	{
@@ -63,7 +63,7 @@ static int handle_readline(t_env *env_struct)
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
 	(void) argv;
-	t_env *env_struct = copy_env(envp);
+	t_env_list *env_struct = copy_env(envp);
 	handle_readline(env_struct);
 	free_t_env(env_struct);
     return (0);

@@ -25,7 +25,7 @@ Set the $PATH to a multiple directory value (directory1:directory2) and ensure t
 order from left to right.
 */
 
-int do_cd(char **argv, t_env *env)
+int do_cd(char **argv, t_env_list *env)
 {
 	char cwd[CWD_MAX];
 	char *result = NULL;

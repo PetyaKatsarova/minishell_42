@@ -10,10 +10,14 @@ In Bash, the special variable _ holds:
 The last argument to the last executed command.
 */
 
-int get_env(t_env  *env)
+int get_env(t_env_list *env)
 {
     int i = 0;
-    while (env[i++].key) //env[i].exported &&
-        printf("%s=%s\n", env[i].key, env[i].value);
+    while (i < env->size)
+    {
+        if (env->vars[i].exported && env->vars[i].value)
+            printf("%s=%s\n", env->vars[i].key, env->vars[i].value);
+        i++;
+    }
     return (0);
 }

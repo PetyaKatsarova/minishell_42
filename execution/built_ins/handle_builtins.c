@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   handle_builtins.c                                  :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/28 16:55:48 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/28 20:27:02 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/03/31 18:45:13 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 Returns 0 if builtin was found and 1 or none zero inf command is not built in
 It's normal for readline() to leave things in memory to speed up future calls or due to lazy cleanup.
 */
-int	handle_builtins(char **input_args, t_env *env_struct, char *input)
+int	handle_builtins(char **input_args, t_env_list *env_struct, char *input)
 {
 	if (ft_strncmp(input_args[0], "exit", 5) == 0)
 		return do_exit(input_args, input); 
