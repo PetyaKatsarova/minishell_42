@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 11:17:10 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/31 19:02:15 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/01 15:39:25 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,6 @@ static int handle_readline(t_env_list *env_struct)
 			exit_status = handle_builtins(input_args, env_struct, input);
 			if (exit_status == EXIT_SPECIAL_EXIT)
 				return (exit_status);
-		}
-		if (exit_status)
-		{
-			// under construction: handle command path....
-			 // if not built ins, handle_path commands
-			 printf("under construction: executable commands...\n");
 		}
 		free(input);
 		free_arr(input_args);

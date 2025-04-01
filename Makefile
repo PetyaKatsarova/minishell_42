@@ -6,7 +6,7 @@
 #    By: petya <petya@student.42.fr>                  +#+                      #
 #                                                    +#+                       #
 #    Created: 2025/02/04 11:27:44 by pekatsar      #+#    #+#                  #
-#    Updated: 2025/03/28 20:12:30 by pekatsar      ########   odam.nl          #
+#    Updated: 2025/04/01 17:38:48 by pekatsar      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRCS     := execution/built_ins/pwd.c \
 			execution/built_ins/export.c \
 			execution/freeing.c \
 			execution/init_env.c \
+			execution/utils.c \
 			main.c
 OBJS     := $(SRCS:.c=.o)
 

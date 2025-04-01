@@ -25,14 +25,19 @@ Set the $PATH to a multiple directory value (directory1:directory2) and ensure t
 order from left to right.
 */
 
-int do_cd(char **argv, t_env_list *env)
+int do_cd(char **input_args, t_env_list *env)
 {
 	char cwd[CWD_MAX];
 	char *result = NULL;
 	char *oldpwd = get_env_value(env, "PWD");
-	printf("OLDPWD:: %s\n", oldpwd);
+	//printf("OLDPWD:: %s\n", oldpwd);
 
-	if (!argv[1])
+	if (too_many_args(input_args))
+	{
+		print_builtin_error("cd", NULL, "too many arguments");
+		return (EXIT_FAILURE);
+	}
+	if (!input_args[1])
 	{
 		result = ft_strdup(get_env_value(env, "HOME"));
 		if (!result)
@@ -42,17 +47,21 @@ int do_cd(char **argv, t_env_list *env)
 		}
 		printf("CD:: %s\n", result);
 	}
-	else if (argv[1][0] == '~') // do check for validpathrubbish case
+	else if (input_args[1][0] == '~') // do check for validpathrubbish case
 	{
+		//if (input_args[2])
+		//{
+		//	perror("")
+		//}
 		char *home = get_env_value(env, "HOME");
 		if (!home) {
 			fprintf(stderr, "minishell: cd: HOME not set\n");
 			return (EXIT_FAILURE);
 		}
-		char *rest = argv[1] + 1;
+		char *rest = input_args[1] + 1;
 		result = ft_strjoin(home, rest); // malloc check?? TODO
 	}
-	else if (argv[1][0] == '-' && argv[1][1] == '\0')
+	else if (input_args[1][0] == '-' && input_args[1][1] == '\0')
 	{
 		char *old = get_env_value(env, "OLDPWD");
 		if (!old)
@@ -65,7 +74,7 @@ int do_cd(char **argv, t_env_list *env)
 		result = ft_strdup(old);
 	}
 	else
-		result = ft_strdup(argv[1]);
+		result = ft_strdup(input_args[1]);
 
 	if (!result || chdir(result) != 0)
 	{

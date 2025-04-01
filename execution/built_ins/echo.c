@@ -6,6 +6,10 @@ Repeat multiple times with different arguments.
 
 #include "../../includes/minishell.h"
 
+/*
+echo -n -nnnnnnnnnnnnnn bla: handle TODO
+*/
+
 static int only_n(char *str)
 {
     int i = 1; // in next func is checked that str[0] = '-'

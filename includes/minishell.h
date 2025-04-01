@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 17:28:45 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/01 14:56:17 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/01 17:47:22 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ void        set_env_value(t_env_list *env_list, const char *key, const char *val
 char        *get_env_value(t_env_list *env_list, const char *key);
 t_env_list  *copy_env(char **env);
 void        unset_export_flag(t_env_list *env_list, const char *key);
+
+// execution/utils.c
+int	        too_many_args(char	**input_args);
+int	        print_builtin_error(const char *cmd, const char *arg, const char *msg);
 
 //void    set_export_flag(t_env *env_struct, const char *key); // do i need it?
 
