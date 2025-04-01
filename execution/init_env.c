@@ -4,7 +4,7 @@
 
 #include "../includes/minishell.h"
 
-int env_len(char **env)
+static int env_len(char **env)
 {
     int i = 0;
     while (env[i])
@@ -30,13 +30,16 @@ t_env_list *copy_env(char **env)
         char *delim = ft_strchr(env[i], '=');
         if (!delim)
         {
-            i++;
-            continue;
+            env_list->vars[env_list->size].key = ft_strdup(env[i]);
+            env_list->vars[env_list->size].value = NULL;
         }
-        int key_len = delim - env[i];
-        env_list->vars[env_list->size].key = ft_substr(env[i], 0, key_len);
-        env_list->vars[env_list->size].value = ft_strdup(delim + 1);
-        env_list->vars[env_list->size].exported = 1;
+        else
+        {
+            int key_len = delim - env[i];
+            env_list->vars[env_list->size].key = ft_substr(env[i], 0, key_len);
+            env_list->vars[env_list->size].value = ft_strdup(delim + 1);
+            env_list->vars[env_list->size].exported = 1;
+        }
         env_list->size++;
         i++;
     }

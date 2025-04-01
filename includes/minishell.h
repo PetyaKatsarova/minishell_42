@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 17:28:45 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/31 19:00:08 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/01 14:56:17 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,15 @@
 #define EXIT_SPECIAL_EXIT 999 // exit status
 
 typedef struct s_env {
-    char *key;
-    char *value;
-    int exported; // by default set to 1 = exported (visible to env/execve), 0 = local only
+    char    *key;
+    char    *value;
+    int     exported; // by default set to 1 = exported (visible to env/execve), 0 = local only
 } t_env;
 
+/*
+size: how many environment variables are currently stored
+capacity: how many variables can fit before realloc is needed
+*/
 typedef struct s_env_list {
     t_env   *vars;
     int     size;

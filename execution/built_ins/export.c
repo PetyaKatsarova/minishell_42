@@ -46,6 +46,8 @@ You're copying the full struct from address el1 into a local variable temp.
 box temp = contents of el1
 el1 = contents of el2
 el2 = temp
+
+!NB: export and export -p behave the same
 */
 
 //case 1: call export allone: display sorted env, this is for array, need to change for linked list

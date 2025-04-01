@@ -3,7 +3,7 @@
 
 /*
 cd
-Use the command cd to move the working directory and check if you are in the right directory with /bin/ls
+Use the command cd to move the working directory and check if you are in the right directory with /bin/ls: !!NB!! /bin/ls is the actual binary of the ls command — the one that lists files.
 Why use /bin/ls? same result as ls
 It bypasses aliases or shell functions, running the real system ls directly.
 Useful when:
@@ -82,21 +82,3 @@ int do_cd(char **argv, t_env_list *env)
 	free(result);
 	return (EXIT_SUCCESS);
 }
-
-/*
-PWD=/mnt/c/Users/petya.katsarova/OneDrive - CGI/Desktop/minishell_unstoppable
-!! NB !!
-oLDPWD should only appear after the first cd, and only if PWD existed before. in our program: we start minishell with the original envp from your shell, and that includes OLDPWD. TODO: do i need to do sth abt it?
-
-if no argv[1] or argv[1] starts with "~":
-    replace ~ with get_env_path(env, "HOME")
-elif argv[1] starts with "/":
-    use as absolute path
-else:
-    use as relative path from current cwd
-But in reality, you don’t need to split those cases. You can just ft_strdup(argv[1]) and pass to chdir() — it works for both.
-
-WSL1 uses drvfs, which can confuse POSIX APIs like getcwd()
-
-Long OneDrive paths or symlinks can sometimes confuse WSL's path resolution
-*/
