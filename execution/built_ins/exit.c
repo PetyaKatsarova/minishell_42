@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/26 11:43:52 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/28 20:19:43 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/01 18:18:51 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ exit 42       # custom error
 Valid: 0–255
 
 exit 256 → wraps to 0 (only 8 bits)
+
+exit from its current execution environment with the exit status specified by the unsigned decimal integer n
+which $? // Exit status of last command
+Always stores the numeric return code (0 = success, non-zero = error)
 */
 
 #include "../../includes/minishell.h"

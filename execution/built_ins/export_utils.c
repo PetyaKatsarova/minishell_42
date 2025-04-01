@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/28 20:09:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/31 19:01:08 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/01 18:04:17 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 // Bubble sort by key
 
 #include "../../includes/minishell.h"
-
-int get_env_struct_len(t_env_list *env_struct)
-{
-    return env_struct->size;
-}
 
 // Returns malloc'ed sorted copy of env_struct
 // Performs deep copy of key/value pairs

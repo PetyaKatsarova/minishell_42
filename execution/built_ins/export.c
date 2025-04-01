@@ -50,10 +50,16 @@ el2 = temp
 !NB: export and export -p behave the same
 */
 
-//case 1: call export allone: display sorted env, this is for array, need to change for linked list
+/*
+TODO ONCE PARSER IS READY:
+1. if existing env var=bla, replace value
+2. if not existing var=bla, not exported: add to env, set exported=0
+3. if exported: how to: need to print sorted env but all next exported vars append last exported on the bottom
+in env print as it comes from env, but in export: all exported append at the end, not sorted
+*/
 
 
-//!!todo: waht is declare -x for?
+// if contains export: if exists, replace if not add, change size of list and check capacity... how to reallocate memory??
 
 int do_export(char **input_args, t_env_list *env_struct)
 {

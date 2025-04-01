@@ -49,10 +49,6 @@ int do_cd(char **input_args, t_env_list *env)
 	}
 	else if (input_args[1][0] == '~') // do check for validpathrubbish case
 	{
-		//if (input_args[2])
-		//{
-		//	perror("")
-		//}
 		char *home = get_env_value(env, "HOME");
 		if (!home) {
 			fprintf(stderr, "minishell: cd: HOME not set\n");
