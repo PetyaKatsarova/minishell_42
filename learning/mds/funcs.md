@@ -1,9 +1,5 @@
 # C Functions Tutorial
 
-This tutorial covers various C functions categorized by their use cases, with detailed explanations and example code. The examples range from basic usage to more complex implementations.
-
----
-
 ## 1. Readline Functions
 
 ### `readline`

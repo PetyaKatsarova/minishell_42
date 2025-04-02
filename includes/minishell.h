@@ -6,13 +6,14 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 17:28:45 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/01 17:47:22 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/02 08:25:30 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+#include <sys/stat.h>  // for stats func and MACROS: S_ISLNK(m) S_ISDIR(m) S_ISREG(m)
 # include "../libs/libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -39,6 +40,7 @@ typedef struct s_env_list {
     t_env   *vars;
     int     size;
     int     capacity;
+    int     last_exit_status; //Every time a command runs → set shell->last_status = exit_code
 } t_env_list;
 
 // execution/built_ins/*
@@ -66,6 +68,7 @@ void        unset_export_flag(t_env_list *env_list, const char *key);
 // execution/utils.c
 int	        too_many_args(char	**input_args);
 int	        print_builtin_error(const char *cmd, const char *arg, const char *msg);
+// char *expand_dollar_vars(const char *input, t_env_list env_lst); TODO
 
 //void    set_export_flag(t_env *env_struct, const char *key); // do i need it?
 
