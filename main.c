@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 11:17:10 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/01 15:39:25 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/02 16:20:27 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static int handle_readline(t_env_list *env_struct)
 	while (1)
 	{
 		char	*input;
+		char	*expanded_input_args;
 		char	**input_args;
 		int		exit_status = 1;
 		
@@ -38,6 +39,18 @@ static int handle_readline(t_env_list *env_struct)
 			free(input);
 			return (EXIT_FAILURE);
 		}
+		expanded_input_args = expand_input_args(input_args);
+		if (expanded_input_args)
+		{
+			free(input);
+			input = expanded_input_args;
+		}
+		if (ft_strcmp(input, "") == 0)
+		{
+			free(input);
+			free_arr(input_args);
+			continue;
+		}
 		if (*input) // DO I NEED hte if? and why *
 			add_history(input);
 		if (input_args[0])
@@ -46,7 +59,6 @@ static int handle_readline(t_env_list *env_struct)
 			if (exit_status == EXIT_SPECIAL_EXIT)
 				return (exit_status);
 		}
-		free(input);
 		free_arr(input_args);
 	}
 	return (0);

@@ -2,7 +2,27 @@ echo $SHELL
 
 chmod +x filename // executable
 
-The basic actions of the shell are simple. It reads a line. This is either from a file, a script, or from a user. First, meta-characters are "handled." Second, the name of the executable is found. Third, the arguments are passed to the program. Fourth, the file redirection is setup. Lastly, the program is executed.
+The basic actions of the shell are simple. It reads a line. This is either from a file, a script, or from a user. First, meta-characters are "handled."
+Metacharacters are special characters that have meaning to the shell — they control how the shell parses and interprets commands.
+🔥 Common Shell Metacharacters
+Metachar	Meaning	Example
+;	command separator	ls; pwd
+`	`	pipe (send output to next command)
+>	redirect output	echo hi > file.txt
+>>	append output	echo hi >> file.txt
+<	input redirection	cat < file.txt
+<<	heredoc	cat << EOF
+&	run in background	sleep 5 &
+&&	run if previous succeeded	make && ./a.out
+`		`
+*	wildcard (glob)	ls *.c
+?	matches any single char (glob)	ls ?.c
+$	variable expansion	echo $HOME
+" '	quoting to prevent expansion	'literal' vs "$var"
+\	escape character	echo \$HOME
+()	grouping subshell	(cd .. && ls)
+
+ Second, the name of the executable is found. Third, the arguments are passed to the program. Fourth, the file redirection is setup. Lastly, the program is executed.
 
 Examples of POSIX shell filename expansions
 Pattern	Matches

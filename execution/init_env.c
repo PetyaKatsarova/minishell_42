@@ -18,7 +18,7 @@ t_env_list *copy_env(char **env)
     int         len = env_len(env);
     t_env_list *env_list = malloc(sizeof(t_env_list));
 
-    env_list->vars = malloc(sizeof(t_env) * (len + 10)); // reserve extra space
+    env_list->vars = malloc(sizeof(t_env) * (len + 10)); // reserve extra space **todo** is good idea?
     if (!env_list || !env_list->vars)
         return NULL;
 

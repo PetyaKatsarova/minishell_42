@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/26 11:43:52 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/01 18:18:51 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/02 16:21:26 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,6 @@ int	do_exit(char **input_args, char *input)
 	free_arr(input_args);
 	clear_history();
 	return (EXIT_SPECIAL_EXIT);
+	//free_t_env(env_struct);
+	//return (EXIT_SUCCESS);
 }

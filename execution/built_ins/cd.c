@@ -25,6 +25,7 @@ Set the $PATH to a multiple directory value (directory1:directory2) and ensure t
 order from left to right.
 */
 
+// for each command check if has $ and if so: replace key
 int do_cd(char **input_args, t_env_list *env)
 {
 	char cwd[CWD_MAX];
