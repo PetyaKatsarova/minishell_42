@@ -48,15 +48,30 @@ int do_cd(char **input_args, t_env_list *env)
 		}
 		printf("CD:: %s\n", result);
 	}
-	else if (input_args[1][0] == '~') // do check for validpathrubbish case
+	else if (input_args[1][0] == '~')
 	{
-		char *home = get_env_value(env, "HOME");
-		if (!home) {
-			fprintf(stderr, "minishell: cd: HOME not set\n");
+		char	*home = get_env_value(env, "HOME");
+		char	*rest;
+		
+		if (!home)
+		{
+			printf("minishell: cd: HOME not set\n");
 			return (EXIT_FAILURE);
 		}
-		char *rest = input_args[1] + 1;
-		result = ft_strjoin(home, rest); // malloc check?? TODO
+		rest = input_args[1] + 1; // everything after '~'
+
+		// if it's just "~", cd to HOME
+		if (rest[0] == '\0')
+			result = ft_strdup(home);
+		else if (rest[0] == '/') // "~/folder" case
+			result = ft_strjoin(home, rest); // result = HOME + /folder
+		else
+		{
+			// unsupported like "~username" → treat as literal path
+			result = ft_strdup(input_args[1]);
+		}
+		if (!result) // do i need this?
+			return (EXIT_FAILURE); // exit failure strategy: what num?
 	}
 	else if (input_args[1][0] == '-' && input_args[1][1] == '\0')
 	{

@@ -7,40 +7,45 @@ Repeat multiple times with different arguments.
 #include "../../includes/minishell.h"
 
 /*
-echo -n -nnnnnnnnnnnnnn bla: handle TODO
+echo -n -nnnnnnnnnnnnnn bla: handle TODO undefined behavior
 */
 
-static int only_n(char *str)
+/*
+    Returns 1(true) if the string ends after ns and starts with -, otherwise 0(false).
+*/
+static int	is_echo_n_flag(char *str)
 {
-    int i = 1; // in next func is checked that str[0] = '-'
+    size_t	i;
 
-    while (str[i])
-    {
-        if (str[i] != 'n')
-            return (0); // not only ns
+    i = 1;
+    if (str[0] != '-')
+        return (0);
+    while (str[i] == 'n')
         i++;
-    }
-    return (1);
+    return (str[i] == '\0');
 }
 
-int do_echo(char **argv)
+int	do_echo(char **argv)
 {
-    int i = 1;
-    int new_line = 1;
+    size_t	i;
+    int		newline;
 
-    if (argv[1] && ft_strncmp(argv[1], "-n", 1) == 0 && only_n(argv[1]) == 1)
+    i = 1;
+    newline = 1;
+    while (argv[i] && is_echo_n_flag(argv[i]))
     {
-        new_line = 0;
+        newline = 0;
         i++;
     }
     while (argv[i])
     {
         printf("%s", argv[i]);
-        if (argv[i+1])
+        if (argv[i + 1])
             printf(" ");
         i++;
     }
-    if (new_line)
+    if (newline)
         printf("\n");
-    return (EXIT_SUCCESS); // 0
+
+    return (EXIT_SUCCESS);
 }

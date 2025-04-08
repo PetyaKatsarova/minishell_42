@@ -24,6 +24,7 @@ t_env_list *copy_env(char **env)
 
     env_list->size = 0;
     env_list->capacity = len + 10;
+    env_list->process_num = 1;
 
     while (env[i])
     {

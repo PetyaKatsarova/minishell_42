@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 17:28:45 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/02 16:07:12 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/08 19:35:09 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 #include <string.h>
 #include <errno.h> // is it allowed?
 
-#define EXIT_SPECIAL_EXIT 999 // exit status
 
 // todo: where to keep last exit status?
 typedef struct s_env {
@@ -32,7 +31,7 @@ typedef struct s_env {
     char    *value;
     int     exported; // by default set to 1 = exported (visible to env/execve), 0 = local only
     int     exit_status; // do i need it in this struct?
-    //int     sth about expanded var: if key starts with $ and key[1, end] exists: return only val
+    //int     sth about expanded var: for now handled in readline input...
 } t_env;
 
 /*
@@ -41,8 +40,9 @@ capacity: how many variables can fit before realloc is needed
 */
 typedef struct s_env_list {
     t_env   *vars;
-    int     size;
-    int     capacity;
+    size_t     size;
+    size_t     capacity;
+    int     process_num;
     int     last_exit_status; //Every time a command runs → set shell->last_status = exit_code
 } t_env_list;
 
@@ -55,7 +55,7 @@ int	        get_env_struct_len(t_env_list *env_struct);
 t_env_list  *sort_env(t_env_list *env_struct);
 void        print_env_export(t_env_list *sorted_env_struct);
 int         do_export(char  **input_args, t_env_list *env_struct);
-int         do_exit(char **input_args, char *input);
+int         do_exit(char **input_args, char *input, t_env_list *env_struct);
 int	        handle_builtins(char **input_args, t_env_list *env_struct, char *input);
 
 // execution/freeing.c
@@ -71,6 +71,7 @@ void        unset_export_flag(t_env_list *env_list, const char *key);
 // execution/utils.c
 int	        too_many_args(char	**input_args);
 int	        print_builtin_error(const char *cmd, const char *arg, const char *msg);
+long        ft_atol(const char *str);
 // char *expand_dollar_vars(const char *input, t_env_list env_lst); TODO
 
 // execution/expand_dollar.c

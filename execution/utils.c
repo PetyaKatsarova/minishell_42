@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/01 17:31:20 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/01 18:02:01 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/08 17:18:01 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,27 @@ int	print_builtin_error(const char *cmd, const char *arg, const char *msg)
 	}
 	printf("minishell: %s: unknown error\n", cmd);
 	return (EXIT_FAILURE);
+}
+
+long	ft_atol(const char *str)
+{
+    long	result;
+    int		sign;
+
+    result = 0;
+    sign = 1;
+    while (*str == ' ' || (*str >= 9 && *str <= 13)) // Skip whitespace
+        str++;
+    if (*str == '-' || *str == '+') // Handle sign
+    {
+        if (*str == '-')
+            sign = -1;
+        str++;
+    }
+    while (*str && *str >= '0' && *str <= '9') // Convert digits
+    {
+        result = result * 10 + (*str - '0');
+        str++;
+    }
+    return (result * sign);
 }
