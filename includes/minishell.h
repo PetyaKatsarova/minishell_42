@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 17:28:45 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/09 10:57:55 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/09 16:39:35 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int         get_env(t_env_list   *env);
 int	        get_env_struct_len(t_env_list *env_struct);
 int         do_export(char  **input_args, t_env_list *env_struct);
 int         do_exit(char **input_args, char *input, t_env_list *env_struct);
+int         do_unset(char **input_args, t_env_list *env_struct);
 int	        handle_builtins(char **input_args, t_env_list *env_struct, char *input);
 
 // execution/export_utils.c

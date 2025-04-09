@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/28 16:55:48 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/08 18:18:43 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/09 16:39:09 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	handle_builtins(char **input_args, t_env_list *env_struct, char *input)
 		exit_status = do_echo(input_args);
 	else if (ft_strncmp(input_args[0], "export", 7) == 0)
 		exit_status = do_export(input_args, env_struct);
+	else if (ft_strncmp(input_args[0], "unset", 6) == 0)
+		exit_status = do_unset(input_args, env_struct);
 	else
 	{
 		printf("under construction. but unstoppable ....\n");

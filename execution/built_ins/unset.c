@@ -10,65 +10,54 @@
 // /*                                                                            */
 // /* ************************************************************************** */
 
-// #include "../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-// t_env	*delete_env_var(char *key, t_env *env_struct)
-// {
-//     t_env	*new_env;
-//     size_t	i = 0, j = 0, env_size = 0;
+static void delete_env_var(const char *key, t_env_list *env_list)
+{
+    size_t i = 0;
+    size_t len = ft_strlen(key);
 
-//     while (env_struct[env_size].key)
-//         env_size++;
-//     new_env = malloc(sizeof(t_env) * env_size);
-//     if (!new_env)
-//         return (NULL);
+    while (i < env_list->size)
+    {
+        if (ft_strncmp(env_list->vars[i].key, key, len) == 0 && env_list->vars[i].key[len] == '\0')
+        {
+            // Free the memory for the key and value
+            free(env_list->vars[i].key);
+            free(env_list->vars[i].value);
 
-//     while (i < env_size)
-//     {
-//         if (ft_strncmp(env_struct[i].key, key, ft_strlen(key) + 1) != 0)
-//         {
-//             new_env[j].key = ft_strdup(env_struct[i].key);
-//             new_env[j].value = ft_strdup(env_struct[i].value);
-//             new_env[j].exported = env_struct[i].exported;
-//             if (!new_env[j].key || (env_struct[i].value && !new_env[j].value))
-//                 return (free(new_env), NULL);
-//             j++;
-//         }
-//         else
-//         {
-//             free(env_struct[i].key);
-//             free(env_struct[i].value);
-//         }
-//         i++;
-//     }
-//     new_env[j].key = NULL;
-//     new_env[j].value = NULL;
-//     new_env[j].exported = 0;
-//     free(env_struct);
-//     return (new_env);
-// }
+            // Shift the remaining variables down
+            while (i < env_list->size - 1)
+            {
+                env_list->vars[i] = env_list->vars[i + 1];
+                i++;
+            }
+            env_list->vars[env_list->size - 1].key = NULL;
+            env_list->vars[env_list->size - 1].value = NULL;
+            env_list->size--;
+            return;
+        }
+        i++;
+    }
+}
 
-// int	do_unset(char **input_args, t_env *env_struct)
-// {
-//     size_t	i = 1;
-//     int		status = EXIT_SUCCESS;
+int do_unset(char **input_args, t_env_list *env_struct)
+{
+    size_t i;
 
-//     if (!input_args || !env_struct)
-//         return (EXIT_FAILURE);
+    if (!input_args || !env_struct)
+        return (EXIT_FAILURE);
 
-//     while (input_args[i])
-//     {
-//         if (!input_args[i] || !*input_args[i])
-//         {
-//             i++;
-//             continue;
-//         }
-//         t_env *new_env = delete_env_var(input_args[i], env_struct);
-//         if (!new_env)
-//             status = EXIT_FAILURE;
-//         else
-//             env_struct = new_env;
-//         i++;
-//     }
-//     return (status);
-// }
+    i = 1; // 0 is cmd unset
+    while (input_args[i])
+    {
+        if (!ft_isalpha(input_args[i][0]) && input_args[i][0] != '_')
+            print_builtin_error("unset", input_args[i], "not a valid identif");
+        else
+        {
+            // unset_export_flag(env_struct, input_args[i]); // Unset export flag if needed
+            delete_env_var(input_args[i], env_struct);
+        }
+        i++;
+    }
+    return (EXIT_SUCCESS);
+}

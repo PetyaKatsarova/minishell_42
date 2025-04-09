@@ -51,15 +51,14 @@ int	do_export(char **input_args, t_env_list *env_struct)
     // char		**export_args;
     t_env_list	*sorted_env;
 
-    if (!input_args[1])
+    if (input_args[1])
     {
-        sorted_env = sort_env(env_struct);
-        if (!sorted_env)
-            err_malloc(NULL, "minishell: sorted env-struct failed");
-        print_env_export(sorted_env);
-        free_t_env(sorted_env);
-        return (EXIT_SUCCESS);
-    }
 
+    }
+    sorted_env = sort_env(env_struct);
+    if (!sorted_env)
+        err_malloc(NULL, "minishell: sorted env-struct failed");
+    print_env_export(sorted_env);
+    free_t_env(sorted_env);
     return (EXIT_SUCCESS);
 }

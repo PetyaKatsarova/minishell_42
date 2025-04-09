@@ -3,10 +3,10 @@
 #                                                         ::::::::             #
 #    Makefile                                           :+:    :+:             #
 #                                                      +:+                     #
-#    By: petya <petya@student.42.fr>                  +#+                      #
+#    By: marvin <marvin@student.42.fr>                +#+                      #
 #                                                    +#+                       #
 #    Created: 2025/02/04 11:27:44 by pekatsar      #+#    #+#                  #
-#    Updated: 2025/04/02 14:10:19 by pekatsar      ########   odam.nl          #
+#    Updated: 2025/04/09 16:42:43 by anonymous     ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRCS     := execution/built_ins/pwd.c \
 			execution/built_ins/echo.c \
 			execution/built_ins/env.c \
 			execution/built_ins/exit.c \
+			execution/built_ins/unset.c \
 			execution/built_ins/handle_builtins.c \
 			execution/built_ins/export_utils.c \
 			execution/built_ins/export.c \
