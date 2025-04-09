@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/14 17:28:45 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/08 19:35:09 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/09 10:57:55 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ capacity: how many variables can fit before realloc is needed
 */
 typedef struct s_env_list {
     t_env   *vars;
-    size_t     size;
-    size_t     capacity;
-    int     process_num;
+    size_t  size;
+    size_t  capacity;
+    int     shlvl; // shell level
     int     last_exit_status; //Every time a command runs → set shell->last_status = exit_code
 } t_env_list;
 
@@ -52,11 +52,15 @@ int         do_cd(char **argv, t_env_list *env);
 int         do_echo(char **args);
 int         get_env(t_env_list   *env);
 int	        get_env_struct_len(t_env_list *env_struct);
-t_env_list  *sort_env(t_env_list *env_struct);
-void        print_env_export(t_env_list *sorted_env_struct);
 int         do_export(char  **input_args, t_env_list *env_struct);
 int         do_exit(char **input_args, char *input, t_env_list *env_struct);
 int	        handle_builtins(char **input_args, t_env_list *env_struct, char *input);
+
+// execution/export_utils.c
+int        err_malloc(t_env_list *cpy, char *msg);
+t_env_list  *cpy_env_list(t_env_list *env_struct);
+t_env_list  *sort_env(t_env_list *env_struct);
+void        print_env_export(t_env_list *sorted_env_struct);
 
 // execution/freeing.c
 void        free_arr(char **arr);

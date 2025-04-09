@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   exit.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/26 11:43:52 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/08 18:09:07 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/09 11:03:28 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int	do_exit(char **input_args, char *input, t_env_list *env_struct)
     int	exit_status;
 
     exit_status = env_struct->last_exit_status;
-	if (env_struct->process_num == 1)
+	if (env_struct->shlvl == 0)
 		write(STDERR_FILENO, "exit\n", 5);
     // No arguments: exit with last status
     if (input_args[1] == NULL)

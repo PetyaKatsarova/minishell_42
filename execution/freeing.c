@@ -15,13 +15,9 @@ void free_arr(char **arr)
     free(arr);
 }
 
-// needs to change: coming from parser
-/*
-Returns arr of t_env structs
-*/
 void free_t_env(t_env_list *env_struct)
 {
-    int i = 0;
+    size_t i = 0;
     while (i < env_struct->size)
     {
         free(env_struct->vars[i].key);
