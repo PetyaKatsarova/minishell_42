@@ -8,28 +8,28 @@ cd ~
 cc -Wall -Wextra -Werror dir_handling.c && ./a.out
 */
 int main() {
-    DIR *dir = opendir("."); // DIR: directory stream object
-    if (!dir) {
-        perror("opendir");
-        return (1);
-    }
-    struct  dirent *entry;
-    struct stat file_stat;
-    while ((entry = readdir(dir)) != NULL) {
-        if (stat(entry->d_name, &file_stat) == 0) {
-            if (S_ISDIR(file_stat.st_mode)) {
-                printf("[DIR] %s\n", entry->d_name);
-            } else if (S_ISREG(file_stat.st_mode)) {
-                printf("[FILE] %s\n", entry->d_name);
-            } else {
-                printf("[OTHER] %s\n", entry->d_name);
-            }
-        } else {
-            perror("stat");
-        }
-    }
-    closedir(dir);
-    return (0);
+	DIR *dir = opendir("."); // DIR: directory stream object
+	if (!dir) {
+		perror("opendir");
+		return (1);
+	}
+	struct  dirent *entry;
+	struct stat file_stat;
+	while ((entry = readdir(dir)) != NULL) {
+		if (stat(entry->d_name, &file_stat) == 0) {
+			if (S_ISDIR(file_stat.st_mode)) {
+				printf("[DIR] %s\n", entry->d_name);
+			} else if (S_ISREG(file_stat.st_mode)) {
+				printf("[FILE] %s\n", entry->d_name);
+			} else {
+				printf("[OTHER] %s\n", entry->d_name);
+			}
+		} else {
+			perror("stat");
+		}
+	}
+	closedir(dir);
+	return (0);
 }
 
 /*
@@ -37,11 +37,11 @@ int main() {
 The struct dirent is defined in <dirent.h> and typically looks like this:
 
 struct dirent {
-    ino_t          d_ino;       // Inode number
-    off_t          d_off;       // Offset to next dirent
-    unsigned short d_reclen;    // Length of this record
-    unsigned char  d_type;      // Type of file (not always available)
-    char           d_name[];    // File name (null-terminated)
+	ino_t		  d_ino;	   // Inode number
+	off_t		  d_off;	   // Offset to next dirent
+	unsigned short d_reclen;	// Length of this record
+	unsigned char  d_type;	  // Type of file (not always available)
+	char		   d_name[];	// File name (null-terminated)
 };
 d_ino – The inode number of the file. Used for identifying files uniquely within a filesystem.
 d_off – Offset to the next directory entry (mostly used internally).

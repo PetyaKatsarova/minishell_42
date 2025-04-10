@@ -1,13 +1,13 @@
 # **************************************************************************** #
-#                                                                              #
-#                                                         ::::::::             #
-#    Makefile                                           :+:    :+:             #
-#                                                      +:+                     #
-#    By: pekatsar <pekatsar@student.codam.nl>         +#+                      #
-#                                                    +#+                       #
-#    Created: 2024/10/12 10:16:36 by pekatsar      #+#    #+#                  #
-#    Updated: 2024/10/12 10:16:39 by pekatsar      ########   odam.nl          #
-#                                                                              #
+#																			  #
+#														 ::::::::			 #
+#	Makefile										   :+:	:+:			 #
+#													  +:+					 #
+#	By: pekatsar <pekatsar@student.codam.nl>		 +#+					  #
+#													+#+					   #
+#	Created: 2024/10/12 10:16:36 by pekatsar	  #+#	#+#				  #
+#	Updated: 2024/10/12 10:16:39 by pekatsar	  ########   odam.nl		  #
+#																			  #
 # **************************************************************************** #
 
 SRC = ft_isalpha.c\

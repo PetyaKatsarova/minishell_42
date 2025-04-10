@@ -13,13 +13,13 @@ The `readline` function reads a line from standard input with editing capabiliti
 #include <stdlib.h>
 
 int main() {
-    char *input = readline("Enter command: ");
-    if (input && *input) { // Ensure input is not NULL or empty
-        add_history(input); // Store input in history
-        printf("You entered: %s\n", input);
-        free(input);
-    }
-    return 0;
+	char *input = readline("Enter command: ");
+	if (input && *input) { // Ensure input is not NULL or empty
+		add_history(input); // Store input in history
+		printf("You entered: %s\n", input);
+		free(input);
+	}
+	return 0;
 }
 ```
 
@@ -32,9 +32,9 @@ Clears the readline history, which is useful for freeing memory or resetting a s
 #include <readline/history.h>
 
 int main() {
-    add_history("test");
-    rl_clear_history();
-    return 0;
+	add_history("test");
+	rl_clear_history();
+	return 0;
 }
 ```
 
@@ -46,9 +46,9 @@ Replaces the current input line with a specified string. This is useful for dyna
 #include <readline/readline.h>
 
 int main() {
-    rl_replace_line("Modified input", 0);
-    rl_redisplay();
-    return 0;
+	rl_replace_line("Modified input", 0);
+	rl_redisplay();
+	return 0;
 }
 ```
 
@@ -66,15 +66,15 @@ The `open` function is used to open a file, returning a file descriptor, while `
 #include <stdio.h>
 
 int main() {
-    int fd = open("output.txt", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-    if (fd == -1) {
-        perror("open");
-        return 1;
-    }
-    char *text = "Hello, file!";
-    write(fd, text, 12);
-    close(fd);
-    return 0;
+	int fd = open("output.txt", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd == -1) {
+		perror("open");
+		return 1;
+	}
+	char *text = "Hello, file!";
+	write(fd, text, 12);
+	close(fd);
+	return 0;
 }
 ```
 
@@ -88,19 +88,19 @@ The `read` function reads data from a file descriptor into a buffer. It returns 
 #include <stdio.h>
 
 int main() {
-    char buffer[100];
-    int fd = open("output.txt", O_RDONLY);
-    if (fd == -1) {
-        perror("open");
-        return 1;
-    }
-    int bytes = read(fd, buffer, sizeof(buffer) - 1);
-    if (bytes > 0) {
-        buffer[bytes] = '\0';
-        printf("Read: %s\n", buffer);
-    }
-    close(fd);
-    return 0;
+	char buffer[100];
+	int fd = open("output.txt", O_RDONLY);
+	if (fd == -1) {
+		perror("open");
+		return 1;
+	}
+	int bytes = read(fd, buffer, sizeof(buffer) - 1);
+	if (bytes > 0) {
+		buffer[bytes] = '\0';
+		printf("Read: %s\n", buffer);
+	}
+	close(fd);
+	return 0;
 }
 ```
 
@@ -118,16 +118,16 @@ The `fork` function creates a child process, and `execve` replaces the current p
 #include <sys/types.h>
 
 int main() {
-    pid_t pid = fork();
-    if (pid == 0) {
-        char *args[] = {"/bin/ls", "-l", NULL};
-        execve("/bin/ls", args, NULL);
-    } else {
-        printf("Parent process waiting...\n");
-        wait(NULL);
-        printf("Child process finished.\n");
-    }
-    return 0;
+	pid_t pid = fork();
+	if (pid == 0) {
+		char *args[] = {"/bin/ls", "-l", NULL};
+		execve("/bin/ls", args, NULL);
+	} else {
+		printf("Parent process waiting...\n");
+		wait(NULL);
+		printf("Child process finished.\n");
+	}
+	return 0;
 }
 ```
 
@@ -144,17 +144,17 @@ The `opendir` function opens a directory stream, while `readdir` iterates over d
 #include <stdio.h>
 
 int main() {
-    DIR *dir = opendir(".");
-    if (!dir) {
-        perror("opendir");
-        return 1;
-    }
-    struct dirent *entry;
-    while ((entry = readdir(dir)) != NULL) {
-        printf("%s\n", entry->d_name);
-    }
-    closedir(dir);
-    return 0;
+	DIR *dir = opendir(".");
+	if (!dir) {
+		perror("opendir");
+		return 1;
+	}
+	struct dirent *entry;
+	while ((entry = readdir(dir)) != NULL) {
+		printf("%s\n", entry->d_name);
+	}
+	closedir(dir);
+	return 0;
 }
 ```
 
@@ -171,12 +171,12 @@ The `isatty` function checks whether a file descriptor refers to a terminal devi
 #include <stdio.h>
 
 int main() {
-    if (isatty(STDIN_FILENO)) {
-        printf("Standard input is a terminal.\n");
-    } else {
-        printf("Standard input is not a terminal.\n");
-    }
-    return 0;
+	if (isatty(STDIN_FILENO)) {
+		printf("Standard input is a terminal.\n");
+	} else {
+		printf("Standard input is not a terminal.\n");
+	}
+	return 0;
 }
 ```
 
@@ -187,13 +187,13 @@ The `ttyname` function returns the name of the terminal associated with a given 
 #include <stdio.h>
 
 int main() {
-    char *terminal_name = ttyname(STDIN_FILENO);
-    if (terminal_name) {
-        printf("Terminal device: %s\n", terminal_name);
-    } else {
-        printf("No terminal associated with this file descriptor.\n");
-    }
-    return 0;
+	char *terminal_name = ttyname(STDIN_FILENO);
+	if (terminal_name) {
+		printf("Terminal device: %s\n", terminal_name);
+	} else {
+		printf("No terminal associated with this file descriptor.\n");
+	}
+	return 0;
 }
 ```
 

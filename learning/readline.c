@@ -10,35 +10,35 @@
 // cc -Wall -Wextra -Werror readline.c -lreadline && ./a.out
 
  int main() {
-    char *input;
+	char *input;
 
-    while (1)
-    {
-        // input = readline("Enter command: "); gives automatically the prompt 
-        printf("Enter command: "); // manual prompt instead readl
-        fflush(stdout);            // Ensure it appears before readline()
-        input = readline(""); // reads input without the auto prompt
-        // !!NB!! Ctrl+D signals EOF (End of File) when reading from standard input.
-        if (!input) { // Exit on Ctrl+D
-            printf("\nExiting...\n");
-            break;
-        }
-        if (*input)
-            add_history(input); // arrow key navigation: past inputs
-        printf("Original input: %s", rl_line_buffer);
-        rl_on_new_line(); // signals a new line
-        rl_replace_line("tra la la", 0); // replaces curr input line 
-        // rl_redisplay(); // refreshes the command prompt display and immediately display on the shell
-        printf("\nModified buffer: %s\n", rl_line_buffer);
-        free(input);
-    }
-    rl_clear_history(); // clears memory from history
-    return (0);
+	while (1)
+	{
+		// input = readline("Enter command: "); gives automatically the prompt 
+		printf("Enter command: "); // manual prompt instead readl
+		fflush(stdout);			// Ensure it appears before readline()
+		input = readline(""); // reads input without the auto prompt
+		// !!NB!! Ctrl+D signals EOF (End of File) when reading from standard input.
+		if (!input) { // Exit on Ctrl+D
+			printf("\nExiting...\n");
+			break;
+		}
+		if (*input)
+			add_history(input); // arrow key navigation: past inputs
+		printf("Original input: %s", rl_line_buffer);
+		rl_on_new_line(); // signals a new line
+		rl_replace_line("tra la la", 0); // replaces curr input line 
+		// rl_redisplay(); // refreshes the command prompt display and immediately display on the shell
+		printf("\nModified buffer: %s\n", rl_line_buffer);
+		free(input);
+	}
+	rl_clear_history(); // clears memory from history
+	return (0);
  }
  /*
  readline
  Supports arrow keys, history navigation, and auto-completion. char *readline(const char *prompt);
-         
+		 
  rl_clear_history
 rl stands for readline
 The rl_clear_history function clears the Readline history, freeing the memory used to store previous inputs. This is useful when you want to reset or prevent memory leaks in long-running applications. Calling this function ensures that past commands stored in memory are removed, but it does not affect saved history files.

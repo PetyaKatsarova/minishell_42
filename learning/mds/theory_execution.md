@@ -55,10 +55,10 @@ ps -ef	Show all processes with full details.
 ps aux	Show processes with more info, including memory usage.
 ps -e --forest	Show processes in a tree view.
 
-TTY     Value	            Meaning
-pts/0	Pseudo-terminal     (process running inside a terminal emulator like bash, ssh, tmux).
+TTY	 Value				Meaning
+pts/0	Pseudo-terminal	 (process running inside a terminal emulator like bash, ssh, tmux).
 hvc0	Hypervisor Console  (used by WSL, virtual machines, or cloud instances).
-?	    No terminal         (background system process, daemon, or service).
+?		No terminal		 (background system process, daemon, or service).
 
 SessionLeader → Manages a login session.
 Relay(607) → A relay process handling communication.
@@ -148,13 +148,13 @@ You can use either the number or the name.
 2. How to Choose the Right Signal?
 You need to replace [SIGNAL] with the right one:
 
-Signal	Number	Effect	    Usage               Example
-SIGTERM	15	    Graceful    stop	            kill -15 PID (default if no signal is given)
-SIGKILL	9	       Force kill (cannot be blocked)	kill -9 PID
+Signal	Number	Effect		Usage			   Example
+SIGTERM	15		Graceful	stop				kill -15 PID (default if no signal is given)
+SIGKILL	9		   Force kill (cannot be blocked)	kill -9 PID
 SIGHUP	1	Restart process (reload configs)	kill -1 PID
-SIGINT	2	Interrupt (like Ctrl+C)	            kill -2 PID
-SIGSTOP	19	Pause process	                    kill -19 PID
-SIGCONT	18	Resume paused process	            kill -18 PID
+SIGINT	2	Interrupt (like Ctrl+C)				kill -2 PID
+SIGSTOP	19	Pause process						kill -19 PID
+SIGCONT	18	Resume paused process				kill -18 PID
 3. Example: Kill a Process
 kill -9 1234  # Force kill process with PID 1234
 kill -15 5678 # Gracefully stop process 5678
@@ -235,12 +235,12 @@ never to cache the variable.
 
 void ft_pwd(void)
 {
-    char cwd[1024];
+	char cwd[1024];
 
-    if (getcwd(cwd, sizeof(cwd)))
-        printf("%s\n", cwd);
-    else
-        perror("pwd");
+	if (getcwd(cwd, sizeof(cwd)))
+		printf("%s\n", cwd);
+	else
+		perror("pwd");
 }
 Uses getcwd() to get the current directory.
 Prints the result like the real pwd command.
@@ -252,7 +252,7 @@ stands for "Terminal Control Set Attributes" — it is used to configure termina
 #include <termios.h>
 
 int tcsetattr(int fildes, int optional_actions,
-    const struct termios *termios_p);
+	const struct termios *termios_p);
 ----------------------------------------------------------------------------
 Canonical Mode vs. Non-Canonical Mode in the Terminal
 The terminal operates in two modes:
@@ -360,9 +360,9 @@ Path	Meaning
 /var	Logs, temp data, services
 /mnt/c	Access to Windows C:\
 -------------------------------------------------------------------
-Type	    Stays in shell?	Passed to programs?	    Shown by env?
-VAR=value	✅ Yes	        ❌ No	                ❌ No
-export VAR	✅ Yes	        ✅ Yes	                ✅ Yes
+Type		Stays in shell?	Passed to programs?		Shown by env?
+VAR=value	✅ Yes			❌ No					❌ No
+export VAR	✅ Yes			✅ Yes					✅ Yes
 -------------------------------------------------------------------
 write vs printf in C:
 
@@ -391,8 +391,8 @@ Example:
 c
 Copy
 Edit
-write(1, "Hello\n", 6);          // raw output
-printf("Hello\n");              // formatted output
+write(1, "Hello\n", 6);		  // raw output
+printf("Hello\n");			  // formatted output
 ==============================================================================
 
 

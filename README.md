@@ -39,7 +39,7 @@ Youe shell should not:
 ◦ ctrl-D exits the shell.
 ◦ ctrl-\ does nothing.
 ------------------------------------------------------------
-                  built-in commands
+				  built-in commands
 ------------------------------------------------------------
 ◦ echo with option -n ✅
 ◦ cd with only a relative or absolute path ✅

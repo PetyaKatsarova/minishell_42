@@ -51,18 +51,35 @@ Assuming input_args[0]="export"
 */
 int	do_export(char **input_args, t_env_list *env_struct)
 {
-    // size_t		i;
-    // char		**export_args;
-    t_env_list	*sorted_env;
+	// size_t		i;
+	// char		**export_args;
+	t_env_list	*sorted_env;
 
-    sorted_env = sort_env(env_struct);
-    if (!sorted_env)
-        err_malloc(NULL, "minishell: sorted env-struct failed");
-    if (input_args[1])
-    {
+	sorted_env = sort_env(env_struct);
+	if (!sorted_env)
+		err_malloc(NULL, "minishell: sorted env-struct failed");
+	if (input_args[1])
+	{
 
-    }
-    print_env_export(sorted_env);
-    free_t_env(sorted_env);
-    return (EXIT_SUCCESS);
+	}
+	print_env_export(sorted_env);
+	free_t_env(sorted_env);
+	return (EXIT_SUCCESS);
 }
+
+/*
+Theory:accessdeclare -x _="/home/pekatsar/Desktop/minishell_42/./minishell" wht is last line in here on export
+
+GitHub Copilot
+The last line in the export output, declare -x _="/home/pekatsar/Desktop/minishell_42/./minishell", represents the special shell variable _.
+
+What is _ in Shells?
+Special Variable _:
+
+In most shells (like Bash), _ is a special variable that holds the last argument of the last executed command or the absolute path of the current shell or script.
+In the Context of export:
+
+When you run a shell or execute a command, _ is updated to reflect the path of the shell binary or the last executed command.
+In this case, _ is set to the path of your minishell binary:
+"/home/pekatsar/Desktop/minishell_42/./minishell".
+*/

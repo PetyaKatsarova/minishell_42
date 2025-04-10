@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: marvin <marvin@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/14 11:17:10 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/08 15:46:03 by pekatsar      ########   odam.nl         */
-/*                                                                            */
+/*																			*/
+/*														::::::::			*/
+/*   main.c											 :+:	:+:			*/
+/*													 +:+					*/
+/*   By: marvin <marvin@student.42.fr>				+#+					 */
+/*												   +#+					  */
+/*   Created: 2025/03/14 11:17:10 by pekatsar	  #+#	#+#				 */
+/*   Updated: 2025/04/10 13:36:26 by pekatsar	  ########   odam.nl		 */
+/*																			*/
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
@@ -61,8 +61,9 @@ static int handle_readline(t_env_list *env_struct_lst)
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
 	(void) argv;
-	t_env_list *env_struct_lst = copy_env(envp);
+	t_env_list *env_struct_lst = copy_env(envp); 
+	// todo: check if envstructlst is not null or err or empty.... protect
 	handle_readline(env_struct_lst);
 	free_t_env(env_struct_lst);
-    return (0);
+	return (0);
 }

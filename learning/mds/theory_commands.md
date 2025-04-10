@@ -38,12 +38,12 @@ When user writes echo $?, replace $? with that number
 =====================================================
 **todo**
 expand vars: 
-echo $USER             # shows current user
-echo $HOME/Desktop     # path expansion
-cd $HOME               # use var in builtin
-ls $PWD                # print current dir contents
+echo $USER			 # shows current user
+echo $HOME/Desktop	 # path expansion
+cd $HOME			   # use var in builtin
+ls $PWD				# print current dir contents
 export PATH=$PATH:/new # reuse existing value
-env | grep $USER       # search env for yourself
+env | grep $USER	   # search env for yourself
 
 You must increment SHLVL on shell startup.”
 You must increment SHLVL on shell startup.”

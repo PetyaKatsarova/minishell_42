@@ -3,22 +3,22 @@
 #include <unistd.h>
 
 void signal_handler(int signo) {
-    printf("Caught signal %d\n", signo);
+	printf("Caught signal %d\n", signo);
 }
 
 // cc -Wall -Wextra -Werror signal.c && ./a.out
 int main() {
-    struct sigaction sa;
-    sa.sa_handler = signal_handler;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = 0;
+	struct sigaction sa;
+	sa.sa_handler = signal_handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
 
-    sigaction(SIGINT, &sa, NULL);
-    printf("Printf Ctrl+C to trigger SIGINT\n");
-    while (1) {
-        sleep(1);
-    }
-    return (0);
+	sigaction(SIGINT, &sa, NULL);
+	printf("Printf Ctrl+C to trigger SIGINT\n");
+	while (1) {
+		sleep(1);
+	}
+	return (0);
 }
 
 /*

@@ -78,7 +78,7 @@ int do_cd(char **input_args, t_env_list *env)
 		char *old = get_env_value(env, "OLDPWD");
 		if (!old)
 		{
-            // todo: check management in bash
+			// todo: check management in bash
 			fprintf(stderr, "minishell: cd: OLDPWD not set\n");
 			return (EXIT_FAILURE);
 		}

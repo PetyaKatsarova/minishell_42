@@ -12,85 +12,85 @@
 
 // Signal handler for SIGINT (Ctrl+C)
 void handle_signal(int sig) {
-    printf("\nReceived signal %d. Ignoring...\n", sig);
+	printf("\nReceived signal %d. Ignoring...\n", sig);
 }
 
 void create_and_write_file(const char *filename) {
-    int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-    if (fd == -1) {
-        perror("Error creating file");
-        exit(EXIT_FAILURE);
-    }
+	int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1) {
+		perror("Error creating file");
+		exit(EXIT_FAILURE);
+	}
 
-    const char *text =
-        "Выхожу один я на дорогу;\n"
-        "Сквозь туман кремнистый путь блестит;\n"
-        "Ночь тиха. Пустыня внемлет богу,\n"
-        "И звезда с звездою говорит.\n";
-    write(fd, text, strlen(text));
-    close(fd);
+	const char *text =
+		"Выхожу один я на дорогу;\n"
+		"Сквозь туман кремнистый путь блестит;\n"
+		"Ночь тиха. Пустыня внемлет богу,\n"
+		"И звезда с звездою говорит.\n";
+	write(fd, text, strlen(text));
+	close(fd);
 }
 
 void read_and_print(const char *fliname) {
-    int fd = open(fliname, O_RDONLY);
-    if (fd == -1) {
-        perror("Error reading file");
-        exit(EXIT_FAILURE);
-    }
+	int fd = open(fliname, O_RDONLY);
+	if (fd == -1) {
+		perror("Error reading file");
+		exit(EXIT_FAILURE);
+	}
 
-    char buffer[256];
-    ssize_t bytes;
-    printf("\nFile content:\n");
-    while ((bytes = read(fd, buffer, sizeof(buffer)-1)) > 0) {
-        buffer[bytes] = '\0';
-        printf("%s", buffer);
-    }
-    close(fd);
+	char buffer[256];
+	ssize_t bytes;
+	printf("\nFile content:\n");
+	while ((bytes = read(fd, buffer, sizeof(buffer)-1)) > 0) {
+		buffer[bytes] = '\0';
+		printf("%s", buffer);
+	}
+	close(fd);
 }
 
 // cc -Wall -Wextra -Werror read.c && ./a.out
 int main() {
-    struct sigaction sa;
-    memset(&sa, 0, sizeof(sa));  // Zero out the struct
-    sa.sa_handler = handle_signal;  // Set the handler function
-    sigemptyset(&sa.sa_mask);       // No signals blocked during execution
-    sa.sa_flags = 0;                // No special flags
+	struct sigaction sa;
+	memset(&sa, 0, sizeof(sa));  // Zero out the struct
+	sa.sa_handler = handle_signal;  // Set the handler function
+	sigemptyset(&sa.sa_mask);	   // No signals blocked during execution
+	sa.sa_flags = 0;				// No special flags
 
-    // SIGINT (Ctrl + C)
-    if (sigaction(SIGINT, &sa, NULL) == -1) {
-        perror("sigaction failed");
-        exit(EXIT_FAILURE);
-    }
-    create_and_write_file(FILENAME);
-    if (access(FILENAME, F_OK) == 0)
-        printf("Fiel '%s' exists.\n", FILENAME);
-    else {
-        perror("File access error");
-        exit(EXIT_FAILURE);
-    }
+	// SIGINT (Ctrl + C)
+	if (sigaction(SIGINT, &sa, NULL) == -1) {
+		perror("sigaction failed");
+		exit(EXIT_FAILURE);
+	}
+	create_and_write_file(FILENAME);
+	if (access(FILENAME, F_OK) == 0)
+		printf("Fiel '%s' exists.\n", FILENAME);
+	else {
+		perror("File access error");
+		exit(EXIT_FAILURE);
+	}
 
-    pid_t pid = fork();
-    if (pid < 0) {
-        perror("Fork failed");
-        exit(EXIT_FAILURE);
-    }
-    if (pid == 0) {
-        printf("Child process (PID %d) reading file...\n", getpid());
-        read_and_print(FILENAME);
-        exit(0);
+	pid_t pid = fork();
+	if (pid < 0) {
+		perror("Fork failed");
+		exit(EXIT_FAILURE);
+	}
+	if (pid == 0) {
+		printf("Child process (PID %d) reading file...\n", getpid());
+		read_and_print(FILENAME);
+		exit(0);
 
-    } else {
-        int status;
-        struct  rusage usage;
-        printf("Parent process (PID %d) waiting for child (PID %d)...\n", getpid(), pid);
-        
-        wait(&status);
-        waitpid(pid, &status, 0);
-        wait3(&status, 0, &usage);
-        wait4(pid, &status, 0, &usage);
-        printf("Child process finished.\n");
-    }
-    return (0);
+	} else {
+		int status;
+		struct  rusage usage;
+		printf("Parent process (PID %d) waiting for child (PID %d)...\n", getpid(), pid);
+		
+		wait(&status);
+		waitpid(pid, &status, 0);
+		wait3(&status, 0, &usage);
+		wait4(pid, &status, 0, &usage);
+		printf("Child process finished.\n");
+	}
+	return (0);
 }
 
 /*
@@ -116,18 +116,18 @@ It allows us to: Set a custom signal handler function
 Block specific signals while handling another
 Control how signals behave (e.g., restart system calls)
 struct sigaction {
-    void (*sa_handler)(int);  // Pointer to the signal handler function
-    sigset_t sa_mask;         // Signals to block while handling current signal
-    int sa_flags;             // Special options for handling signals
+	void (*sa_handler)(int);  // Pointer to the signal handler function
+	sigset_t sa_mask;		 // Signals to block while handling current signal
+	int sa_flags;			 // Special options for handling signals
 };
 
 sigaction() vs. signal()
-Feature	                signal()	sigaction()
-Basic usage	            ✅ Yes	    ❌ No (More complex)
-Portability	            ❌ No	    ✅ Yes
-Can block signals	    ❌ No	    ✅ Yes (sa_mask)
-Controls behavior	    ❌ No	    ✅ Yes (sa_flags)
-Works reliably	        ❌ No	    ✅ Yes
+Feature					signal()	sigaction()
+Basic usage				✅ Yes		❌ No (More complex)
+Portability				❌ No		✅ Yes
+Can block signals		❌ No		✅ Yes (sa_mask)
+Controls behavior		❌ No		✅ Yes (sa_flags)
+Works reliably			❌ No		✅ Yes
 struct sigaction controls how a signal is handled.
 Use sigaction() instead of signal() for better control.
 sa_handler defines the handler function.
@@ -138,9 +138,9 @@ sa_flags changes behavior (e.g., SA_RESTART)
 #include <signal.h>
 int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact);
 Parameter	Description
-signum	    The signal to catch (e.g., SIGINT).
-act	        The new signal action (handler and options).
-oldact	    Stores the previous action (can be NULL if not needed).
+signum		The signal to catch (e.g., SIGINT).
+act			The new signal action (handler and options).
+oldact		Stores the previous action (can be NULL if not needed).
 memset(&sa, 0, sizeof(sa)); // Ensures all fields are zeroed
 sa.sa_handler = handle_signal; // Assign signal handler
 sigemptyset(&sa.sa_mask); // Clears the signal mask

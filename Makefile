@@ -1,24 +1,24 @@
 # **************************************************************************** #
-#                                                                              #
-#                                                         ::::::::             #
-#    Makefile                                           :+:    :+:             #
-#                                                      +:+                     #
-#    By: marvin <marvin@student.42.fr>                +#+                      #
-#                                                    +#+                       #
-#    Created: 2025/02/04 11:27:44 by pekatsar      #+#    #+#                  #
-#    Updated: 2025/04/09 16:42:43 by anonymous     ########   odam.nl          #
-#                                                                              #
+#																			  #
+#														 ::::::::			 #
+#	Makefile										   :+:	:+:			 #
+#													  +:+					 #
+#	By: marvin <marvin@student.42.fr>				+#+					  #
+#													+#+					   #
+#	Created: 2025/02/04 11:27:44 by pekatsar	  #+#	#+#				  #
+#	Updated: 2025/04/09 16:42:43 by anonymous	 ########   odam.nl		  #
+#																			  #
 # **************************************************************************** #
 
-NAME     := minishell
-CC       := cc
+NAME	 := minishell
+CC	   := cc
 CFLAGS   := -Wall -Wextra -Werror -g
-LIBFT    := libs/libft
+LIBFT	:= libs/libft
 
 HEADERS  := -I ./include -I $(LIBFT)/include
-LIBS     := -L$(LIBFT) -lft -lreadline  # Use -lft instead of -lftprintf
+LIBS	 := -L$(LIBFT) -lft -lreadline  # Use -lft instead of -lftprintf
 
-SRCS     := execution/built_ins/pwd.c \
+SRCS	 := execution/built_ins/pwd.c \
 			execution/built_ins/cd.c \
 			execution/built_ins/echo.c \
 			execution/built_ins/env.c \
@@ -30,9 +30,8 @@ SRCS     := execution/built_ins/pwd.c \
 			execution/freeing.c \
 			execution/init_env.c \
 			execution/utils.c \
-			execution/expand_dollar.c \
 			main.c
-OBJS     := $(SRCS:.c=.o)
+OBJS	 := $(SRCS:.c=.o)
 
 # Default target to build everything
 all: libft $(NAME)

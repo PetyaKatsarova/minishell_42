@@ -29,27 +29,24 @@ Ensure the _ variable is updated correctly after executing a command.
 
 int	get_env(t_env_list *env_struct)
 {
-    size_t	i;
+	size_t	i;
 
-    if (!env_struct || !env_struct->vars)
-        return (EXIT_SUCCESS);
+	// Check for missing PATH
+	i = 0;
+	while (i < env_struct->size && ft_strncmp(env_struct->vars[i].key, "PATH", 4))
+		i++;
+	if (i == env_struct->size || !env_struct->vars[i].value)
+	{
+		write(STDERR_FILENO, "minihell: env: No such file or directory\n", 41); // TODO !! MINIHELL
+		return (127);
+	}
 
-    // Check for missing PATH
-    i = 0;
-    while (i < env_struct->size && ft_strncmp(env_struct->vars[i].key, "PATH", 4))
-        i++;
-    if (i == env_struct->size || !env_struct->vars[i].value)
-    {
-        write(STDERR_FILENO, "minihell: env: No such file or directory\n", 41); // TODO !! MINIHELL
-        return (127);
-    }
-
-    i = 0;
-    while (i < env_struct->size)
-    {
-        if (env_struct->vars[i].key && env_struct->vars[i].value)
-            printf("%s=%s\n", env_struct->vars[i].key, env_struct->vars[i].value);
-        i++;
-    }
-    return (EXIT_SUCCESS);
+	i = 0;
+	while (i < env_struct->size)
+	{
+		if (env_struct->vars[i].key && env_struct->vars[i].value)
+			printf("%s=%s\n", env_struct->vars[i].key, env_struct->vars[i].value);
+		i++;
+	}
+	return (EXIT_SUCCESS);
 }

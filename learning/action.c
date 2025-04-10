@@ -4,24 +4,24 @@
 
 void sigint_handler(int signal)
 {
-    if (signal == SIGINT)
-        printf("\nIntercepted SIGINT!\n");
+	if (signal == SIGINT)
+		printf("\nIntercepted SIGINT!\n");
 }
 
 void set_signal_action(void)
 {
-    struct sigaction act;
+	struct sigaction act;
 
-    bzero(&act, sizeof(act));
-    act.sa_handler = &sigint_handler;
-    sigaction(SIGINT, &act, NULL);
+	bzero(&act, sizeof(act));
+	act.sa_handler = &sigint_handler;
+	sigaction(SIGINT, &act, NULL);
 }
 
 // cc action.c && ./a.out
 int main(void)
 {
-    set_signal_action();
-    while (1)
-        continue;
-    return (0);
+	set_signal_action();
+	while (1)
+		continue;
+	return (0);
 }

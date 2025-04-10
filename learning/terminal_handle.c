@@ -4,18 +4,18 @@
 // cc -Wall -Wextra -Werror terminal_handle.c && ./a.out
 int main()
 {
-    if (isatty(STDIN_FILENO)) {
-        printf("Std input is a terminal.\n");
-    } else {
-        printf("Std input is not a terminal.\n");
-    }
+	if (isatty(STDIN_FILENO)) {
+		printf("Std input is a terminal.\n");
+	} else {
+		printf("Std input is not a terminal.\n");
+	}
 
-    char *terminal_name = ttyname(STDIN_FILENO);
-    if (terminal_name)
-        printf("Term devise: %s\n", terminal_name);
-    else
-        printf("No term. associated with this fd.\n");
-    return (0);
+	char *terminal_name = ttyname(STDIN_FILENO);
+	if (terminal_name)
+		printf("Term devise: %s\n", terminal_name);
+	else
+		printf("No term. associated with this fd.\n");
+	return (0);
 }
 
 /*

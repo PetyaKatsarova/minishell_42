@@ -86,14 +86,14 @@ Do this before executing builtins or forking
 
 char *expand_dollars(const char *input)
 {
-    for each character in input:
-        if '$' found:
-            if next is '?'
-                replace with g_exit_status
-            else if valid env name
-                replace with env var
-        else
-            copy char
+	for each character in input:
+		if '$' found:
+			if next is '?'
+				replace with g_exit_status
+			else if valid env name
+				replace with env var
+		else
+			copy char
 }
 **NEED TO IMPLEMENT EXPAND DOLLAR VARS
 ========
@@ -131,7 +131,7 @@ mkdir real
 ln -s real link
 
 cd link
-pwd        # resolves to full path of real
+pwd		# resolves to full path of real
 
 ls -l link # shows link -> real
 Symlinks store a text path to another file/dir

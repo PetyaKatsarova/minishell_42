@@ -1,19 +1,30 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   pwd.c                                              :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/03/20 14:44:21 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/03/26 14:08:21 by pekatsar      ########   odam.nl         */
-/*                                                                            */
+/*																			*/
+/*														::::::::			*/
+/*   pwd.c											  :+:	:+:			*/
+/*													 +:+					*/
+/*   By: pekatsar <pekatsar@student.codam.nl>		 +#+					 */
+/*												   +#+					  */
+/*   Created: 2025/03/20 14:44:21 by pekatsar	  #+#	#+#				 */
+/*   Updated: 2025/03/26 14:08:21 by pekatsar	  ########   odam.nl		 */
+/*																			*/
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/*
+TODO: parser: handle invalid args: pwd -bla: 
+pwd -bla
+bash: pwd: -b: invalid option
+pwd: usage: pwd [-LP]
+pekatsar@f1r5s19:~$ $?
+2: command not found
+*/
 int	get_pwd()
 {
+	/*
+PATH_MAX is a constant defined in <limits.h> on most Unix-like systems. It specifies the maximum length of a file path, including the null-terminating character (\0). This value is used to ensure that buffers allocated for file paths are large enough to hold the longest possible path on the system.
+	*/
 	char	buff[PATH_MAX + 1];
 	
 	// copies an absolute pathname of the current working directory to the array pointed to by buf, which is of length size.
