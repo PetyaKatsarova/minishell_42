@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/03/28 20:09:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/09 10:37:30 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/09 19:18:03 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int err_malloc(t_env_list *cpy, char *msg)
         free_t_env(cpy);
     exit(EXIT_FAILURE);
 }
-
 
 t_env_list *cpy_env_list(t_env_list *env_struct)
 {

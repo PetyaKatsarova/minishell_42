@@ -53,10 +53,7 @@ int do_unset(char **input_args, t_env_list *env_struct)
         if (!ft_isalpha(input_args[i][0]) && input_args[i][0] != '_')
             print_builtin_error("unset", input_args[i], "not a valid identif");
         else
-        {
-            // unset_export_flag(env_struct, input_args[i]); // Unset export flag if needed
             delete_env_var(input_args[i], env_struct);
-        }
         i++;
     }
     return (EXIT_SUCCESS);

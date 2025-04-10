@@ -43,7 +43,11 @@ Handles the `export` built-in command:
 
 
 /*
-Assuming input_args[0]="export"	
+Assuming input_args[0]="export"
+1: func add env var, set key, val, exported
+2: sort curr env
+3: append to sorted env struct with func from point 1, at the end
+4: print the last updated env struct with print_env_export
 */
 int	do_export(char **input_args, t_env_list *env_struct)
 {
@@ -51,13 +55,13 @@ int	do_export(char **input_args, t_env_list *env_struct)
     // char		**export_args;
     t_env_list	*sorted_env;
 
+    sorted_env = sort_env(env_struct);
+    if (!sorted_env)
+        err_malloc(NULL, "minishell: sorted env-struct failed");
     if (input_args[1])
     {
 
     }
-    sorted_env = sort_env(env_struct);
-    if (!sorted_env)
-        err_malloc(NULL, "minishell: sorted env-struct failed");
     print_env_export(sorted_env);
     free_t_env(sorted_env);
     return (EXIT_SUCCESS);
