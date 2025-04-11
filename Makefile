@@ -24,13 +24,18 @@ SRCS	 := execution/built_ins/pwd.c \
 			execution/built_ins/env.c \
 			execution/built_ins/exit.c \
 			execution/built_ins/unset.c \
-			execution/built_ins/handle_builtins.c \
 			execution/built_ins/export_utils.c \
 			execution/built_ins/export.c \
 			execution/freeing.c \
 			execution/init_env.c \
 			execution/utils.c \
+			execution/handle_commands.c \
+			execution/executables/exec_on_path.c \
+			execution/executables/parse_path.c \
+			execution/executables/helpers.c \
+			execution/executables/manage_files.c \
 			main.c
+			
 OBJS	 := $(SRCS:.c=.o)
 
 # Default target to build everything

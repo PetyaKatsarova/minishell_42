@@ -12,6 +12,24 @@
 
 #include "../../includes/minishell.h"
 
+/*
+for each cmd i:
+	if (i < N - 1)
+		pipe(pipefd[i]);
+
+	fork();
+	if (child)
+	{
+		if (i > 0)
+			dup2(pipefd[i-1][0], STDIN_FILENO); // read from prev
+		if (i < N - 1)
+			dup2(pipefd[i][1], STDOUT_FILENO); // write to next
+		close all pipes
+		execve(cmd[i][0], cmd[i], envp);
+	}
+
+*/
+
 void execute_pipes(char ***commands, t_env_list *env_lst)
 {
 	int i = 0, num_pipes = 0;

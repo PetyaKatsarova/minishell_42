@@ -25,6 +25,7 @@ t_env_list *copy_env(char **env)
 	env_list->size = 0;
 	env_list->capacity = len + 10;
 	env_list->shlvl = 1;
+	env_list->is_child = 0;
 
 	while (env[i])
 	{
@@ -85,4 +86,67 @@ void set_env_value(t_env_list *env_list, const char *key, const char *val)
 	env_list->vars[env_list->size].exported = 1;
 	env_list->size++;
 	env_list->vars[env_list->size].key = NULL;
+}
+
+char	**converted_env(t_env_list *env_struct)
+{
+	char	**env;
+	char	*joined;
+	size_t	i;
+	size_t	j;
+
+	env = malloc(sizeof(char *) * (env_struct->size + 1));
+	if (!env)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (i < env_struct->size)
+	{
+		if (env_struct->vars[i].exported && env_struct->vars[i].key && env_struct->vars[i].value)
+		{
+			joined = ft_strjoin(env_struct->vars[i].key, "=");
+			if (!joined)
+				return (free_arr(env), NULL);
+			env[j] = ft_strjoin(joined, env_struct->vars[i].value);
+			free(joined);
+			if (!env[j])
+				return (free_arr(env), NULL);
+			j++;
+		}
+		i++;
+	}
+	env[j] = NULL;
+	return (env);
+}
+
+
+void free_env_struct(t_env_list *env_struct)
+{
+	for (size_t i = 0; i < env_struct->size; i++)
+	{
+		free(env_struct->vars[i].key);
+		free(env_struct->vars[i].value);
+	}
+	free(env_struct->vars);
+	free(env_struct);
+}
+void free_env_list(t_env_list *env_struct)
+{
+	for (size_t i = 0; i < env_struct->size; i++)
+	{
+		free(env_struct->vars[i].key);
+		free(env_struct->vars[i].value);
+	}
+	free(env_struct->vars);
+	free(env_struct);
+}
+void free_env(t_env_list *env_struct)
+{
+	for (size_t i = 0; i < env_struct->size; i++)
+	{
+		free(env_struct->vars[i].key);
+		free(env_struct->vars[i].value);
+	}
+	free(env_struct->vars);
+	free(env_struct);
 }

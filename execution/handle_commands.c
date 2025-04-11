@@ -1,22 +1,22 @@
 /* ************************************************************************** */
-/*																			*/
-/*														::::::::			*/
-/*   handle_builtins.c								  :+:	:+:			*/
-/*													 +:+					*/
-/*   By: marvin <marvin@student.42.fr>				+#+					 */
-/*												   +#+					  */
-/*   Created: 2025/03/28 16:55:48 by pekatsar	  #+#	#+#				 */
-/*   Updated: 2025/04/09 16:39:09 by anonymous	 ########   odam.nl		 */
-/*																			*/
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   handle_commands.c                                  :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/04/11 11:38:02 by pekatsar      #+#    #+#                 */
+/*   Updated: 2025/04/11 17:56:50 by pekatsar      ########   odam.nl         */
+/*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
 /*
 Returns exit_status if builtin was found and func executed and 1 or none zero inf command is not built in
 It's normal for readline() to leave things in memory to speed up future calls or due to lazy cleanup.
 */
-int	handle_builtins(char **input_args, t_env_list *env_struct, char *input)
+int	handle_commands(char **input_args, t_env_list *env_struct, char *input)
 {
 	int exit_status;
 
@@ -37,9 +37,8 @@ int	handle_builtins(char **input_args, t_env_list *env_struct, char *input)
 		exit_status = do_unset(input_args, env_struct);
 	else
 	{
-		printf("under construction. but unstoppable ....\n");
-		system(input); // just for testing
-		return (EXIT_FAILURE); // none zero, usually 1
+		// todo: if child fork and exec else todo?
+		exit_status = fork_and_exec(env_struct, input_args);
 	}
 	// for debugging: todo: delete on production
 	printf("(exit status: %d)", exit_status);

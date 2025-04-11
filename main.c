@@ -42,16 +42,15 @@ static int handle_readline(t_env_list *env_struct_lst)
 		}
 		if (input_args[0])
 		{
-			env_struct_lst->last_exit_status = handle_builtins(input_args, env_struct_lst, input);
+			env_struct_lst->last_exit_status = handle_commands(input_args, env_struct_lst, input);
 			if (env_struct_lst->last_exit_status == EXIT_FAILURE)
 			{
 				free(input);
-				free_arr(input_args);
-				free_t_env(env_struct_lst);
-				return (EXIT_FAILURE);
+				continue; // todo: check if this is ok
 			}
 		}
 		free_arr(input_args);
+		free(input);
 	}
 	return (0);
 }
