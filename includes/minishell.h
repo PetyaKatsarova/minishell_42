@@ -58,10 +58,8 @@ typedef struct s_env_list {
 	t_env   *vars;
 	size_t  size;
 	size_t  capacity;
-	int	 shlvl; // shell level
 	int	 last_exit_status; //Every time a command runs → set shell->last_status = exit_code
-	int	 last_cmd_status; //Every time a command runs → set
-	int  is_child; // 1 if child process, 0 if parent
+	int  is_child; // 1 if child process, 0 if parent, default is 0
 } t_env_list;
 
 // execution/built_ins/*

@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   parse_path.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:20:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/11 18:43:57 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/11 22:45:33 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static char	**split_path(t_env_list *env_list)
 {
 	int	i;
 	char	**env;
+	char	**arr;
 	
 	env = converted_env(env_list);
 	if (!env)
@@ -29,7 +30,14 @@ static char	**split_path(t_env_list *env_list)
 	{
 		if (ft_strnstr(env[i], "PATH=", 5))
 		{
-			return (ft_split(env[i] + 5, ':'));
+			arr = ft_split(env[i] + 5, ':');
+			if (!arr)
+			{
+				perror("Error in splitting PATH.");
+				free_arr(env);
+				return (NULL);
+			}
+			return (arr);
 		}
 		i++;
 	}

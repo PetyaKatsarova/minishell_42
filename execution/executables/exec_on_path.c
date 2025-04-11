@@ -3,20 +3,18 @@
 /*                                                        ::::::::            */
 /*   exec_on_path.c                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/11 17:49:16 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/11 22:46:46 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /*
-For external commands (e.g., ls, grep), you should use execve to execute them. This replaces the current process with the new program.
-I am using the original env: no need to cpy, i think.
+Frees char **args and char *cmd_path, and exits with EXIT_FAILURE.
 */
-
 static	void	helper_free(char **args, int i, char *cmd_path)
 {
 	perror("Failed to allocate memory for argument.");
@@ -26,7 +24,7 @@ static	void	helper_free(char **args, int i, char *cmd_path)
 }
 
 /**
- * Allocates and fills the argv array based on the splitted_command array.
+ * Allocates and fills the argv array for execve based on the splitted_command array.
  */
 static char	**prepare_command_args(char *cmd_path, char **splitted_cmd, int cnt)
 {
@@ -68,12 +66,7 @@ void	msg(char *name, char *msg)
 /**
  * Executes the given command from the given path, handling errors appropriately.
  * 
- * if (contains_pipes(input))
-	parse_pipeline();
-	exec_pipeline(...);
-else
-	parse_single_cmd();
-	exec_single_cmd(...);
+ * Todo: if child: exec there, if not child process: complete bellow
  */
 void	exec_command(t_env_list *env_list, char **splitted_cmd)
 {
@@ -94,6 +87,10 @@ void	exec_command(t_env_list *env_list, char **splitted_cmd)
 	while (splitted_cmd[i])
 		i++;
 	args = prepare_command_args(cmd_path, splitted_cmd, i);
+	if (!args)
+	{
+		helper_free(args, i, cmd_path);
+	}
 	env = converted_env(env_list);
 	if (!env) // todo: to handle later
 	{
