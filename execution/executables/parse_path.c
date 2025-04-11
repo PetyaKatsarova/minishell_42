@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:20:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/11 17:13:02 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/11 18:43:57 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	**split_path(t_env_list *env_list)
 	char	**env;
 	
 	env = converted_env(env_list);
-	if (!env) // todo: handle later
+	if (!env)
 	{
 		perror("Error in converting env.");
 		return (NULL);

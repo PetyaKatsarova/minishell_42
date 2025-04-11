@@ -36,6 +36,8 @@ static int handle_readline(t_env_list *env_struct_lst)
 		{
 			//todo err handle and clear memory
 			perror("failed to split read line input_args\n");
+			clear_history(); // for mem leaks
+			free_t_env(env_struct_lst);
 			free(input);
 			// free envstruct
 			return (EXIT_FAILURE);
@@ -56,13 +58,20 @@ static int handle_readline(t_env_list *env_struct_lst)
 }
 
 // cc -Wall -Wextra -Werror main.c -lreadline && ./a.out
+// valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes ./minishell
+
+// valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=readline.supp ./minishell
 
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
 	(void) argv;
 	t_env_list *env_struct_lst = copy_env(envp); 
-	// todo: check if envstructlst is not null or err or empty.... protect
+	if (!env_struct_lst) {
+        perror("Failed to initialize environment");
+        return (EXIT_FAILURE);
+    }
 	handle_readline(env_struct_lst);
 	free_t_env(env_struct_lst);
+	clear_history();
 	return (0);
 }

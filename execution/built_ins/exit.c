@@ -24,9 +24,6 @@ ls /no/such/dir
 echo $?   # 2 → error
 Used in scripts or interactive shells to terminate the process with a status:
 
-bash
-Copy
-Edit
 exit		  # exits with the last command's status
 exit 0		# success
 exit 1		# failure
