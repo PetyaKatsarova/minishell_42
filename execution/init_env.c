@@ -24,7 +24,7 @@ t_env_list *copy_env(char **env)
 
 	env_list->size = 0;
 	env_list->capacity = len + 10;
-	env_list->shlvl = 1;
+	// env_list->shlvl = 1;
 	env_list->is_child = 0;
 
 	while (env[i])
