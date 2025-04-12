@@ -35,8 +35,8 @@ The t_shell_exit_status enum is a type definition, and its purpose is to provide
 */
 typedef enum e_exit_status
 {
-    EXIT_SUCC = 0,
-    EXIT_GEN_ERR = 1,
+    // EXIT_SUCC = 0, use EXIT_SUCCESS from stdlib.h
+    // EXIT_GEN_ERR = 1, use EXIT_FAILURE from stdlib.h
     EXIT_INVALID_BUILTIN_ARGS = 2,
     EXIT_CMD_NOT_EXECUTABLE = 126,
     EXIT_CMD_NOT_FOUND = 127,
