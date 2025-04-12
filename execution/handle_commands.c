@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   handle_commands.c                                  :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:38:02 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/11 17:56:50 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/12 17:04:57 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,6 @@ int	handle_commands(char **input_args, t_env_list *env_struct, char *input)
 		exit_status = fork_and_exec(env_struct, input_args);
 	}
 	// for debugging: todo: delete on production
-	printf("(exit status: %d)", exit_status);
+	printf("(exit status: %d\n)", exit_status);
 	return (exit_status); // 0
 }

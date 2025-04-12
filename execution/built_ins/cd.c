@@ -31,7 +31,7 @@ static int handle_cd_home(char **input_args, t_env_list *env)
 	if (!home)
 		return (print_builtin_error("cd", NULL, " HOME not set"));
 	if (!input_args[1] && chdir(home) != 0)
-			return (print_builtin_error("cd", NULL, " Failed to change directory"));
+		return (print_builtin_error("cd", NULL, " Failed to change directory"));
 	else if (input_args[1] && input_args[1][0] == '~')
 	{
 		rest = input_args[1] + 1; // everything after '~'
@@ -75,7 +75,7 @@ int do_cd(char **input_args, t_env_list *env)
 		return (print_builtin_error("strdup", NULL, " malloc failed"));
 	if  (chdir(result) != 0)
 	{
-        free(result);
+        // free(result);
         return (print_builtin_error("cd", result, " Failed to change directory"));
     }
 	if (getcwd(cwd, CWD_MAX))
@@ -83,3 +83,4 @@ int do_cd(char **input_args, t_env_list *env)
 	free(result);
 	return (EXIT_SUCCESS);
 }
+

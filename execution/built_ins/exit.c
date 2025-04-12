@@ -66,37 +66,19 @@ typedef struct s_env_list {
 #include "../../includes/minishell.h"
 
 /*
-Returns exit status: uint8_t only between 0 and 255
-under and overflow: undefined behavior:exit -1 = 255
+test: exit // exit, 0
+exit 123 // exit, 123
+exit bla 123 // exit, bash: exit: bla: numeric argument required, 2
+exit 223 456 //exit
+bash: exit: too many arguments, 1
+exit 444444 // exit, 28
+exit -33 // exit, 223
 */
 #include <stdint.h>
 
-/*
-Mimics bash behavior for: returns 255 exit status if not valid numeric argument or out of range (0-255)
-*/
-static uint8_t validate_exit_status(const char *arg)
-{
-    unsigned long result = 0;
-    int i = 0;
-
-    if (arg[0] == '-' || arg[0] == '+')
-    {
-        if (arg[0] == '-')
-            return (255);
-        i++;
-    }
-    while (arg[i])
-    {
-        if (!ft_isdigit(arg[i]))
-            return (255);
-        result = result * 10 + (arg[i] - '0');
-        if (result > 255)
-            return (255);
-        i++;
-    }
-    return ((uint8_t)result);
-}
-
+/**
+ * @brief Frees input, input_args, env_struct and clears history
+ */
 static void	free_exit_resources(char *input, char **input_args, t_env_list *env_struct)
 {
 	free(input);
@@ -105,54 +87,80 @@ static void	free_exit_resources(char *input, char **input_args, t_env_list *env_
 	free_t_env(env_struct);
 }
 
-// handle invalid numeric arguments
-static void	handle_invalid_exit_arg(char *input, char **input_args, t_env_list *env_struct, const char *arg)
-{
-	print_builtin_error("exit", arg, "numeric argument required");
-	free_exit_resources(input, input_args, env_struct);
-	exit(2);
-}
-
-// handle too many arguments
-static int	handle_too_many_args(char *input, char **input_args)
+/**
+ * @brief exit(exit_failure) & prints exit err and frees resources
+ */
+static void	handle_too_many_args(char *input, char **input_args, t_env_list *env_struct)
 {
 	print_builtin_error("exit", NULL, "too many arguments");
-	free(input);
-	free_arr(input_args);
-	clear_history();
-	return (EXIT_FAILURE); // Do not exit the shell
+	free_exit_resources(input, input_args, env_struct);
+	exit(EXIT_FAILURE);
+}
+
+/**
+ * @brief Returns 1 if the argument is a valid exit argument (numeric), 0 otherwise.
+ */
+static int	is_valid_exit_arg(char *arg)
+{
+	size_t	i;
+
+	i = 0;
+	if (arg[0] == '-' || arg[0] == '+')
+		i++;
+	if (!arg[i])
+		return (0);
+	while (arg[i])
+	{
+		if (!ft_isdigit(arg[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 int	do_exit(char **input_args, char *input, t_env_list *env_struct)
 {
 	int	exit_status;
 
-	exit_status = env_struct->last_exit_status;
-	// if (env_struct->shlvl > 1)
-		write(STDERR_FILENO, "exit\n", 5);
-	// No arguments: exit with last status
-	if (input_args[1] == NULL)
+	if (env_struct->last_exit_status)
+		exit_status = env_struct->last_exit_status;
+	else
+		exit_status = 0;
+	write(STDERR_FILENO, "exit\n", 5);
+	if (!input_args[1])
 	{
 		free_exit_resources(input, input_args, env_struct);
 		exit(exit_status);
 	}
-
-	// Validate the first argument as an exit status
-	exit_status = validate_exit_status(input_args[1]);
-	if (exit_status == -1) // Invalid numeric argument
-		handle_invalid_exit_arg(input, input_args, env_struct, input_args[1]);
-	// Handle too many arguments
-	if (input_args[2] != NULL)
-		return (handle_too_many_args(input, input_args));
-
-	// Free resources and exit with the specified status
+	else if (input_args[1] && is_valid_exit_arg(input_args[1]))
+	{
+		if (input_args[2])
+			handle_too_many_args(input, input_args, env_struct);
+		exit_status = ft_atoi(input_args[1]) % 256; // bash returns between 0-255
+	}
+	else if (input_args[1])
+	{
+		write(STDERR_FILENO, "minisell: exit: ", 16);
+		write(STDERR_FILENO, input_args[1], ft_strlen(input_args[1]));
+		write(STDERR_FILENO, ": numeric argument required\n", 28);
+		exit_status = 2;
+	}
 	free_exit_resources(input, input_args, env_struct);
-	// for debugging: todo: delete on production
-	printf("exit status: %d\n", exit_status);
 	exit(exit_status);
 }
 
 /*
+The exit status message should be sent to the standard error stream (stderr), not the standard output (stdout).
+
+write() allows you to specify the file descriptor directly (STDERR_FILENO for error messages), ensuring that the message goes to the error stream.
+Exit status 255: Commonly used for indicating an error or abnormal termination, but it is not defined by the system. Some programs or shells use 255 to signal specific conditions like:
+
+A fatal error or critical failure in the program.
+
+A "command not found" situation in shells like Bash (when the program cannot be located).
+
+Programs that exit after receiving a signal or exception.
+
 THEORY:
 Interactive Shells:
 
