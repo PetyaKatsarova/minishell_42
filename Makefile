@@ -12,7 +12,7 @@
 
 NAME	 := minishell
 CC	   := cc
-CFLAGS   := -Wall -Wextra -Werror -g
+CFLAGS   := -Wall -Wextra -Werror -g -fsanitize=address
 LIBFT	:= libs/libft
 
 HEADERS  := -I ./include -I $(LIBFT)/include

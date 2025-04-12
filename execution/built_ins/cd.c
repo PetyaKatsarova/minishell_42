@@ -4,12 +4,6 @@
 /*
 cd
 Use the command cd to move the working directory and check if you are in the right directory with /bin/ls: !!NB!! /bin/ls is the actual binary of the ls command — the one that lists files.
-Why use /bin/ls? same result as ls
-It bypasses aliases or shell functions, running the real system ls directly.
-Useful when:
-You want raw ls behavior
-Your shell has an alias like alias ls='ls --color=auto'
-
 Repeat multiple times with working and not working cd
 Also, try '.' and '..' as arguments.
 pwd
@@ -23,83 +17,69 @@ Execute commands but this time without any path (ls, wc, awk and so forth).
 Unset the $PATH and ensure commands are not working anymore.
 Set the $PATH to a multiple directory value (directory1:directory2) and ensure that directories are checked in
 order from left to right.
+bash: cd: HOME not set
 */
 
-// for each command check if has $ and if so: replace key
-int do_cd(char **input_args, t_env_list *env)
+static int handle_cd_home(char **input_args, t_env_list *env)
 {
+	char *home;
+	char *rest;
+	char *result;
 	char cwd[CWD_MAX];
-	char *result = NULL;
-	char *oldpwd = get_env_value(env, "PWD");
-	//printf("OLDPWD:: %s\n", oldpwd);
 
-	if (too_many_args(input_args))
+	home = get_env_value(env, "HOME");
+	if (!home)
+		return (print_builtin_error("cd", NULL, " HOME not set"));
+	if (!input_args[1] && chdir(home) != 0)
+			return (print_builtin_error("cd", NULL, " Failed to change directory"));
+	else if (input_args[1] && input_args[1][0] == '~')
 	{
-		print_builtin_error("cd", NULL, "too many arguments");
-		return (EXIT_FAILURE);
-	}
-	if (!input_args[1])
-	{
-		result = ft_strdup(get_env_value(env, "HOME"));
-		if (!result)
-		{
-			fprintf(stderr, "minishell: cd: HOME not set\n");
-			return (EXIT_FAILURE);
-		}
-		printf("CD:: %s\n", result);
-	}
-	else if (input_args[1][0] == '~')
-	{
-		char	*home = get_env_value(env, "HOME");
-		char	*rest;
-		
-		if (!home)
-		{
-			printf("minishell: cd: HOME not set\n");
-			return (EXIT_FAILURE);
-		}
 		rest = input_args[1] + 1; // everything after '~'
-
-		// if it's just "~", cd to HOME
-		if (rest[0] == '\0')
+		if (rest[0] == '\0') // if it's just "~", cd to HOME
 			result = ft_strdup(home);
 		else if (rest[0] == '/') // "~/folder" case
 			result = ft_strjoin(home, rest); // result = HOME + /folder
 		else
-		{
-			// unsupported like "~username" → treat as literal path
-			result = ft_strdup(input_args[1]);
-		}
-		if (!result) // do i need this?
-			return (EXIT_FAILURE); // exit failure strategy: what num?
-	}
-	else if (input_args[1][0] == '-' && input_args[1][1] == '\0')
-	{
-		char *old = get_env_value(env, "OLDPWD");
-		if (!old)
-		{
-			// todo: check management in bash
-			fprintf(stderr, "minishell: cd: OLDPWD not set\n");
+			result = ft_strdup(input_args[1]); // unsupported like "~username" → treat as literal path
+		if (!result)
 			return (EXIT_FAILURE);
-		}
-		// printf("%s\n", old); // print the path being switched to
-		result = ft_strdup(old);
+		if (chdir(result) != 0)
+		{
+            print_builtin_error("cd", result, " Failed to change directory");
+            free(result);
+            return (EXIT_FAILURE);
+        }
+		if (getcwd(cwd, CWD_MAX))
+			set_env_value(env, "PWD", cwd);
+        free(result);
 	}
+	return (EXIT_SUCCESS);
+}
+
+/**
+ * @brief Handles cd, cd ~, cd ~/path, cd -, cd .., cd ./path
+ */
+int do_cd(char **input_args, t_env_list *env)
+{
+	char cwd[CWD_MAX];
+	char *result;
+
+	if (too_many_args(input_args))
+		return (print_builtin_error("cd", NULL, " too many arguments"));
+	set_env_value(env, "OLDPWD", getcwd(NULL, 0));
+	if (!input_args[1] || (input_args[1] && input_args[1][0] == '~'))
+		return (handle_cd_home(input_args, env));
 	else
 		result = ft_strdup(input_args[1]);
-
-	if (!result || chdir(result) != 0)
+	if (!result)
+		return (print_builtin_error("strdup", NULL, " malloc failed"));
+	if  (chdir(result) != 0)
 	{
-		perror("cd");
-		free(result);
-		return (EXIT_FAILURE);
-	}
-
-	if (oldpwd)
-		set_env_value(env, "OLDPWD", oldpwd);
+        free(result);
+        return (print_builtin_error("cd", result, " Failed to change directory"));
+    }
 	if (getcwd(cwd, CWD_MAX))
 		set_env_value(env, "PWD", cwd);
-
 	free(result);
 	return (EXIT_SUCCESS);
 }

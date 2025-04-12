@@ -61,7 +61,10 @@ char *get_env_value(t_env_list *env_list, const char *key)
 	}
 	return NULL;
 }
-
+/**
+ * @brief TODO: CANT USE REALLOC
+ * @details if key, updates val, if key=null, adds new key=val with malloc
+	 */
 void set_env_value(t_env_list *env_list, const char *key, const char *val)
 {
 	size_t i = 0;

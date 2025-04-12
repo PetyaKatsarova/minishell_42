@@ -12,9 +12,15 @@
 
 #include "../includes/minishell.h"
 
-/*
-Returns 1 if more than 2 args, 0 on 2 args
-*/
+/**
+ * @brief Check if the number of arguments is more than 2.
+ * 
+ * @param input_args The array of arguments.
+ * @return int Returns 1 if more than 2 args, 0 on 2 args.
+ * 
+ * This function checks if the number of arguments in the input_args array
+ * is more than 2. If it is, it returns 1; otherwise, it returns 0.
+ */
 int	too_many_args(char	**input_args)
 {
 	int	i = 0;
@@ -24,7 +30,9 @@ int	too_many_args(char	**input_args)
 		return (1);
 	return (0);
 }
-
+/**
+ * @brief Prints err msg for cmd with args
+ */
 int	print_builtin_error(const char *cmd, const char *arg, const char *msg)
 {
 	if (msg)

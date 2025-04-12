@@ -1,0 +1,12 @@
+Feature                          | Valgrind                  | AddressSanitizer (fsanitize)
+---------------------------------|---------------------------|-----------------------------
+Uninitialized Memory             | Yes                       | No
+Memory Leaks                     | Detailed                  | li(requires-fsanitize=leak)
+Invalid Memory Access            | Yes                       | Yes
+File Descriptor Leaks            | Yes                       | No
+Threading Issues                 | Yes (Helgrind, DRD)       | l(requires-fsanitize=thread)
+Stack/Global Memory Issues       | Yes                       | Limited
+Recompilation Required           | No                        | Yes
+System Call Tracking             | Yes                       | No
+Memory Alignment Issues          | Yes                       | No
+Overlapping Memory Operations    | Yes                       | No
