@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:38:02 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/12 17:04:57 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/12 20:35:01 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int	handle_commands(char **input_args, t_env_list *env_struct, char *input)
 		// todo: if child fork and exec else todo?
 		exit_status = fork_and_exec(env_struct, input_args);
 	}
+	env_struct->last_exit_status = exit_status;
 	// for debugging: todo: delete on production
-	printf("(exit status: %d\n)", exit_status);
+	printf("(exit status: %d)\n", exit_status);
 	return (exit_status); // 0
 }

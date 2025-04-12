@@ -45,12 +45,6 @@ static int handle_readline(t_env_list *env_struct_lst)
 		if (input_args[0])
 		{
 			env_struct_lst->last_exit_status = handle_commands(input_args, env_struct_lst, input);
-			if (env_struct_lst->last_exit_status == EXIT_FAILURE)
-			{
-				// free(input);
-				// free_arr(input_args);
-				continue; // todo: check if this is ok
-			}
 		}
 		free_arr(input_args);
 		free(input);
@@ -73,7 +67,5 @@ int main(int argc, char **argv, char **envp) {
         return (EXIT_FAILURE);
     }
 	handle_readline(env_struct_lst);
-	// free_t_env(env_struct_lst); this is done in exit.c
-	// clear_history();
 	return (0);
 }
