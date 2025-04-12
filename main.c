@@ -47,7 +47,8 @@ static int handle_readline(t_env_list *env_struct_lst)
 			env_struct_lst->last_exit_status = handle_commands(input_args, env_struct_lst, input);
 			if (env_struct_lst->last_exit_status == EXIT_FAILURE)
 			{
-				free(input);
+				// free(input);
+				// free_arr(input_args);
 				continue; // todo: check if this is ok
 			}
 		}
@@ -60,7 +61,8 @@ static int handle_readline(t_env_list *env_struct_lst)
 // cc -Wall -Wextra -Werror main.c -lreadline && ./a.out
 // valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes ./minishell
 
-// valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=readline.supp ./minishell
+// valgrind -s --leak-check=full --track-origins=yes ./minishell
+
 
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
@@ -71,7 +73,7 @@ int main(int argc, char **argv, char **envp) {
         return (EXIT_FAILURE);
     }
 	handle_readline(env_struct_lst);
-	free_t_env(env_struct_lst);
-	clear_history();
+	// free_t_env(env_struct_lst); this is done in exit.c
+	// clear_history();
 	return (0);
 }

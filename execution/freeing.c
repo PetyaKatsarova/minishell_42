@@ -1,5 +1,8 @@
 #include "../includes/minishell.h"
 
+/**
+ * @brief if arr is NULL, do nothing. Otherwise, free each string in arr and then free arr itself.
+ */
 void free_arr(char **arr)
 {
 	size_t	i;
