@@ -40,20 +40,12 @@ static int handle_cd_home(char **input_args, t_env_list *env)
 	{
 		rest = input_args[1] + 1; // everything after '~'
 		if (rest[0] == '\0')
-		{
-			result = ft_strdup(home);
-			if (!result)
-				return (EXIT_FAILURE);
-		} // if it's just "~", cd to HOME
+			result = ft_strdup(home); // if it's just "~", cd to HOME
 			// result = ft_strdup(home);
 		else if (rest[0] == '/') // "~/folder" case
 			result = ft_strjoin(home, rest); // result = HOME + /folder
 		else
-		{
 			result = ft_strdup(input_args[1]); // unsupported like "~username" → treat as literal path
-			if (!result)
-			return (EXIT_FAILURE);
-		}
 		if (!result)
 			return (EXIT_FAILURE);
 		if (chdir(result) != 0)
@@ -64,6 +56,7 @@ static int handle_cd_home(char **input_args, t_env_list *env)
         }
 		if (getcwd(cwd, CWD_MAX))
 			set_env_value(env, "PWD", cwd);
+		printf("*********** TRA LA LA ****************: %s\n", get_env_value(env, "PWD"));
         free(result);
 	}
 	return (EXIT_SUCCESS);
