@@ -12,10 +12,8 @@
 int	check_quotes(char *input)
 {
 	e_state	state;
-	int		parentheses;
 	
 	state = OUTSIDE;
-	parentheses = 0;
 	while (*input)
 	{
 		if (state == OUTSIDE)
@@ -24,12 +22,6 @@ int	check_quotes(char *input)
 				state = INSIDE_SINGLES;
 			else if (*input == '\"')
 				state = INSIDE_DOUBLES;
-			else if (*input == '(')
-				parentheses++;
-			else if (*input == ')')
-				parentheses--;
-			if (parentheses < 0)
-				return (-1);
 		}
 		else if (state == INSIDE_SINGLES && *input == '\'')
 			state = OUTSIDE;
@@ -37,7 +29,7 @@ int	check_quotes(char *input)
 			state = OUTSIDE;
 		input++;
 	}
-	if (state != OUTSIDE || parentheses != 0)
+	if (state != OUTSIDE)
 		return (-1);
 	return (0);
 }

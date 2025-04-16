@@ -1,4 +1,4 @@
-NAME = minishell
+NAME = parsing
 
 CC = cc
 CFLAGS = -lreadline -Wall -Wextra -Werror
