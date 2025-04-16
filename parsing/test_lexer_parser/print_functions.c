@@ -1,6 +1,7 @@
 #include "../minishell.h"
 
-static const char *token_strings[] = {	"TOKEN_PIPE",
+static const char *token_strings[] = {	"TOKEN_NULL",
+										"TOKEN_PIPE",
 										"TOKEN_INPUT_REDIRECT",
 										"TOKEN_OUTPUT_REDIRECT",
 										"TOKEN_HEREDOC",

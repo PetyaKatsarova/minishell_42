@@ -60,15 +60,3 @@ int	getwordlen(char *input)
 	}
 	return (cpy - input);
 }
-
-int	getlen(char *input, char end)
-{
-	char	*cpy;
-
-	cpy = input;
-	while (*cpy != end)
-	{
-		cpy++;
-	}
-	return (cpy - input);
-}

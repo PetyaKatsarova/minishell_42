@@ -9,9 +9,7 @@ RESET		= \\033[0m
 
 SRCS = 	lexer/lexer.c \
 		lexer/check_quotes.c \
-		lexer/dq_str.c \
-		lexer/consume_chars.c \
-		lexer/sq_str.c \
+		lexer/consume_input.c \
 		lexer/utils.c \
 		lexer/utils2.c \
 		lexer/list_utils.c \

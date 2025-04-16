@@ -15,9 +15,8 @@ typedef enum	e_state {
 }	e_state;
 
 typedef enum	e_token {
+	TOKEN_NULL,
 	TOKEN_PIPE,
-	TOKEN_VAR,
-	TOKEN_EXIT_STATUS,
 
 	// redirects
 	TOKEN_INPUT_REDIRECT,
@@ -35,9 +34,7 @@ typedef enum	e_token {
 	TOKEN_EXIT,
 
 	// words, strings
-	TOKEN_WORD,
-	TOKEN_SQ_STR,
-	TOKEN_DQ_STR
+	TOKEN_WORD
 }	e_token;
 
 // nodes for token list
@@ -76,7 +73,6 @@ t_token		*consume_chars(t_token *tail, char **input);
 t_token 	*consume_special_delim(t_token *tail, char **input);
 t_token		*sq_str(t_token *tail, char **input);
 t_token		*tokennew(t_token *tail, char *lexeme, enum e_token token_type);
-int			getlen(char *input, char end);
 bool		isendword(e_state state, char c);
 int			getwordlen(char *input);
 void		free_list(t_token **head);
