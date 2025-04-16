@@ -13,6 +13,10 @@ void	lexer(t_token **head, char *input)
 		{
 			input++;
 		}
+		if (is_special_delim(*input) == true)
+		{
+			tail = consume_special_delim(tail, &input);
+		}
 		else
 		{
 			tail = consume_chars(tail, &input);

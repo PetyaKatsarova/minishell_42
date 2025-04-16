@@ -72,3 +72,24 @@ t_token	*consume_chars(t_token *tail, char **input)
 	}
 	return (new_token);
 }
+
+t_token *consume_special_delim(t_token *tail, char **input)
+{
+	if (**input == '|')
+		return ((*input)++, tokennew(tail, NULL, TOKEN_PIPE));
+	if (**input == '>')
+	{
+		(*input)++;
+		if (**input == '>')
+			return ((*input)++, tokennew(tail, NULL, TOKEN_APPEND_OUTPUT_REDIRECT));
+		return (tokennew(tail, NULL, TOKEN_OUTPUT_REDIRECT));
+	}
+	if (**input == '<')
+	{
+		(*input)++;
+		if (**input == '<')
+			return ((*input)++, tokennew(tail, NULL, TOKEN_APPEND_OUTPUT_REDIRECT));
+		return (tokennew(tail, NULL, TOKEN_OUTPUT_REDIRECT));
+	}
+	return (NULL);
+}

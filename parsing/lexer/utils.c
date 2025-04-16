@@ -11,11 +11,28 @@ bool	is_whitespace(char c)
 	return (false);
 }
 
+bool	is_special_delim(char c)
+{
+	if (c == '|')
+	{
+		return (true);
+	}
+	if (c == '>' || c == '<')
+	{
+		return (true);
+	}
+	return (false);
+}
+
 bool	isendword(e_state state, char c)
 {
 	if (state == OUTSIDE)
 	{
 		if (is_whitespace(c) == true)
+		{
+			return (true);
+		}
+		if (is_special_delim(c) == true)
 		{
 			return (true);
 		}

@@ -24,10 +24,14 @@ t_node	*go_first_pipe(t_tree *tree)
 
 t_node	*go_next_pipe(t_node *current)
 {
+	printf("entered go_next_pipe\n");
 	while (current->token_type != TOKEN_PIPE)
 	{
+		printf("looping go_next_pipe\n");
 		current = current->parent;
 	}
+	printf("after loop in go_next_pipe\n");
 	current = current->parent;
+	printf("returning from go_next_pipe\n");
 	return (current);
 }
