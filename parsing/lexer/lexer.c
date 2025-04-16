@@ -9,7 +9,7 @@ void	lexer(t_token **head, char *input)
 	first = true;
 	while (*input != '\0')
 	{
-		if (is_whitespace(*input) == true)
+		while (is_whitespace(*input) == true)
 		{
 			input++;
 		}

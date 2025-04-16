@@ -40,6 +40,8 @@ typedef enum	e_token {
 	TOKEN_DQ_STR
 }	e_token;
 
+// nodes for token list
+
 typedef struct	s_token {
 	char			*lexeme;
 	enum e_token	token_type;			
@@ -65,40 +67,6 @@ typedef struct	s_node {
 	struct s_node	*redirects;
 	char			*redir_path;
 }	t_node;
-
-// typedef struct	s_pipe {
-// 	enum e_token		TOKEN_PIPE;
-// 	struct s_command	*producer;
-// 	struct s_command	*consumer;
-// 	struct s_pipe		*producer_pipe;
-// 	struct s_pipe		*consumer_pipe;
-// }	t_pipe;
-
-// typedef struct	s_command {
-// 	enum e_token		token_type;
-// 	char				*lexeme;
-// 	struct s_flags		*flags;
-// 	struct s_parameters	*parameters;
-// 	struct s_redirects	*redirects;
-// }	t_command;
-
-// typedef struct	s_flag {
-// 	enum e_token	token_type;
-// 	char			*lexeme;
-// 	struct s_flag	*next;
-// }	t_flag;
-
-// typedef struct	s_parameter {
-// 	enum e_token		token_type;
-// 	char				*lexeme;
-// 	struct s_parameter	*next;
-// }	t_parameter;
-
-// typedef struct	s_redirect {
-// 	enum e_token		token_type;
-// 	char				*path;
-// 	struct s_redirect	*next;
-// }	t_redirect;
 
 // lexer functions
 int			check_quotes(char *input);

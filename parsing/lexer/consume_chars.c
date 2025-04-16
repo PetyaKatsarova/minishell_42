@@ -12,20 +12,6 @@ static int	my_strcmp(char *s1, char *s2)
 
 static int	gettype(char *str)
 {
-	if (my_strcmp(str, "|") == 0)
-		return (TOKEN_PIPE);
-	if (my_strcmp(str, "$?") == 0)
-		return (TOKEN_EXIT_STATUS);
-	if (*str == '$')
-		return (TOKEN_VAR);	
-	if (my_strcmp(str, "<") == 0)
-		return (TOKEN_INPUT_REDIRECT);
-	if (my_strcmp(str, ">") == 0)
-		return (TOKEN_OUTPUT_REDIRECT);
-	if (my_strcmp(str, "<<") == 0)
-		return (TOKEN_HEREDOC);
-	if (my_strcmp(str, ">>") == 0)
-		return (TOKEN_APPEND_OUTPUT_REDIRECT);
 	if (my_strcmp(str, "echo") == 0)
 		return (TOKEN_ECHO);
 	if (my_strcmp(str, "cd") == 0)
