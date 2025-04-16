@@ -60,3 +60,23 @@ int	getwordlen(char *input)
 	}
 	return (cpy - input);
 }
+
+int	set_state(e_state state, char c)
+{
+	if (state == OUTSIDE)
+	{
+		if (c == '\'')
+		{
+			state = INSIDE_SINGLES;
+		}
+		else if (c == '\"')
+		{
+			state = INSIDE_DOUBLES;
+		}
+	}
+	else if (c == '\'' || c == '\"')
+	{
+		state = OUTSIDE;
+	}
+	return (state);
+}

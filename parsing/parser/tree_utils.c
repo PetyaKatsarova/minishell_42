@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-t_node	*nodenew(enum e_token token_type, char *lexeme, t_node *parent)
+t_node	*nodenew(e_token token_type, char *lexeme, t_node *parent)
 {
 	t_node	*new_node;
 
@@ -24,7 +24,6 @@ t_node	*nodenew(enum e_token token_type, char *lexeme, t_node *parent)
 t_tree	*treenew(t_token *token_list)
 {
 	t_tree	*new_tree;
-
 	new_tree = malloc(sizeof(t_tree));
 	if (new_tree == NULL)
 	{
@@ -36,79 +35,55 @@ t_tree	*treenew(t_token *token_list)
 	return (new_tree);
 }
 
-// t_pipe *pipenew(void)
-// {
-// 	t_pipe	*new_pipe;
+static int	countpipes(t_token *current)
+{
+	int	num_pipes;
 
-// 	new_pipe = malloc(sizeof(t_pipe));
-// 	if (new_pipe == NULL)
-// 	{
-// 		return (NULL); // add error handling
-// 	}
-// 	new_pipe->producer = NULL;
-// 	new_pipe->consumer = NULL;
-// 	new_pipe->producer_pipe = NULL;
-// 	new_pipe->consumer_pipe = NULL;
-// 	return (new_pipe);
-// }
+	num_pipes = 0;
+	while (current != NULL)
+	{
+		if (current->token_type == TOKEN_PIPE)
+		{
+			num_pipes++;
+		}
+		current = current->next;
+	}
+	printf("countpipes(): num_pipes: %d\n", num_pipes);
+	return (num_pipes);
+}
 
-// t_command *commandnew(char *lexeme, enum e_token token_type)
-// {
-// 	t_command *new_command;
+void	make_pipe_nodes(t_tree *tree)
+{
+	t_node	*current;
+	int		i;
 
-// 	new_command = malloc(sizeof(t_command));
-// 	if (new_command == NULL)
-// 	{
-// 		return (NULL); // add error handling: free all
-// 	}
-// 	new_command->token_type = token_type;
-// 	new_command->lexeme = lexeme;
-// 	new_command->flags = NULL;
-// 	new_command->parameters = NULL;
-// 	new_command->redirects = NULL;
-// 	return (new_command);
-// }
+	tree->num_pipes = countpipes(tree->token_list);
+	i = 0;
+	while (i < tree->num_pipes)
+	{
+		if (i == 0)
+		{
+			tree->root = nodenew(TOKEN_PIPE, "|", NULL);
+			current = tree->root;
+		}
+		else
+		{
+			current->producer = nodenew(TOKEN_PIPE, "|", current);
+			current = current->producer;
+		}
+		i++;
+		printf("made new pipe: %d\n", i);
+	}
+}
 
-// t_flag *flagnew(char *lexeme, enum e_token token_type)
-// {
-// 	t_flag	*new_flag;
+void	make_cmd_nodes(t_tree *tree)
+{
+	t_node	*current;
 
-// 	new_flag = malloc(sizeof(t_flag));
-// 	if (new_flag == NULL)
-// 	{
-// 		return (NULL); // add error handling: free all
-// 	}
-// 	new_flag->token_type = token_type;
-// 	new_flag->lexeme = lexeme;
-// 	new_flag->next = NULL;
-// 	return (new_flag);
-// }
-
-// t_parameter	*parameternew(char *lexeme, enum e_token token_type)
-// {
-// 	t_parameter	*new_parameter;
-
-// 	new_parameter = malloc(sizeof(t_parameter));
-// 	if (new_parameter == NULL)
-// 	{
-// 		return (NULL); // add error handling: free all
-// 	}
-// 	new_parameter->token_type = token_type;
-// 	new_parameter->lexeme = lexeme;
-// 	new_parameter->next = NULL;
-// 	return (new_parameter);
-// }
-
-// t_redirect *redirectnew(enum e_token token_type)
-// {
-// 	t_redirect	*new_redirect;
-
-// 	new_redirect = malloc(sizeof(t_redirect));
-// 	if (new_redirect == NULL)
-// 	{
-// 		return (NULL); // add error handling: free all
-// 	}
-// 	new_redirect->token_type = token_type;
-// 	new_redirect->next = NULL;
-// 	return (new_redirect);
-// }
+	current = go_first_pipe(tree);
+	if (current == NULL)
+	{
+		tree->root = nodenew(TOKEN_NULL, NULL, NULL);
+		return ;
+	}
+}

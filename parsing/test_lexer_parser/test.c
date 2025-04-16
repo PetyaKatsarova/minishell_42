@@ -24,7 +24,7 @@ int main(void)
 
 	tree = treenew(token_list);
 
-	parser(tree, token_list);
+	parser(tree);
 
 	free_list(&token_list);
 	free(input);

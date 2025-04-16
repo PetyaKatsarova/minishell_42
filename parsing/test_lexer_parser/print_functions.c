@@ -27,7 +27,7 @@ void	printlist(t_token *token_list)
 	printf("\n");
 }
 
-void	print_token_type(enum e_token token_type)
+void	print_token_type(e_token token_type)
 {
 	printf("token type: %s\n", token_strings[token_type]);
 }

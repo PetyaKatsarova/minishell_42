@@ -11,7 +11,6 @@ SRCS = 	lexer/lexer.c \
 		lexer/check_quotes.c \
 		lexer/consume_input.c \
 		lexer/utils.c \
-		lexer/utils2.c \
 		lexer/list_utils.c \
 		parser/tree_utils.c \
 		parser/tree_navigation.c \
@@ -20,7 +19,6 @@ SRCS = 	lexer/lexer.c \
 		parser/consume_token_list.c \
 		test_lexer_parser/test.c \
 		test_lexer_parser/print_functions.c
-
 
 OBJS =	$(SRCS:.c=.o)
 

@@ -16,6 +16,7 @@ typedef enum	e_state {
 
 typedef enum	e_token {
 	TOKEN_NULL,
+
 	TOKEN_PIPE,
 
 	// redirects
@@ -33,7 +34,7 @@ typedef enum	e_token {
 	TOKEN_ENV,
 	TOKEN_EXIT,
 
-	// words, strings
+	// words
 	TOKEN_WORD
 }	e_token;
 
@@ -41,7 +42,7 @@ typedef enum	e_token {
 
 typedef struct	s_token {
 	char			*lexeme;
-	enum e_token	token_type;			
+	e_token	token_type;			
 	struct s_token	*next;
 }	t_token;
 
@@ -55,7 +56,7 @@ typedef struct	s_tree {
 
 typedef struct	s_node {
 	struct s_node	*parent;
-	enum e_token	token_type;
+	e_token	token_type;
 	char			*lexeme;
 	struct s_node	*producer;
 	struct s_node	*consumer;
@@ -72,7 +73,7 @@ void		lexer(t_token **head, char *input);
 t_token		*consume_chars(t_token *tail, char **input);
 t_token 	*consume_special_delim(t_token *tail, char **input);
 t_token		*sq_str(t_token *tail, char **input);
-t_token		*tokennew(t_token *tail, char *lexeme, enum e_token token_type);
+t_token		*tokennew(t_token *tail, char *lexeme, e_token token_type);
 bool		isendword(e_state state, char c);
 int			getwordlen(char *input);
 void		free_list(t_token **head);
@@ -81,20 +82,20 @@ int			set_state(e_state state, char c);
 bool		is_special_delim(char c);
 
 // parser functions
-t_node		*nodenew(enum e_token token_type, char *lexeme, t_node *parent);
+t_node		*nodenew(e_token token_type, char *lexeme, t_node *parent);
 t_tree		*treenew(t_token *token_list);
-void		parser(t_tree *tree, t_token *token_list);
+void		parser(t_tree *tree);
 t_node		*go_first_pipe(t_tree *tree);
 t_node		*go_next_pipe(t_node *current);
 void		consume_token_list(t_tree *tree);
 t_node		*go_first_cmd(t_tree *tree);
 t_node		*go_next_cmd(t_node *current);
 int			get_num_pipes(t_tree *tree);
-
+void		make_pipe_nodes(t_tree *tree);
 
 // test functions
 void		printlist(t_token *token_list);
-void		print_token_type(enum e_token token_type);
+void		print_token_type(e_token token_type);
 void		print_state(e_state state);
 
 #endif
