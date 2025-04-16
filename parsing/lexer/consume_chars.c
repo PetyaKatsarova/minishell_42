@@ -43,11 +43,12 @@ static int	gettype(char *str)
 	return (TOKEN_WORD);
 }
 
-t_token	*outside_quotes(t_token *tail, char **input)
+t_token	*consume_chars(t_token *tail, char **input)
 {	
 	t_token *new_token;
 	char	*lexeme;
 	char	*cpy_lexeme;
+	e_state	state;
 
 	lexeme = malloc((getwordlen(*input) + 1) * sizeof(char));
 	if (lexeme == NULL)
@@ -55,11 +56,13 @@ t_token	*outside_quotes(t_token *tail, char **input)
 		return (NULL); // implement error handling: free all
 	}
 	cpy_lexeme = lexeme;
-	while (isendword(**input) == false)
+	state = set_state(OUTSIDE, **input);
+	while (isendword(state, **input) == false)
 	{
 		*cpy_lexeme = **input;
 		(*input)++;
 		cpy_lexeme++;
+		state = set_state(state, **input);
 	}
 	*cpy_lexeme = '\0';
 	new_token = tokennew(tail, lexeme, gettype(lexeme));

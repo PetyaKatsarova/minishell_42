@@ -104,13 +104,15 @@ typedef struct	s_node {
 int			check_quotes(char *input);
 t_token		*dq_str(t_token *tail, char **input);
 void		lexer(t_token **head, char *input);
-t_token		*outside_quotes(t_token *tail, char **input);
+t_token		*consume_chars(t_token *tail, char **input);
 t_token		*sq_str(t_token *tail, char **input);
 t_token		*tokennew(t_token *tail, char *lexeme, enum e_token token_type);
 int			getlen(char *input, char end);
-bool		isendword(char c);
+bool		isendword(e_state state, char c);
 int			getwordlen(char *input);
 void		free_list(t_token **head);
+bool		is_whitespace(char c);
+int			set_state(e_state state, char c);
 
 // parser functions
 t_node		*nodenew(enum e_token token_type, char *lexeme, t_node *parent);
@@ -127,5 +129,6 @@ int			get_num_pipes(t_tree *tree);
 // test functions
 void		printlist(t_token *token_list);
 void		print_token_type(enum e_token token_type);
+void		print_state(e_state state);
 
 #endif

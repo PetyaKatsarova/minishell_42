@@ -1,11 +1,28 @@
 
 #include "../minishell.h"
 
-bool	isendword(char c)
+
+bool	is_whitespace(char c)
 {
-	if (c == ' ' || c == '\'' || c == '\"' || c == '\0')
+	if (c == 32 || (c >= 9 && c <= 13))
 	{
 		return (true);
+	}
+	return (false);
+}
+
+bool	isendword(e_state state, char c)
+{
+	if (state == OUTSIDE)
+	{
+		if (is_whitespace(c) == true)
+		{
+			return (true);
+		}
+		if (c == '\0')
+		{
+			return (true);
+		}
 	}
 	return (false);
 }
@@ -13,11 +30,16 @@ bool	isendword(char c)
 int	getwordlen(char *input)
 {
 	char	*cpy;
+	e_state	state;
 
 	cpy = input;
-	while (isendword(*cpy) == false)
+	state = OUTSIDE;
+	state = set_state(state, *cpy);
+	while (isendword(state, *cpy) == false)
 	{
 		cpy++;
+		state = set_state(state, *cpy);
+		
 	}
 	return (cpy - input);
 }

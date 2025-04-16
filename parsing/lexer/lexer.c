@@ -6,27 +6,16 @@ void	lexer(t_token **head, char *input)
 	bool	first;
 
 	tail = NULL;
+	first = true;
 	while (*input != '\0')
 	{
-		if (tail == NULL)
-		{
-			first = true;
-		}
-		if (*input == '\'')
-		{
-			tail = sq_str(tail, &input);
-		}
-		else if (*input == '\"')
-		{
-			tail = dq_str(tail, &input);
-		}
-		else if (*input == 32)
+		if (is_whitespace(*input) == true)
 		{
 			input++;
 		}
 		else
 		{
-			tail = outside_quotes(tail, &input);
+			tail = consume_chars(tail, &input);
 		}
 		if (first == true)
 		{

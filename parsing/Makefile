@@ -10,9 +10,10 @@ RESET		= \\033[0m
 SRCS = 	lexer/lexer.c \
 		lexer/check_quotes.c \
 		lexer/dq_str.c \
-		lexer/outside_quotes.c \
+		lexer/consume_chars.c \
 		lexer/sq_str.c \
 		lexer/utils.c \
+		lexer/utils2.c \
 		lexer/list_utils.c \
 		parser/tree_utils.c \
 		parser/tree_navigation.c \
@@ -20,7 +21,7 @@ SRCS = 	lexer/lexer.c \
 		parser/parser.c \
 		parser/consume_token_list.c \
 		test_lexer_parser/test.c \
-		test_lexer_parser/print_list.c
+		test_lexer_parser/print_functions.c
 
 
 OBJS =	$(SRCS:.c=.o)

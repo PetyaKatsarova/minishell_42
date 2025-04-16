@@ -13,6 +13,7 @@ void	consume_token_list(t_tree *tree)
 		{
 			current = go_next_pipe(current);
 		}
+		printf("consume_token_list: ");
 		print_token_type(token->token_type);
 		token = token->next;
 
