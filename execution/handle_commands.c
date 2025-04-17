@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:38:02 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/17 14:11:04 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/17 17:15:38 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ int	handle_commands(char **input_args, t_env_list *env_struct, char *input)
 	{
 		// todo: if child fork and exec else todo?
 		if (!are_pipes)
-			exit_status = fork_and_exec_no_pipes(env_struct, input_args);
-		if (exit_status == EXIT_FAILURE)
-		{
-			perror("fork_and_exec_no_pipes failed");
-			free_arr(input_args);
-			return (EXIT_FAILURE);
+		{ // todo: exitfailure: change for all casess...
+			if (exec_on_path(env_struct, input_args, 0) == EXIT_FAILURE)
+			{
+				perror("fork_and_exec_no_pipes failed");
+				free_arr(input_args);
+				return (EXIT_FAILURE);
+			}
 		}
-
 	}
 	// for debugging: todo: delete on production
 	printf("(exit status: %d)\n", exit_status);
