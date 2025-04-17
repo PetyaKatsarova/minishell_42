@@ -24,6 +24,7 @@ t_node	*nodenew(e_token token_type, char *lexeme, t_node *parent)
 t_tree	*treenew(t_token *token_list)
 {
 	t_tree	*new_tree;
+
 	new_tree = malloc(sizeof(t_tree));
 	if (new_tree == NULL)
 	{
@@ -81,9 +82,16 @@ void	make_cmd_nodes(t_tree *tree)
 	t_node	*current;
 
 	current = go_first_pipe(tree);
+	printf("make_cmd_nodes: went to first pipe\n");
 	if (current == NULL)
 	{
 		tree->root = nodenew(TOKEN_NULL, NULL, NULL);
 		return ;
+	}
+	current->producer = nodenew(TOKEN_NULL, NULL, NULL);
+	while (current != NULL)
+	{
+		current->consumer = nodenew(TOKEN_NULL, NULL, NULL);
+		current = go_next_pipe(current);
 	}
 }
