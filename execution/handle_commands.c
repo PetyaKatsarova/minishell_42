@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:38:02 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/12 17:04:57 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/17 14:11:04 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ It's normal for readline() to leave things in memory to speed up future calls or
 int	handle_commands(char **input_args, t_env_list *env_struct, char *input)
 {
 	int exit_status;
+	int are_pipes;
 
 	exit_status = 0;
+	are_pipes = 0;
 	if (ft_strncmp(input_args[0], "exit", 5) == 0)
 		return do_exit(input_args, input, env_struct); // how abt shell in a shell, piped or not ?
 	else if (ft_strncmp(input_args[0], "pwd", 4) == 0)
@@ -38,9 +40,17 @@ int	handle_commands(char **input_args, t_env_list *env_struct, char *input)
 	else
 	{
 		// todo: if child fork and exec else todo?
-		exit_status = fork_and_exec(env_struct, input_args);
+		if (!are_pipes)
+			exit_status = fork_and_exec_no_pipes(env_struct, input_args);
+		if (exit_status == EXIT_FAILURE)
+		{
+			perror("fork_and_exec_no_pipes failed");
+			free_arr(input_args);
+			return (EXIT_FAILURE);
+		}
+
 	}
 	// for debugging: todo: delete on production
-	printf("(exit status: %d\n)", exit_status);
+	printf("(exit status: %d)\n", exit_status);
 	return (exit_status); // 0
 }

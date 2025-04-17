@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/11 22:46:46 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/17 14:10:44 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,12 @@ void	exec_command(t_env_list *env_list, char **splitted_cmd)
 	}
 	cmd_path = get_command_path(env_list, splitted_cmd[0]);
 	if (!cmd_path)
-		msg(splitted_cmd[0], ": command not found");
+	{
+		msg(splitted_cmd[0], ": command not found ");
+		free_t_env(env_list);
+		free_arr(splitted_cmd);
+		exit(EXIT_CMD_NOT_FOUND);
+	}
 	i = 0;
 	while (splitted_cmd[i])
 		i++;
@@ -110,7 +115,7 @@ void	exec_command(t_env_list *env_list, char **splitted_cmd)
 	exit(EXIT_FAILURE);
 }
 
-int	fork_and_exec(t_env_list *env_list, char **splitted_cmd)
+int	fork_and_exec_no_pipes(t_env_list *env_list, char **splitted_cmd)
 {
 	pid_t	pid;
 	int		status;
