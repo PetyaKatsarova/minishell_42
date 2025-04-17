@@ -26,6 +26,8 @@ int main(void)
 
 	parser(tree);
 
+	print_cmd_nodes(tree);
+
 	free_list(&token_list);
 	free(input);
 	printf("\n");

@@ -22,7 +22,7 @@ static char	**make_argv(t_token *token)
 	argv = malloc((count + 1) * sizeof(char *));
 	if (argv == NULL)
 	{
-		return (NULL);
+		return (NULL); // add error handling: free all
 	}
 	return (argv);
 }
@@ -35,6 +35,10 @@ static void	parse_tokens(t_token **token, t_node **node)
 	(*node)->argv = make_argv(*token);
 	while (*token != NULL && (*token)->token_type != TOKEN_PIPE)
 	{
+		if ((*node)->token_type == TOKEN_NULL)
+		{
+			(*node)->token_type = (*token)->token_type;
+		}
 		(*node)->argv[i] = (*token)->lexeme;
 		*token = (*token)->next;
 		i++;
@@ -59,7 +63,6 @@ void	consume_token_list(t_tree *tree)
 		else
 		{
 			parse_tokens(&token, &node);
-			print_argv(node);
 		}
 	}
 }

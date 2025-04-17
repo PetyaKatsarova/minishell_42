@@ -44,7 +44,7 @@ typedef enum	e_token {
 
 typedef struct	s_token {
 	char			*lexeme;
-	e_token	token_type;			
+	e_token			token_type;			
 	struct s_token	*next;
 }	t_token;
 
@@ -97,5 +97,7 @@ void		printlist(t_token *token_list);
 void		print_token_type(e_token token_type);
 void		print_state(e_state state);
 void		print_argv(t_node *node);
+void		print_node(t_node *node);
+void		print_cmd_nodes(t_tree *tree);
 
 #endif

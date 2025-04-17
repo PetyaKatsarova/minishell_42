@@ -29,7 +29,7 @@ void	printlist(t_token *token_list)
 
 void	print_token_type(e_token token_type)
 {
-	printf("token type: %s\n", token_strings[token_type]);
+	printf("%s\n", token_strings[token_type]);
 }
 
 void	print_state(e_state state)
@@ -55,4 +55,33 @@ void	print_argv(t_node *node)
 		i++;
 	}
 	printf("\n");
+}
+
+void	print_node(t_node *node)
+{
+	printf("\n");
+	printf("parent: %p\n", node->parent);
+	printf("token_type: ");
+	print_token_type(node->token_type);
+	print_argv(node);
+	printf("producer: %p\n", node->producer);
+	printf("consumer: %p\n", node->consumer);
+	printf("redirects: %p\n", node->redirects);
+	printf("\n");
+}
+
+void	print_cmd_nodes(t_tree *tree)
+{
+	t_node	*current;
+	int		count;
+
+	current = go_first_cmd(tree);
+	count = 1;
+	while (current != NULL)
+	{
+		printf("CMD %d", count);
+		print_node(current);
+		current = go_next_cmd(current);
+		count++;
+	}
 }
