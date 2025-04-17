@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../parsing.h"
 
 static int	my_strcmp(char *s1, char *s2)
 {

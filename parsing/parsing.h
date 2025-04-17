@@ -59,22 +59,18 @@ typedef struct	s_tree {
 typedef struct	s_node {
 	struct s_node	*parent;
 	e_token			token_type;
-	char			*lexeme;
+	char			**argv;
 	struct s_node	*producer;
 	struct s_node	*consumer;
-	struct s_node	*flags;
-	struct s_node	*parameters;
 	struct s_node	*redirects;
 	char			*redir_path;
 }	t_node;
 
 // lexer functions
 int			check_quotes(char *input);
-t_token		*dq_str(t_token *tail, char **input);
 void		lexer(t_token **head, char *input);
 t_token		*consume_chars(t_token *tail, char **input);
 t_token 	*consume_special_delim(t_token *tail, char **input);
-t_token		*sq_str(t_token *tail, char **input);
 t_token		*tokennew(t_token *tail, char *lexeme, e_token token_type);
 bool		isendword(e_state state, char c);
 int			getwordlen(char *input);
@@ -84,7 +80,7 @@ int			set_state(e_state state, char c);
 bool		is_special_delim(char c);
 
 // parser functions
-t_node		*nodenew(e_token token_type, char *lexeme, t_node *parent);
+t_node		*nodenew(e_token token_type, t_node *parent);
 t_tree		*treenew(t_token *token_list);
 void		parser(t_tree *tree);
 t_node		*go_first_pipe(t_tree *tree);
@@ -100,5 +96,6 @@ void		make_cmd_nodes(t_tree *tree);
 void		printlist(t_token *token_list);
 void		print_token_type(e_token token_type);
 void		print_state(e_state state);
+void		print_argv(t_node *node);
 
 #endif

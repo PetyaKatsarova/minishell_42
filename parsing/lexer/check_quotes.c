@@ -1,5 +1,5 @@
 
-#include "../minishell.h"
+#include "../parsing.h"
 
 /*
 ** this function uses the logic of a state machine. this machine changes its states

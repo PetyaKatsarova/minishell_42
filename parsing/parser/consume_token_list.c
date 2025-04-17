@@ -1,4 +1,46 @@
-#include "../minishell.h"
+#include "../parsing.h"
+
+static int	count_tokens(t_token *token)
+{
+	int	count;
+
+	count = 0;
+	while (token != NULL && token->token_type != TOKEN_PIPE)
+	{
+		token = token->next;
+		count++;
+	}
+	return (count);
+}
+
+static char	**make_argv(t_token *token)
+{
+	int		count;
+	char	**argv;
+
+	count = count_tokens(token);
+	argv = malloc((count + 1) * sizeof(char *));
+	if (argv == NULL)
+	{
+		return (NULL);
+	}
+	return (argv);
+}
+
+static void	parse_tokens(t_token **token, t_node **node)
+{
+	int	i;
+
+	i = 0;
+	(*node)->argv = make_argv(*token);
+	while (*token != NULL && (*token)->token_type != TOKEN_PIPE)
+	{
+		(*node)->argv[i] = (*token)->lexeme;
+		*token = (*token)->next;
+		i++;
+	}
+	(*node)->argv[i] = NULL;
+}
 
 void	consume_token_list(t_tree *tree)
 {
@@ -9,17 +51,15 @@ void	consume_token_list(t_tree *tree)
 	node = go_first_cmd(tree);
 	while (token != NULL)
 	{
-		printf("consume_token_list: ");
-		print_token_type(token->token_type);
-		
-		printf("node token type: ");
-		assert(token != NULL);
-		assert(node != NULL);
-		print_token_type(node->token_type);
 		if (token->token_type == TOKEN_PIPE)
 		{
 			node = go_next_cmd(node);
+			token = token->next;
 		}
-		token = token->next;
+		else
+		{
+			parse_tokens(&token, &node);
+			print_argv(node);
+		}
 	}
 }

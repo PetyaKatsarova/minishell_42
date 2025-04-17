@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../parsing.h"
 
 void	lexer(t_token **head, char *input)
 {

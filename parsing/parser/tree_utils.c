@@ -1,6 +1,6 @@
-#include "../minishell.h"
+#include "../parsing.h"
 
-t_node	*nodenew(e_token token_type, char *lexeme, t_node *parent)
+t_node	*nodenew(e_token token_type, t_node *parent)
 {
 	t_node	*new_node;
 
@@ -11,11 +11,9 @@ t_node	*nodenew(e_token token_type, char *lexeme, t_node *parent)
 	}
 	new_node->parent = parent;
 	new_node->token_type = token_type;
-	new_node->lexeme = lexeme;
+	new_node->argv = NULL;
 	new_node->producer = NULL;
 	new_node->consumer = NULL;
-	new_node->flags = NULL;
-	new_node->parameters = NULL;
 	new_node->redirects = NULL;
 	new_node->redir_path = NULL;
 	return (new_node);
@@ -49,7 +47,7 @@ static int	countpipes(t_token *current)
 		}
 		current = current->next;
 	}
-	printf("countpipes(): num_pipes: %d\n", num_pipes);
+	//printf("countpipes(): num_pipes: %d\n", num_pipes);
 	return (num_pipes);
 }
 
@@ -64,16 +62,16 @@ void	make_pipe_nodes(t_tree *tree)
 	{
 		if (i == 0)
 		{
-			tree->root = nodenew(TOKEN_PIPE, "|", NULL);
+			tree->root = nodenew(TOKEN_PIPE, NULL);
 			current = tree->root;
 		}
 		else
 		{
-			current->producer = nodenew(TOKEN_PIPE, "|", current);
+			current->producer = nodenew(TOKEN_PIPE, current);
 			current = current->producer;
 		}
 		i++;
-		printf("made new pipe: %d\n", i);
+		//("made new pipe: %d\n", i);
 	}
 }
 
@@ -82,16 +80,16 @@ void	make_cmd_nodes(t_tree *tree)
 	t_node	*current;
 
 	current = go_first_pipe(tree);
-	printf("make_cmd_nodes: went to first pipe\n");
+	//printf("make_cmd_nodes: went to first pipe\n");
 	if (current == NULL)
 	{
-		tree->root = nodenew(TOKEN_NULL, NULL, NULL);
+		tree->root = nodenew(TOKEN_NULL, NULL);
 		return ;
 	}
-	current->producer = nodenew(TOKEN_NULL, NULL, current);
+	current->producer = nodenew(TOKEN_NULL, current);
 	while (current != NULL)
 	{
-		current->consumer = nodenew(TOKEN_NULL, NULL, current);
+		current->consumer = nodenew(TOKEN_NULL, current);
 		current = go_next_pipe(current);
 	}
 }

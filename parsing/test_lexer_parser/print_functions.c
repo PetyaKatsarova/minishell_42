@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../parsing.h"
 
 static const char *token_strings[] = {	"TOKEN_NULL",
 										"TOKEN_PIPE",
@@ -38,4 +38,21 @@ void	print_state(e_state state)
 								"INSIDE_SINGLES",
 								"INSIDE_DOUBLES"};
 	printf("state: %s\n", state_strings[state]);
+}
+
+void	print_argv(t_node *node)
+{
+
+	int 	i = 0;
+	bool	first = true;
+	printf("argv: ");
+	while (node->argv[i] != NULL)
+	{
+		if (!first)
+			printf(", ");
+		printf("%s", node->argv[i]);
+		first = false;
+		i++;
+	}
+	printf("\n");
 }

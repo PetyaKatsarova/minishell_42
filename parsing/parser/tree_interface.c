@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../parsing.h"
 
 int	get_num_pipes(t_tree *tree)
 {
@@ -10,6 +10,10 @@ t_node	*go_first_cmd(t_tree *tree)
 	t_node	*current;
 
 	current = go_first_pipe(tree);
+	if (current == NULL)
+	{
+		current = tree->root;
+	}
 	if (current->token_type == TOKEN_PIPE)
 	{
 		current = current->producer;
