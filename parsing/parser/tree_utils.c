@@ -88,10 +88,10 @@ void	make_cmd_nodes(t_tree *tree)
 		tree->root = nodenew(TOKEN_NULL, NULL, NULL);
 		return ;
 	}
-	current->producer = nodenew(TOKEN_NULL, NULL, NULL);
+	current->producer = nodenew(TOKEN_NULL, NULL, current);
 	while (current != NULL)
 	{
-		current->consumer = nodenew(TOKEN_NULL, NULL, NULL);
+		current->consumer = nodenew(TOKEN_NULL, NULL, current);
 		current = go_next_pipe(current);
 	}
 }

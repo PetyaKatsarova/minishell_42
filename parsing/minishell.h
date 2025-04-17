@@ -8,6 +8,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# include <assert.h> // remove for eval
+
 typedef enum	e_state {
 	OUTSIDE,
 	INSIDE_SINGLES,
@@ -56,7 +58,7 @@ typedef struct	s_tree {
 
 typedef struct	s_node {
 	struct s_node	*parent;
-	e_token	token_type;
+	e_token			token_type;
 	char			*lexeme;
 	struct s_node	*producer;
 	struct s_node	*consumer;

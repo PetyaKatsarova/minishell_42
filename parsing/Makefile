@@ -1,7 +1,7 @@
 NAME = parsing
 
 CC = cc
-CFLAGS = -lreadline -Wall -Wextra -Werror
+CFLAGS = -lreadline -Wall -Wextra -Werror -g
 
 GREEN		= \\033[0;32m
 RED			= \\033[0;31m
