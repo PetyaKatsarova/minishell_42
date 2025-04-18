@@ -34,7 +34,18 @@ SRCS	 := execution/built_ins/pwd.c \
 			execution/executables/parse_path.c \
 			execution/executables/helpers.c \
 			execution/executables/manage_files.c \
-			main.c
+			main.c \
+			parsing/lexer/lexer.c \
+			parsing/lexer/check_quotes.c \
+			parsing/lexer/consume_input.c \
+			parsing/lexer/utils.c \
+			parsing/lexer/list_utils.c \
+			parsing/parser/tree_utils.c \
+			parsing/parser/tree_navigation.c \
+			parsing/parser/tree_interface.c \
+			parsing/parser/parser.c \
+			parsing/parser/consume_token_list.c \
+			parsing/test_lexer_parser/print_functions.c
 			
 OBJS	 := $(SRCS:.c=.o)
 

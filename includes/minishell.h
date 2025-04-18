@@ -13,18 +13,20 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include <sys/stat.h>  // for stats func and MACROS: S_ISLNK(m) S_ISDIR(m) S_ISREG(m)
+# include <sys/stat.h>  // for stats func and MACROS: S_ISLNK(m) S_ISDIR(m) S_ISREG(m)
 # include "../libs/libft/libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
+//# include <readline/readline.h>
+//# include <readline/history.h>
 # include <stdlib.h> // exit
 # include <unistd.h> // fork, execve, access, read, write, close
 # include <limits.h> // is it allowed? <limits.h> defines system limits like max values for integers, file paths, and system resources. for PATH_MAX: NOT IN ALL OS
-#include <stdio.h> // perror
-#include <string.h> //?? what for
-#include <errno.h> // is it allowed?
-#include <stdint.h> // for uint8_t
-#include <sys/wait.h> /// waitpid, WIFEXITED, WEXITSTATUS
+# include <stdio.h> // perror
+# include <string.h> //?? what for
+# include <errno.h> // is it allowed?
+# include <stdint.h> // for uint8_t
+# include <sys/wait.h> /// waitpid, WIFEXITED, WEXITSTATUS
+//# include <stdbool.h>
+# include "parsing.h"
 
 # ifndef PATH_MAX
 #  define PATH_MAX 4096
