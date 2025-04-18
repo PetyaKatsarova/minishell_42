@@ -60,7 +60,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 		t_token	*token_list;
 		t_tree	*tree;
 		(void) env_struct_lst;
-		//t_node	*cmd_node;
+		t_node	*cmd_node;
 	
 		input = readline("\033[1;34mminihell$\033[0m ");
 		if (!input) // TODO ??? 
@@ -75,7 +75,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 			add_history(input);
 
 		token_list = NULL;
-		printf("\ninput: %s\n", input);
+		//printf("\ninput: %s\n", input);
 		if (check_quotes(input) == -1)
 		{
 			printf("ERROR: open quotes\n"); // TODO: UPDATE LAST_EXIT_STATUS in env_struct_lst
@@ -86,10 +86,18 @@ static int handle_readline(t_env_list *env_struct_lst)
 		tree = treenew(token_list);
 		parser(tree);
 
-		print_cmd_nodes(tree);
+		cmd_node = go_first_cmd(tree);		
+		while (cmd_node != NULL)
+		{
+		//printf("cmd_node: %s\n", cmd_node->argv[0]);
+			env_struct_lst->last_exit_status = handle_commands(cmd_node->argv, env_struct_lst, input);
+			cmd_node = go_next_cmd(cmd_node);
+			
+		}
+
+		//print_cmd_nodes(tree);
 		free_list(&token_list);
 		free(input);
-		printf("\n");
 	}
 	return (0);
 }

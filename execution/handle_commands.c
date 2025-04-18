@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:38:02 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/17 17:15:38 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/18 14:45:36 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	handle_commands(char **input_args, t_env_list *env_struct, char *input)
 			if (exec_on_path(env_struct, input_args, 0) == EXIT_FAILURE)
 			{
 				perror("fork_and_exec_no_pipes failed");
-				free_arr(input_args);
+				//free_arr(input_args);
 				return (EXIT_FAILURE);
 			}
 		}

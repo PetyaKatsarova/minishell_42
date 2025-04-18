@@ -31,7 +31,7 @@ int	too_many_args(char	**input_args)
 	return (0);
 }
 /**
- * @brief REturns EXIT_FAILURE and prints err msg for cmd with args
+ * @brief Returns EXIT_FAILURE and prints err msg for cmd with args
  */
 int	print_builtin_error(const char *cmd, const char *arg, const char *msg)
 {
