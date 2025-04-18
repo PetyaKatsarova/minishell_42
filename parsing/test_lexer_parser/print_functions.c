@@ -1,4 +1,4 @@
-#include "../parsing.h"
+#include "../../includes/parsing.h"
 
 static const char *token_strings[] = {	"TOKEN_NULL",
 										"TOKEN_PIPE",
