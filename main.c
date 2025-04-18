@@ -12,46 +12,6 @@
 
 #include "includes/minishell.h"
 
-// sudo apt-get install libreadline-dev
-
-//static int handle_readline(t_env_list *env_struct_lst)
-//{
-//	while (1)
-//	{
-//		char	*input;
-//		char	**input_args;
-		
-//		input = readline("\033[1;34mminihell$\033[0m ");
-//		if (!input) // handle CTR+D
-//		{
-//			printf("exit with no input collected.\n");
-//			clear_history(); // for mem leaks
-//			free_t_env(env_struct_lst);
-//			return (EXIT_FAILURE); // NEED TO CLEAR ALL MALLOCS 
-//		}
-//		if (*input) // DO I NEED * and why
-//			add_history(input);
-//		input_args = ft_split(input, ' ');
-//		if (!input_args)
-//		{
-//			//todo err handle and clear memory
-//			perror("failed to split read line input_args\n");
-//			clear_history(); // for mem leaks
-//			free_t_env(env_struct_lst);
-//			free(input);
-//			// free envstruct
-//			return (EXIT_FAILURE);
-//		}
-//		if (input_args[0])
-//		{
-//			env_struct_lst->last_exit_status = handle_commands(input_args, env_struct_lst, input);
-//		}
-//		free_arr(input_args);
-//		free(input);
-//	}
-//	return (0);
-//}
-
 static int handle_readline(t_env_list *env_struct_lst)
 {
 	while (1)
@@ -60,7 +20,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 		t_token	*token_list;
 		t_tree	*tree;
 		(void) env_struct_lst;
-		//t_node	*cmd_node;
+		t_node	*cmd_node;
 	
 		input = readline("\033[1;34mminihell$\033[0m ");
 		if (!input) // TODO ??? 
@@ -75,7 +35,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 			add_history(input);
 
 		token_list = NULL;
-		printf("\ninput: %s\n", input);
+		//printf("\ninput: %s\n", input);
 		if (check_quotes(input) == -1)
 		{
 			printf("ERROR: open quotes\n"); // TODO: UPDATE LAST_EXIT_STATUS in env_struct_lst
@@ -86,10 +46,18 @@ static int handle_readline(t_env_list *env_struct_lst)
 		tree = treenew(token_list);
 		parser(tree);
 
-		print_cmd_nodes(tree);
-		free_list(&token_list);
+		cmd_node = go_first_cmd(tree);		
+		while (cmd_node != NULL)
+		{
+		//printf("cmd_node: %s\n", cmd_node->argv[0]);
+			env_struct_lst->last_exit_status = handle_commands( env_struct_lst, tree, cmd_node);
+			cmd_node = go_next_cmd(cmd_node);
+			
+		}
+
+		//print_cmd_nodes(tree);
+		free_tree(tree);
 		free(input);
-		printf("\n");
 	}
 	return (0);
 }

@@ -68,11 +68,10 @@ typedef struct s_env_list {
 int			get_pwd();
 int		 	do_cd(char **argv, t_env_list *env);
 int		 	do_echo(char **args);
-int		 	get_env(t_env_list   *env);
+int		 	get_env(t_env_list   *env_struct);
 int		 	do_export(char  **input_args, t_env_list *env_struct);
-int		 	do_exit(char **input_args, char *input, t_env_list *env_struct);
+int		 	do_exit(t_env_list *env_struct, t_tree *tree, t_node *cmd_node);
 int		 	do_unset(char **input_args, t_env_list *env_struct);
-
 
 // execution/export_utils.c
 int		err_malloc(t_env_list *cpy, char *msg);
@@ -96,7 +95,7 @@ int			print_builtin_error(const char *cmd, const char *arg, const char *msg);
 //long		ft_atol(const char *str);
 
 // execution/handle_commands.c
-int			handle_commands(char **input_args, t_env_list *env_struct, char *input);
+int			handle_commands(t_env_list *env_struct, t_tree *tre, t_node *cmd_node);
 //char		**expand_input_args(char **input_args);
 
 // execution/executables/*
