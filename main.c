@@ -67,7 +67,6 @@ static int handle_readline(t_env_list *env_struct_lst)
 
 // valgrind -s --leak-check=full --track-origins=yes ./minishell
 
-
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
 	(void) argv;

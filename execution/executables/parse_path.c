@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:20:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/17 14:09:49 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/18 17:42:33 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,6 @@ static char	**split_path(t_env_list *env_list)
 	free_arr(env);
 	return (NULL);
 }
-
-/**
- * @brief Uses split_path and validates path: helper func: TODO: NOT ACTUALLY NEEDED:  */
-//static char	**split_and_validate_paths(t_env_list *env)
-//{
-//	char	**paths;
-
-//	paths = split_path(env);
-//	if (!paths)
-//	{
-//		perror("Error in splitting path.");
-//		return (NULL);
-//	}
-//	return (paths);
-//}
 
 static char	*build_full_command_path(char *path, char *command_no_flag)
 {
