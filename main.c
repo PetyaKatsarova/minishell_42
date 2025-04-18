@@ -54,27 +54,43 @@
 
 static int handle_readline(t_env_list *env_struct_lst)
 {
-	char	*input;
-	t_token	*token_list;
-	t_tree	*tree;
-	(void) env_struct_lst;
-
-	input = readline("\033[1;34mminihell$\033[0m ");
-	token_list = NULL;
-	printf("\ninput: %s\n", input);
-	if (check_quotes(input) == -1)
+	while (1)
 	{
-		printf("ERROR: open quotes\n");
-		return (0);
+		char	*input;
+		t_token	*token_list;
+		t_tree	*tree;
+		(void) env_struct_lst;
+		//t_node	*cmd_node;
+	
+		input = readline("\033[1;34mminihell$\033[0m ");
+		if (!input) // TODO ??? 
+		{
+			printf("exit with no input collected.\n");
+			clear_history(); // for mem leaks
+			free_t_env(env_struct_lst);
+			// DO I NEED TO FREE TREE? YES.. TODO
+			return (EXIT_FAILURE); // NEED TO CLEAR ALL MALLOCS 
+		}
+		if (*input) // DO I NEED * and why
+			add_history(input);
+
+		token_list = NULL;
+		printf("\ninput: %s\n", input);
+		if (check_quotes(input) == -1)
+		{
+			printf("ERROR: open quotes\n"); // TODO: UPDATE LAST_EXIT_STATUS in env_struct_lst
+			return (0);
+		}
+		lexer(&token_list, input);
+		//printlist(token_list);
+		tree = treenew(token_list);
+		parser(tree);
+
+		print_cmd_nodes(tree);
+		free_list(&token_list);
+		free(input);
+		printf("\n");
 	}
-	lexer(&token_list, input);
-	//printlist(token_list);
-	tree = treenew(token_list);
-	parser(tree);
-	print_cmd_nodes(tree);
-	free_list(&token_list);
-	free(input);
-	printf("\n");
 	return (0);
 }
 
