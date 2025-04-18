@@ -27,7 +27,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
-	@echo -e "$(GREEN)\n*** minishell compiled successfully ***\n$(RESET)"
+	@echo -e "$(GREEN)\n*** parsing compiled successfully ***\n$(RESET)"
 
 clean:
 	rm -f $(OBJS)

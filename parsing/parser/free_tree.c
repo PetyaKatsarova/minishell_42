@@ -32,6 +32,15 @@ static void	free_cmds(t_tree *tree)
 		// }
 		free(node->argv);
 		next_cmd = go_next_cmd(node);
+		if (node->parent != NULL)
+		{
+			if (node->parent->producer == node)
+				node->parent->producer = NULL;
+			else
+				node->parent->consumer = NULL;
+		}
+		if (node->parent == NULL)
+			tree->root = NULL;
 		free(node);
 		node = next_cmd;
 	}
