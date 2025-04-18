@@ -50,7 +50,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 		while (cmd_node != NULL)
 		{
 		//printf("cmd_node: %s\n", cmd_node->argv[0]);
-			env_struct_lst->last_exit_status = handle_commands( env_struct_lst, cmd_node);
+			env_struct_lst->last_exit_status = handle_commands( env_struct_lst, tree, cmd_node);
 			cmd_node = go_next_cmd(cmd_node);
 			
 		}

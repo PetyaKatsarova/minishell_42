@@ -31,7 +31,8 @@ int	too_many_args(char	**input_args)
 	return (0);
 }
 /**
- * @brief Returns EXIT_FAILURE and prints err msg for cmd with args
+ * todo::: replace everywhere printf with write: ft_putstr_fd("minihell: ", 2);
+ * Returns EXIT_FAILURE and prints err msg for cmd with args
  */
 int	print_builtin_error(const char *cmd, const char *arg, const char *msg)
 {
