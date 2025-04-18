@@ -6,15 +6,18 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:20:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/11 22:45:33 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/17 14:09:49 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/**
+ * @brief Splits the PATH environment variable into an array of paths.
+ */
 static char	**split_path(t_env_list *env_list)
 {
-	int	i;
+	int		i;
 	char	**env;
 	char	**arr;
 	
@@ -24,13 +27,13 @@ static char	**split_path(t_env_list *env_list)
 		perror("Error in converting env.");
 		return (NULL);
 	}
-
 	i = 0;
 	while (env[i])
 	{
 		if (ft_strnstr(env[i], "PATH=", 5))
 		{
 			arr = ft_split(env[i] + 5, ':');
+			free_arr(env);
 			if (!arr)
 			{
 				perror("Error in splitting PATH.");
@@ -41,21 +44,25 @@ static char	**split_path(t_env_list *env_list)
 		}
 		i++;
 	}
+	perror("PATH not found in env.");
+	free_arr(env);
 	return (NULL);
 }
 
-static char	**split_and_validate_paths(t_env_list *env)
-{
-	char	**paths;
+/**
+ * @brief Uses split_path and validates path: helper func: TODO: NOT ACTUALLY NEEDED:  */
+//static char	**split_and_validate_paths(t_env_list *env)
+//{
+//	char	**paths;
 
-	paths = split_path(env);
-	if (!paths)
-	{
-		perror("Error in splitting path.");
-		return (NULL);
-	}
-	return (paths);
-}
+//	paths = split_path(env);
+//	if (!paths)
+//	{
+//		perror("Error in splitting path.");
+//		return (NULL);
+//	}
+//	return (paths);
+//}
 
 static char	*build_full_command_path(char *path, char *command_no_flag)
 {
@@ -110,12 +117,15 @@ char	*get_command_path(t_env_list *env, char *cmd_no_flag)
 	if ((cmd_no_flag[0] == '.' && cmd_no_flag[1] == '/')
 		|| cmd_no_flag[0] == '/')
 	{
-		if (is_valid_read_file(cmd_no_flag, 'x'))
+		if (is_valid_read_or_exec_file(cmd_no_flag, 'x'))
 			return (ft_strdup(cmd_no_flag));
 		else
+		{
 			return (NULL);
+		}
 	}
-	paths = split_and_validate_paths(env);
+	//paths = split_and_validate_paths(env);
+	paths = split_path(env);
 	if (!paths)
 		return (NULL);
 	found = 0;

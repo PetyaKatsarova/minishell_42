@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   echo.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/04/17 11:56:12 by pekatsar      #+#    #+#                 */
+/*   Updated: 2025/04/17 11:56:15 by pekatsar      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 /*
 echo -n // -n dont output the trailing newline, echo - display a line of text
 Execute the echo command with or without arguments, or the -n option.

@@ -91,6 +91,9 @@ void set_env_value(t_env_list *env_list, const char *key, const char *val)
 	env_list->vars[env_list->size].key = NULL;
 }
 
+/**
+ * @brief Converts the env_struct to a char ** array for execve
+ */
 char	**converted_env(t_env_list *env_struct)
 {
 	char	**env;
@@ -122,34 +125,3 @@ char	**converted_env(t_env_list *env_struct)
 	return (env);
 }
 
-
-void free_env_struct(t_env_list *env_struct)
-{
-	for (size_t i = 0; i < env_struct->size; i++)
-	{
-		free(env_struct->vars[i].key);
-		free(env_struct->vars[i].value);
-	}
-	free(env_struct->vars);
-	free(env_struct);
-}
-void free_env_list(t_env_list *env_struct)
-{
-	for (size_t i = 0; i < env_struct->size; i++)
-	{
-		free(env_struct->vars[i].key);
-		free(env_struct->vars[i].value);
-	}
-	free(env_struct->vars);
-	free(env_struct);
-}
-void free_env(t_env_list *env_struct)
-{
-	for (size_t i = 0; i < env_struct->size; i++)
-	{
-		free(env_struct->vars[i].key);
-		free(env_struct->vars[i].value);
-	}
-	free(env_struct->vars);
-	free(env_struct);
-}

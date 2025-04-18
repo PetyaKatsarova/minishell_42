@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/11 22:46:46 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/17 17:16:17 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ void	msg(char *name, char *msg)
 
 /**
  * Executes the given command from the given path, handling errors appropriately.
- * 
- * Todo: if child: exec there, if not child process: complete bellow
  */
 void	exec_command(t_env_list *env_list, char **splitted_cmd)
 {
@@ -82,7 +80,12 @@ void	exec_command(t_env_list *env_list, char **splitted_cmd)
 	}
 	cmd_path = get_command_path(env_list, splitted_cmd[0]);
 	if (!cmd_path)
-		msg(splitted_cmd[0], ": command not found");
+	{
+		msg(splitted_cmd[0], ": command not found ");
+		free_t_env(env_list);
+		free_arr(splitted_cmd);
+		exit(EXIT_CMD_NOT_FOUND);
+	}
 	i = 0;
 	while (splitted_cmd[i])
 		i++;
@@ -109,27 +112,37 @@ void	exec_command(t_env_list *env_list, char **splitted_cmd)
 	free(cmd_path);
 	exit(EXIT_FAILURE);
 }
-
-int	fork_and_exec(t_env_list *env_list, char **splitted_cmd)
+/**
+ * TODO: need to modify for cases when there are pipes
+ */
+int	exec_on_path(t_env_list *env_list, char **splitted_cmd, int is_pipe)
 {
 	pid_t	pid;
 	int		status;
 
-	pid = fork();
-	if (pid == -1)
+	if (!is_pipe)
 	{
-		perror("minishell: fork failed");
-		return (EXIT_FAILURE);
+		pid = fork();
+		if (pid == -1)
+		{
+			perror("minishell: fork failed");
+			return (EXIT_FAILURE);
+		}
+		if (pid == 0)
+		{
+			exec_command(env_list, splitted_cmd);
+		}
+		waitpid(pid, &status, 0); 
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
+		else if (WIFSIGNALED(status))
+			return (128 + WTERMSIG(status));
 	}
-	if (pid == 0)
+	else
 	{
 		exec_command(env_list, splitted_cmd);
+		// check what needs to be freed here... if execve fails...
 	}
-	waitpid(pid, &status, 0); 
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
 	return (EXIT_FAILURE);
 }
 
