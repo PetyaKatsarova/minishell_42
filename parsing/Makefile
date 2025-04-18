@@ -1,7 +1,7 @@
 NAME = parsing
 
 CC = cc
-CFLAGS = -lreadline -Wall -Wextra -Werror -g
+CFLAGS = -lreadline -g #-Wall -Wextra -Werror
 
 GREEN		= \\033[0;32m
 RED			= \\033[0;31m
@@ -17,6 +17,7 @@ SRCS = 	lexer/lexer.c \
 		parser/tree_interface.c \
 		parser/parser.c \
 		parser/consume_token_list.c \
+		parser/free_tree.c \
 		test_lexer_parser/test.c \
 		test_lexer_parser/print_functions.c
 

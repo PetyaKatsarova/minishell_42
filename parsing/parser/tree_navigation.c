@@ -14,7 +14,7 @@ t_node	*go_first_pipe(t_tree *tree)
 	}
 	current = tree->root;
 	//printf("current set to tree->root\n");
-	while (	current->token_type == TOKEN_PIPE
+	while (current->token_type == TOKEN_PIPE
 			&& current->producer != NULL
 			&& current->producer->token_type == TOKEN_PIPE)
 	{

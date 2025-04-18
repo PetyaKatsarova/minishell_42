@@ -91,6 +91,7 @@ t_node		*go_next_cmd(t_node *current);
 int			get_num_pipes(t_tree *tree);
 void		make_pipe_nodes(t_tree *tree);
 void		make_cmd_nodes(t_tree *tree);
+void		free_tree(t_tree *tree);
 
 // test functions
 void		printlist(t_token *token_list);

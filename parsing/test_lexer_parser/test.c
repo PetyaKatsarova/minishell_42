@@ -4,6 +4,7 @@ int main(void)
 {
 	char	*input;
 	t_token	*token_list;
+	t_tree	*tree;
 
 	input = readline("> ");
 	token_list = NULL;
@@ -20,15 +21,14 @@ int main(void)
 
 	printlist(token_list);
 
-	t_tree	*tree;
-
 	tree = treenew(token_list);
 
 	parser(tree);
 
 	print_cmd_nodes(tree);
 
-	free_list(&token_list);
+	// free_list(&token_list);
+	free_tree(tree);
 	free(input);
 	printf("\n");
 	return (0);
