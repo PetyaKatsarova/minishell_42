@@ -39,6 +39,7 @@ for each cmd i:
 	NULL
 };
  */
+// NB !! on every pipe call handle_commands
 
 static void	setup_child_pipes(int i, int num_cmds, int prev_fd, int pipefd[2])
 {

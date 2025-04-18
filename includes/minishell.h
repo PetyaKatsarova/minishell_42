@@ -99,7 +99,7 @@ int			handle_commands(t_env_list *env_struct, t_tree *tre, t_node *cmd_node);
 //char		**expand_input_args(char **input_args);
 
 // execution/executables/*
-int			exec_on_path(t_env_list *env_list, char **splitted_cmd, int is_pipe);
+int			exec_on_path(t_env_list *env_list, t_node	*curr_cmd, int is_pipe);
 char		*get_command_path(t_env_list *env, char *cmd_no_flag);
 void		free_dbl_ptr(char **ptr);
 void		free_args(char **argv, int count);
