@@ -3,10 +3,9 @@
 
 /*
 ** this function uses the logic of a state machine. this machine changes its states
-** based on its current state and the character it encounters. if it enters a forbidden
-** state (parentheses < 0), or if it is not in the correct state when reaching the end
-** of the input string (OUTSIDE and parentheses == 0), the machine returns -1 to indicate
-** an error.
+** based on its current state and the character it encounters. if it is not in the correct
+** state when reaching the end of the input string (OUTSIDE), the machine returns -1 to
+** indicate an error.
 */
 
 int	check_quotes(char *input)
@@ -33,18 +32,3 @@ int	check_quotes(char *input)
 		return (-1);
 	return (0);
 }
-
-// int main(void)
-// {
-// 	char	*input;
-// 	int		check;
-
-// 	while (1)
-// 	{
-// 		input = readline("> ");
-// 		check = check_quotes(input);
-// 		printf("%s\n", check == 0 ? "well-formed" : "ill-formed");
-// 		free(input);
-// 	}
-// 	return (0);
-// }
