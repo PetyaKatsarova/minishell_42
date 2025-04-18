@@ -50,6 +50,7 @@ int	handle_commands(char **input_args, t_env_list *env_struct, char *input)
 			}
 		}
 	}
+	env_struct->last_exit_status = exit_status;
 	// for debugging: todo: delete on production
 	printf("(exit status: %d)\n", exit_status);
 	return (exit_status); // 0

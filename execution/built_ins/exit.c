@@ -81,10 +81,22 @@ exit -33 // exit, 223
  */
 static void	free_exit_resources(char *input, char **input_args, t_env_list *env_struct)
 {
-	free(input);
-	free_arr(input_args);
+	if (input)
+	{
+		free(input);
+		input = NULL;
+	}
+	if (input_args)
+	{
+		free_arr(input_args);
+		input_args = NULL;
+	}
+	if (env_struct)
+	{
+		free_t_env(env_struct);
+		env_struct = NULL;
+	}
 	clear_history();
-	free_t_env(env_struct);
 }
 
 /**

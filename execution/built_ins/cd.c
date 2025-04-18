@@ -30,6 +30,10 @@ Unset the $PATH and ensure commands are not working anymore.
 Set the $PATH to a multiple directory value (directory1:directory2) and ensure that directories are checked in
 order from left to right.
 bash: cd: HOME not set
+
+1. cd ✓
+2. cd ~ ✓
+3 !! todo: cd bla: 4 bytes leaked in 1 allocation
 */
 
 static int handle_cd_home(char **input_args, t_env_list *env)
@@ -40,15 +44,16 @@ static int handle_cd_home(char **input_args, t_env_list *env)
 	char cwd[CWD_MAX];
 
 	home = get_env_value(env, "HOME");
-	if (!home)
-		return (print_builtin_error("cd", NULL, " HOME not set"));
+	// if (!home)
+	// 	return (print_builtin_error("cd", NULL, " HOME not set"));
 	if (!input_args[1] && chdir(home) != 0)
 		return (print_builtin_error("cd", NULL, " Failed to change directory"));
 	else if (input_args[1] && input_args[1][0] == '~')
 	{
 		rest = input_args[1] + 1; // everything after '~'
-		if (rest[0] == '\0') // if it's just "~", cd to HOME
-			result = ft_strdup(home);
+		if (rest[0] == '\0')
+			result = ft_strdup(home); // if it's just "~", cd to HOME
+			// result = ft_strdup(home);
 		else if (rest[0] == '/') // "~/folder" case
 			result = ft_strjoin(home, rest); // result = HOME + /folder
 		else
@@ -58,16 +63,19 @@ static int handle_cd_home(char **input_args, t_env_list *env)
 		if (chdir(result) != 0)
 		{
             print_builtin_error("cd", result, " Failed to change directory");
-            free(result);
+            free(result); // todo: how come i get hear leaks for cd bla???
             return (EXIT_FAILURE);
         }
 		if (getcwd(cwd, CWD_MAX))
 			set_env_value(env, "PWD", cwd);
+		printf("*********** TRA LA LA ****************: %s\n", get_env_value(env, "PWD"));
         free(result);
 	}
 	return (EXIT_SUCCESS);
 }
 
+
+// TODO: MEM LEAK AFTER: cd, exit, exit alone: works
 /**
  * @brief Handles cd, cd ~, cd ~/path, cd -, cd .., cd ./path
  */
@@ -78,7 +86,12 @@ int do_cd(char **input_args, t_env_list *env)
 
 	if (too_many_args(input_args))
 		return (print_builtin_error("cd", NULL, " too many arguments"));
-	set_env_value(env, "OLDPWD", getcwd(NULL, 0));
+	// set_env_value(env, "OLDPWD", getcwd(NULL, 0));
+	char *oldpwd = getcwd(NULL, 0);
+	if (!oldpwd)
+		return (print_builtin_error("cd", NULL, " Failed to get current directory"));
+	set_env_value(env, "OLDPWD", oldpwd);
+	free(oldpwd);
 	if (!input_args[1] || (input_args[1] && input_args[1][0] == '~'))
 		return (handle_cd_home(input_args, env));
 	else
@@ -87,8 +100,8 @@ int do_cd(char **input_args, t_env_list *env)
 		return (print_builtin_error("strdup", NULL, " malloc failed"));
 	if  (chdir(result) != 0)
 	{
-        // free(result);
-        return (print_builtin_error("cd", result, " Failed to change directory"));
+		int err = print_builtin_error("cd", result, " Failed to change directory");
+        return (free(result), err);
     }
 	if (getcwd(cwd, CWD_MAX))
 		set_env_value(env, "PWD", cwd);
