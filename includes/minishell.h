@@ -68,7 +68,7 @@ typedef struct s_env_list {
 int			get_pwd();
 int		 	do_cd(char **argv, t_env_list *env);
 int		 	do_echo(char **args);
-int		 	get_env(t_env_list   *env);
+int		 	get_env(t_env_list   *env_struct);
 int		 	do_export(char  **input_args, t_env_list *env_struct);
 int		 	do_exit(char **input_args, char *input, t_env_list *env_struct);
 int		 	do_unset(char **input_args, t_env_list *env_struct);
