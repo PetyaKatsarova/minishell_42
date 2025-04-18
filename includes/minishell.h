@@ -98,10 +98,10 @@ int			handle_commands(char **input_args, t_env_list *env_struct, char *input);
 //char		**expand_input_args(char **input_args);
 
 // execution/executables/*
-int			fork_and_exec(t_env_list *env_list, char **splitted_cmd);
+int			exec_on_path(t_env_list *env_list, char **splitted_cmd, int is_pipe);
 char		*get_command_path(t_env_list *env, char *cmd_no_flag);
 void		free_dbl_ptr(char **ptr);
 void		free_args(char **argv, int count);
-int			is_valid_read_file(char *file_name, char mode);
+int			is_valid_read_or_exec_file(char *file_name, char mode);
 
 #endif

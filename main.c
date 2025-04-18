@@ -67,5 +67,7 @@ int main(int argc, char **argv, char **envp) {
         return (EXIT_FAILURE);
     }
 	handle_readline(env_struct_lst);
+	free_t_env(env_struct_lst); //this is done in exit.c: in case i have invalid exec path: testing
+	clear_history();
 	return (0);
 }
