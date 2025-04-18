@@ -28,7 +28,8 @@ static int handle_readline(t_env_list *env_struct_lst)
 			printf("exit with no input collected.\n");
 			clear_history(); // for mem leaks
 			free_t_env(env_struct_lst);
-			// DO I NEED TO FREE TREE? YES.. TODO
+			free_tree(tree);
+			// DO I NEED TO FREE token list and comdnode?
 			return (EXIT_FAILURE); // NEED TO CLEAR ALL MALLOCS 
 		}
 		if (*input) // DO I NEED * and why

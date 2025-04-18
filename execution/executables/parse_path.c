@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:20:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/18 17:42:33 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/18 19:04:45 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,9 @@ static char	**split_path(t_env_list *env_list)
 	return (NULL);
 }
 
+/**
+ * Joins and returns path with cmd name like: /bin + ls = /bin/ls
+ */
 static char	*build_full_command_path(char *path, char *command_no_flag)
 {
 	char	*with_line;
@@ -109,7 +112,6 @@ char	*get_command_path(t_env_list *env, char *cmd_no_flag)
 			return (NULL);
 		}
 	}
-	//paths = split_and_validate_paths(env);
 	paths = split_path(env);
 	if (!paths)
 		return (NULL);

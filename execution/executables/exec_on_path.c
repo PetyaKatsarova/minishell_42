@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/18 18:47:32 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/18 19:06:23 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,7 @@ static void	exec_command(t_env_list *env_list, t_node *curr_cmd)
 	free(cmd_path);
 	exit(EXIT_FAILURE);
 }
-/**
- * TODO: need to modify for cases when there are pipes
- */
+
 int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 {
 	pid_t	pid;
