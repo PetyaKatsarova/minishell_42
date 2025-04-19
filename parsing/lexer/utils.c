@@ -74,9 +74,19 @@ int	set_state(e_state state, char c)
 			state = INSIDE_DOUBLES;
 		}
 	}
-	else if (c == '\'' || c == '\"')
+	else if (state == INSIDE_SINGLES)
 	{
-		state = OUTSIDE;
+		if (c == '\'')
+		{
+			state = OUTSIDE;
+		}
+	}
+	else if (state == INSIDE_DOUBLES)
+	{
+		if (c == '\"')
+		{
+			state = OUTSIDE;
+		}
 	}
 	return (state);
 }
