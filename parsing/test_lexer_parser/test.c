@@ -10,9 +10,8 @@ int main(void)
 
 	printf("\ninput: %s\n", input);
 
-	if (check_quotes(input) == -1)
+	if (prelim_syn_check(input) < 0)
 	{
-		printf("ERROR: open quotes\n");
 		return (0);
 	}
 
