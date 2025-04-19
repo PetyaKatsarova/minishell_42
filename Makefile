@@ -12,7 +12,7 @@
 
 NAME	 := minishell
 CC	   := cc
-CFLAGS   := -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS   := -Wall -Wextra -Werror -g #-fsanitize=address
 LIBFT	:= libs/libft
 
 HEADERS  := -I ./include -I $(LIBFT)/include
@@ -36,7 +36,7 @@ SRCS	 := execution/built_ins/pwd.c \
 			execution/executables/manage_files.c \
 			main.c \
 			parsing/lexer/lexer.c \
-			parsing/lexer/check_quotes.c \
+			parsing/lexer/prelim_syn_check.c \
 			parsing/lexer/consume_input.c \
 			parsing/lexer/utils.c \
 			parsing/lexer/list_utils.c \
