@@ -6,56 +6,16 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/17 17:16:17 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/18 18:47:32 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/*
-Frees char **args and char *cmd_path, and exits with EXIT_FAILURE.
-*/
-static	void	helper_free(char **args, int i, char *cmd_path)
-{
-	perror("Failed to allocate memory for argument.");
-	free_args(args, i);
-	free(cmd_path);
-	exit(EXIT_FAILURE);
-}
-
-/**
- * Allocates and fills the argv array for execve based on the splitted_command array.
- */
-static char	**prepare_command_args(char *cmd_path, char **splitted_cmd, int cnt)
-{
-	char	**args;
-	int		i;
-
-	args = malloc((cnt + 1) * sizeof(char *));
-	if (!args)
-	{
-		perror("Failed to allocate memory for args.");
-		free(cmd_path);
-		exit(EXIT_FAILURE);
-	}
-	args[0] = cmd_path;
-	i = 1;
-	while (i < cnt)
-	{
-		(void)splitted_cmd;
-		args[i] = ft_strdup(splitted_cmd[i]);
-		if (!args[i])
-			helper_free(args, i, cmd_path);
-		i++;
-	}
-	args[cnt] = NULL;
-	return (args);
-}
-
 /**
  * Displays error message at fd 2(std err) and exits with code 127
  */
-void	msg(char *name, char *msg)
+static void	msg(char *name, char *msg)
 {
 	ft_putstr_fd("minihell: ", 2);
 	ft_putstr_fd(msg, 2);
@@ -66,39 +26,37 @@ void	msg(char *name, char *msg)
 /**
  * Executes the given command from the given path, handling errors appropriately.
  */
-void	exec_command(t_env_list *env_list, char **splitted_cmd)
+static void	exec_command(t_env_list *env_list, t_node *curr_cmd)
 {
 	char	*cmd_path;
 	char	**args;
 	char	**env;
-	int		i;
+	//int		i;
 
-	if (!splitted_cmd[0] || splitted_cmd[0][0] == '\0')
+	if (!curr_cmd->argv[0] || curr_cmd->argv[0][0] == '\0') // why?? todo
 	{
 		ft_putendl_fd("pipex: permission denied:", 2);
 		exit(127);
 	}
-	cmd_path = get_command_path(env_list, splitted_cmd[0]);
+	cmd_path = get_command_path(env_list, curr_cmd->argv[0]);
 	if (!cmd_path)
 	{
-		msg(splitted_cmd[0], ": command not found ");
+		msg(curr_cmd->argv[0], ": command not found ");
 		free_t_env(env_list);
-		free_arr(splitted_cmd);
+		//free_arr(curr_cmd->argv); todo: what needs to be freed?? JAN
 		exit(EXIT_CMD_NOT_FOUND);
 	}
-	i = 0;
-	while (splitted_cmd[i])
-		i++;
-	args = prepare_command_args(cmd_path, splitted_cmd, i);
+	args = curr_cmd->argv;
 	if (!args)
 	{
-		helper_free(args, i, cmd_path);
+		//helper_free(args, i, cmd_path);
+		//	ASK JAN: DO STH: FREE_TREE(TREE)??
 	}
 	env = converted_env(env_list);
 	if (!env) // todo: to handle later
 	{
 		perror("Failed to convert environment variables.");
-		free_args(args, i);
+		//free_args(args, i);
 		free(cmd_path);
 		exit(EXIT_FAILURE);
 	}
@@ -108,14 +66,14 @@ void	exec_command(t_env_list *env_list, char **splitted_cmd)
 	printf("I am pid %d (after execve parent: %d)\n", getpid(), getppid());
 
 	perror("execve failed");
-	free_args(args, i);
+	//free_args(args, i);
 	free(cmd_path);
 	exit(EXIT_FAILURE);
 }
 /**
  * TODO: need to modify for cases when there are pipes
  */
-int	exec_on_path(t_env_list *env_list, char **splitted_cmd, int is_pipe)
+int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 {
 	pid_t	pid;
 	int		status;
@@ -130,7 +88,7 @@ int	exec_on_path(t_env_list *env_list, char **splitted_cmd, int is_pipe)
 		}
 		if (pid == 0)
 		{
-			exec_command(env_list, splitted_cmd);
+			exec_command(env_list, curr_cmd);
 		}
 		waitpid(pid, &status, 0); 
 		if (WIFEXITED(status))
@@ -140,7 +98,7 @@ int	exec_on_path(t_env_list *env_list, char **splitted_cmd, int is_pipe)
 	}
 	else
 	{
-		exec_command(env_list, splitted_cmd);
+		exec_command(env_list, curr_cmd);
 		// check what needs to be freed here... if execve fails...
 	}
 	return (EXIT_FAILURE);

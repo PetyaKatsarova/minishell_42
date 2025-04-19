@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:38:02 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/18 17:36:33 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/18 18:50:31 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	handle_commands(t_env_list *env_struct, t_tree *tree, t_node *cmd_node)
 
 	exit_status = 0;
 	if (cmd_node->token_type == TOKEN_EXIT)
-		return do_exit(env_struct, tree, cmd_node);
+		return do_exit(env_struct, tree, cmd_node); // todo: set exit status correctly....
 	else if (cmd_node->token_type == TOKEN_PWD)
 		exit_status = get_pwd();
 	else if (cmd_node->token_type == TOKEN_CD)
@@ -37,8 +37,8 @@ int	handle_commands(t_env_list *env_struct, t_tree *tree, t_node *cmd_node)
 		exit_status = do_unset(cmd_node->argv, env_struct);
 	else
 	{
-		//if (exec_on_path(env_struct, cmd_node->argv, get_num_pipes(t_tree *tree)) == EXIT_FAILURE)
-		//	return (EXIT_FAILURE);
+		if (exec_on_path(env_struct, cmd_node, 0) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
 	}
 	env_struct->last_exit_status = exit_status;
 	return (exit_status); // 0
