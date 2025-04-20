@@ -17,7 +17,7 @@ void	lexer(t_token **head, char *input)
 		{
 			tail = consume_special_delim(tail, &input);
 		}
-		else
+		else if (*input != '\0')
 		{
 			tail = consume_chars(tail, &input);
 		}

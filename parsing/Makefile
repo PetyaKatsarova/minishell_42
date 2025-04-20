@@ -8,7 +8,7 @@ RED			= \\033[0;31m
 RESET		= \\033[0m
 
 SRCS = 	lexer/lexer.c \
-		lexer/check_quotes.c \
+		lexer/prelim_syn_check.c \
 		lexer/consume_input.c \
 		lexer/utils.c \
 		lexer/list_utils.c \

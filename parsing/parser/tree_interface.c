@@ -5,6 +5,10 @@ int	get_num_pipes(t_tree *tree)
 	return (tree->num_pipes);
 }
 
+/* returns a t_node pointer to the node storing information about the first command,
+** in the order of the input.
+*/
+
 t_node	*go_first_cmd(t_tree *tree)
 {
 	t_node	*current;
@@ -22,7 +26,7 @@ t_node	*go_first_cmd(t_tree *tree)
 }
 
 /* go_next_cmd returns a pointer to the next command in the order of the input.
-** only call when current points to a command.
+** only call when current points to a command node!
 */
 
 t_node *go_next_cmd(t_node *current)

@@ -4,6 +4,7 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <unistd.h>
 # include <stdbool.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -67,7 +68,7 @@ typedef struct	s_node {
 }	t_node;
 
 // lexer functions
-int			check_quotes(char *input);
+int			prelim_syn_check(char *input);
 void		lexer(t_token **head, char *input);
 t_token		*consume_chars(t_token *tail, char **input);
 t_token 	*consume_special_delim(t_token *tail, char **input);

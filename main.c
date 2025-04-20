@@ -37,10 +37,11 @@ static int handle_readline(t_env_list *env_struct_lst)
 
 		token_list = NULL;
 		//printf("\ninput: %s\n", input);
-		if (check_quotes(input) == -1)
+		if (prelim_syn_check(input) < 0)
 		{
-			printf("ERROR: open quotes\n"); // TODO: UPDATE LAST_EXIT_STATUS in env_struct_lst
-			return (0);
+			// TODO: UPDATE LAST_EXIT_STATUS in env_struct_lst
+			free(input);
+			continue;
 		}
 		lexer(&token_list, input);
 		//printlist(token_list);
