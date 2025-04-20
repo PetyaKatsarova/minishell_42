@@ -1,0 +1,35 @@
+In a pipeline, every command runs in a subshell — including built-ins.
+Built-ins are still built-in,
+But when used in a pipe, they are run in a child shell (a subprocess),
+So any side effect (like cd, export, unset) is lost after execution.
+
+ in Bash, when a built-in is part of a pipeline, it always runs in a child process, and thus:
+
+!!nb!!
+=====================================================
+Any side effect (like cd, export, exit, unset) is completely lost.
+================================================================
+
+⚙️ Example 1
+cd /tmp | echo hi | pwd
+cd /tmp: runs in a subshell, changes dir only there
+pwd: still shows the original directory
+
+⚙️ Example 2
+exit | echo hello
+exit: exits the child only
+echo: still runs, shell stays open
+
+⚙️ Example 3
+export TEST=hi | env | grep TEST
+TEST is not visible — set only in subshell, lost
+
+In every case, when a built-in is run in a pipeline, its effects are:
+
+Executed in a subprocess
+
+Not visible to the parent shell
+
+That’s expected and correct Bash behavior
+=============================================================================
+

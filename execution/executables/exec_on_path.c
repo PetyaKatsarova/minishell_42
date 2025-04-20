@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/20 10:29:35 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/20 21:21:35 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  */
 static void	msg(char *name, char *msg)
 {
-	ft_putstr_fd("minihell: ", 2);
+	ft_putstr_fd("minihell", 2);
 	ft_putstr_fd(msg, 2);
 	ft_putendl_fd(name, 2);
 	exit(EXIT_CMD_NOT_FOUND);
@@ -38,8 +38,7 @@ static void	exec_command(t_env_list *env_list, t_node *curr_cmd)
 	cmd_path = get_command_path(env_list, curr_cmd->argv[0]);
 	if (!cmd_path)
 	{
-		env_list->last_exit_status = 127;
-		printf("exec_command: %d\n", env_list->last_exit_status);
+		env_list->last_exit_status = 127; // do we need this? is it a child process?
 		msg(curr_cmd->argv[0], ": command not found ");
 		// what we need to free here? todo...
 		exit(127);

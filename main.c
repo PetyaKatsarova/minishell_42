@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*																			*/
-/*														::::::::			*/
-/*   main.c											 :+:	:+:			*/
-/*													 +:+					*/
-/*   By: marvin <marvin@student.42.fr>				+#+					 */
-/*												   +#+					  */
-/*   Created: 2025/03/14 11:17:10 by pekatsar	  #+#	#+#				 */
-/*   Updated: 2025/04/10 13:36:26 by pekatsar	  ########   odam.nl		 */
-/*																			*/
-/* ************************************************************************** */
-
 #include "includes/minishell.h"
 
 static int handle_readline(t_env_list *env_struct_lst)
@@ -34,12 +22,10 @@ static int handle_readline(t_env_list *env_struct_lst)
 		}
 		if (*input) // DO I NEED * and why
 			add_history(input);
-
 		token_list = NULL;
 		//printf("\ninput: %s\n", input);
 		if (prelim_syn_check(input) < 0)
 		{
-			// TODO: UPDATE LAST_EXIT_STATUS in env_struct_lst
 			free(input);
 			continue;
 		}
@@ -47,18 +33,14 @@ static int handle_readline(t_env_list *env_struct_lst)
 		//printlist(token_list);
 		tree = treenew(token_list);
 		parser(tree);
-
 		cmd_node = go_first_cmd(tree);		
 		while (cmd_node != NULL)
 		{
 		//printf("cmd_node: %s\n", cmd_node->argv[0]);
 			env_struct_lst->last_exit_status = handle_commands( env_struct_lst, tree, cmd_node);
-
-			printf("last exit status: %d\n", env_struct_lst->last_exit_status);
-
+			// printf("last exit status: %d\n", env_struct_lst->last_exit_status);
 			cmd_node = go_next_cmd(cmd_node);
 		}
-
 		//print_cmd_nodes(tree);
 		free_tree(tree);
 		free(input);
@@ -70,6 +52,19 @@ static int handle_readline(t_env_list *env_struct_lst)
 // valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes ./minishell
 
 // valgrind -s --leak-check=full --track-origins=yes ./minishell
+// ls -l | wc -l
+// ls -l | grep main
+// bla | ls -l | grep main
+// -rwxrwxrwx 1 petya petya   2448 Apr 20 18:27 main.c
+// -rwxrwxrwx 1 petya petya  12856 Apr 20 18:26 main.o
+// Command 'bla' not found, did you mean:
+
+// pwd | ls -l | cd
+// exit | echo bla | pwd
+// pwd | pwd | pwd
+// echo bla | pwd | exit
+// bash | bash | bash : shlvl 1? i am in wsl, check on linux
+// exit | echo bla | pwd
 
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
