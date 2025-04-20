@@ -1,13 +1,6 @@
 
 #include "../../includes/parsing.h"
 
-/*
-** this function uses the logic of a state machine. the machine changes its states
-** based on its current state and the character it encounters. if it is not in the correct
-** state when reaching the end of the input string (OUTSIDE), the machine returns -1 to
-** indicate an error ("open quotes").
-*/
-
 static int	check_if_empty(char *input)
 {
 	if (*input == '\0')
