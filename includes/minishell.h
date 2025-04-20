@@ -74,7 +74,7 @@ int		 	do_exit(t_env_list *env_struct, t_tree *tree, t_node *cmd_node);
 int		 	do_unset(char **input_args, t_env_list *env_struct);
 
 // execution/export_utils.c
-int		err_malloc(t_env_list *cpy, char *msg);
+int			err_malloc(t_env_list *cpy, char *msg);
 t_env_list  *cpy_env_list(t_env_list *env_struct);
 t_env_list  *sort_env(t_env_list *env_struct);
 void		print_env_export(t_env_list *sorted_env_struct);
@@ -92,11 +92,9 @@ char 		**converted_env(t_env_list *env_struct);
 // execution/utils.c
 int			too_many_args(char	**input_args);
 int			print_builtin_error(const char *cmd, const char *arg, const char *msg);
-//long		ft_atol(const char *str);
 
 // execution/handle_commands.c
-int			handle_commands(t_env_list *env_struct, t_tree *tree, t_node *cmd_node);
-//char		**expand_input_args(char **input_args);
+int 		handle_commands(t_env_list *env, t_tree *tree, t_node *cmd_node);
 
 // execution/executables/*
 int			exec_on_path(t_env_list *env_list, t_node	*curr_cmd, int is_pipe);
@@ -104,5 +102,6 @@ char		*get_command_path(t_env_list *env, char *cmd_no_flag);
 void		free_dbl_ptr(char **ptr);
 void		free_args(char **argv, int count);
 int			is_valid_read_or_exec_file(char *file_name, char mode);
+
 
 #endif

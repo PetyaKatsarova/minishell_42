@@ -41,7 +41,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 			// printf("last exit status: %d\n", env_struct_lst->last_exit_status);
 			cmd_node = go_next_cmd(cmd_node);
 		}
-		//print_cmd_nodes(tree);
+		// print_cmd_nodes(tree);
 		free_tree(tree);
 		free(input);
 	}
@@ -65,6 +65,8 @@ static int handle_readline(t_env_list *env_struct_lst)
 // echo bla | pwd | exit
 // bash | bash | bash : shlvl 1? i am in wsl, check on linux
 // exit | echo bla | pwd
+// echo bla | pwd | wc -w
+// 3
 
 int main(int argc, char **argv, char **envp) {
 	(void) argc;

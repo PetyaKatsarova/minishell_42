@@ -1,0 +1,8 @@
+
+// t_node *get_last_cmd(t_node *cmd_node)
+// {
+// 	t_node *cpy = cmd_node;
+// 	while (cpy && go_next_cmd(cpy))
+// 		cpy = go_next_cmd(cpy);
+// 	return cpy; // This is the last node before NULL
+// }

@@ -41,74 +41,7 @@ for each cmd i:
  */
 // NB !! on every pipe call handle_commands
 
-static void	setup_child_pipes(int i, int num_cmds, int prev_fd, int pipefd[2])
-{
-	if (prev_fd != -1)
-		dup2(prev_fd, STDIN_FILENO);
-	if (i < num_cmds - 1)
-		dup2(pipefd[1], STDOUT_FILENO);
-	if (prev_fd != -1)
-		close(prev_fd);
-	if (i < num_cmds - 1)
-	{
-		close(pipefd[0]);
-		close(pipefd[1]);
-	}
-}
 
-static void	parent_pipe_control(int i, int num_cmds, int pipefd[2], int *prev_fd)
-{
-	if (*prev_fd != -1)
-		close(*prev_fd);
-	if (i < num_cmds - 1)
-	{
-		close(pipefd[1]);
-		*prev_fd = pipefd[0];
-	}
-}
-
-static void	execute_single_child(char **cmd, t_env_list *env)
-{
-	if (is_builtin(cmd[0]))
-		run_builtin(cmd, env, 1);
-	else
-		exec_command(env, cmd); // todo: add in execcommand if child param
-	exit(EXIT_SUCCESS);
-}
-
-void	execute_pipes(char ***args, t_env_list *env_lst)
-{
-	int		i = 0;
-	int		num_cmds = 0;
-	int		pipefd[2];
-	int		prev_fd = -1;
-	int		status = 0;
-	pid_t	pid, last_pid;
-
-	while (args[num_cmds])
-		num_cmds++;
-	while (i < num_cmds)
-	{
-		if (i < num_cmds - 1 && pipe(pipefd) == -1)
-			return (perror("pipe failed"));
-		pid = fork();
-		if (pid == -1)
-			return (perror("fork failed"));
-		if (pid == 0)
-		{
-			setup_child_pipes(i, num_cmds, prev_fd, pipefd);
-			execute_single_child(args[i], env_lst);
-		}
-		last_pid = pid;
-		parent_pipe_control(i, num_cmds, pipefd, &prev_fd);
-		i++;
-	}
-	waitpid(last_pid, &status, 0);
-	if (WIFEXITED(status))
-		env_lst->last_exit_status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		env_lst->last_exit_status = 128 + WTERMSIG(status);
-}
 
 /**
  * THEORY:

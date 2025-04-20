@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/20 21:21:35 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/21 00:28:12 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  */
 static void	msg(char *name, char *msg)
 {
-	ft_putstr_fd("minihell", 2);
+	ft_putstr_fd("\033[1;31mminihell: \033[0m", 2); // red for stderr
 	ft_putstr_fd(msg, 2);
 	ft_putendl_fd(name, 2);
 	exit(EXIT_CMD_NOT_FOUND);
@@ -57,13 +57,9 @@ static void	exec_command(t_env_list *env_list, t_node *curr_cmd)
 		free(cmd_path);
 		exit(EXIT_FAILURE);
 	}
-	printf("I am pid %d (parent: %d)\n", getpid(), getppid());
-
+	printf("I am pid %d (parent: %d)\n", getpid(), getppid()); // todo: delete
 	execve(cmd_path, args, env);
-	printf("I am pid %d (after execve parent: %d)\n", getpid(), getppid());
-
 	perror("execve failed");
-	//free_args(args, i);
 	free(cmd_path);
 	exit(EXIT_FAILURE);
 }
@@ -75,6 +71,7 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 	pid_t	pid;
 	int		status;
 
+	(void)is_pipe;
 	if (!is_pipe)
 	{
 		pid = fork();

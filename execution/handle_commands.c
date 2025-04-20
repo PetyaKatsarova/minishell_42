@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:38:02 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/20 21:19:38 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/21 00:31:49 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,19 @@ static void execute_child(t_env_list *env, t_tree *tree, t_node *cmd, int prev_f
 	setup_child_io(prev_fd, pipe_fd, has_next);
 	if (!is_builtin(cmd))
 		exec_on_path(env, cmd, 1);
+	else
+	{
+		env->last_exit_status = execute_builtin(cmd, tree, env);
+		exit(env->last_exit_status);
+	}
 	exit(1); // if execve fails
 }
-
+/**
+ * Creates child processes for each command in the pipeline.
+ * Each child process executes the command and sets up the necessary pipes.
+ * The parent process waits for all child processes to finish.
+ * Returns the exit status of the last command in the pipeline.
+ */
 static int execute_pipeline(t_env_list *env, t_tree *tree, t_node *cmd_node)
 {
 	int pipe_fd[2];
@@ -101,17 +111,15 @@ static int execute_pipeline(t_env_list *env, t_tree *tree, t_node *cmd_node)
 
 	while (cmd)
 	{
+		// whats this for??
 		bool has_next = cmd->consumer != NULL;
 		if (has_next && pipe(pipe_fd) == -1)
 			perror("pipe");
-
 		pid = fork();
 		if (pid == -1)
 			perror("fork");
-
 		if (pid == 0)
 			execute_child(env, tree, cmd, prev_fd, pipe_fd, has_next);
-
 		if (prev_fd != -1)
 			close(prev_fd);
 		if (has_next)
@@ -126,21 +134,12 @@ static int execute_pipeline(t_env_list *env, t_tree *tree, t_node *cmd_node)
 	return (env->last_exit_status);
 }
 
-// testing: todo: remove
-// t_node *get_last_cmd(t_node *cmd_node)
-// {
-// 	t_node *cpy = cmd_node;
-// 	while (cpy && go_next_cmd(cpy))
-// 		cpy = go_next_cmd(cpy);
-// 	return cpy; // This is the last node before NULL
-// }
-
-
 int handle_commands(t_env_list *env, t_tree *tree, t_node *cmd_node)
 {
 	if (!cmd_node)
 		return (0);
-	// if builtin and not last child: execute builtin, otherwise, continue
+	// if builtin and not last child or line doesnt have pipes: execute builtin, otherwise execute pipeline
+	// this should be in execute pipeline
 	if (is_builtin(cmd_node) && (go_next_cmd(cmd_node) == NULL ||get_num_pipes(tree) == 0))
 	{
 		env->last_exit_status = execute_builtin(cmd_node, tree, env);
