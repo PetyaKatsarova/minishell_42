@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:38:02 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/18 21:44:33 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/20 10:39:57 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,10 @@ int	handle_commands(t_env_list *env_struct, t_tree *tree, t_node *cmd_node)
 		exit_status = do_unset(cmd_node->argv, env_struct);
 	else
 	{
-
-		if (exec_on_path(env_struct, cmd_node, 0) == EXIT_FAILURE)
-		{
-			env_struct->last_exit_status = 127;
-			//free_tree(tree); // TODO: free tree
-			return (127);
-		}
+		exit_status = exec_on_path(env_struct, cmd_node, 0);
+		env_struct->last_exit_status = exit_status;
+		return (exit_status);
 	}
 	env_struct->last_exit_status = exit_status;
-	return (exit_status); // 0
+	return (exit_status);
 }

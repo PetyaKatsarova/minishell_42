@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:20:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/18 19:04:45 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/20 09:58:35 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,9 @@ static char	*get_full_path(char **paths, char *command_no_flag, int *found)
 	}
 	return (NULL);
 }
-
+/**
+ * Returns full path of the command or NULL if not found.
+ */
 char	*get_command_path(t_env_list *env, char *cmd_no_flag)
 {
 	char	**paths;

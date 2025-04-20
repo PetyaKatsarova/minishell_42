@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/18 21:58:59 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/20 10:29:35 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	msg(char *name, char *msg)
 }
 
 /**
- * Executes the given command from the given path, handling errors appropriately.
+ * Runs the binary on the given path: /bin/ls -l, uses execve(overwrites curr process)
  */
 static void	exec_command(t_env_list *env_list, t_node *curr_cmd)
 {
@@ -33,20 +33,15 @@ static void	exec_command(t_env_list *env_list, t_node *curr_cmd)
 	char	**env;
 	//int		i;
 
-	if (!curr_cmd->argv[0] || curr_cmd->argv[0][0] == '\0') // why?? todo
-	{
-		// env_list->last_exit_status = 127;
-		ft_putendl_fd("pipex: permission denied:", 2);
-		exit(127);
-	}
+	if (!curr_cmd->argv[0] || curr_cmd->argv[0][0] == '\0')
+		return ; // when press enter, no command to execute
 	cmd_path = get_command_path(env_list, curr_cmd->argv[0]);
 	if (!cmd_path)
 	{
-		printf("bla bla bla ********** %d\n", env_list->last_exit_status);
+		env_list->last_exit_status = 127;
+		printf("exec_command: %d\n", env_list->last_exit_status);
 		msg(curr_cmd->argv[0], ": command not found ");
-		// free_t_env(env_list);
-		//free_arr(curr_cmd->argv); todo: what needs to be freed?? JAN
-		// exit(EXIT_CMD_NOT_FOUND);
+		// what we need to free here? todo...
 		exit(127);
 	}
 	args = curr_cmd->argv;
@@ -73,7 +68,9 @@ static void	exec_command(t_env_list *env_list, t_node *curr_cmd)
 	free(cmd_path);
 	exit(EXIT_FAILURE);
 }
-
+/**
+ * If in pipe, execve() directly with exec_command, if not: fork and execve(exec_command)
+ */
 int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 {
 	pid_t	pid;
@@ -85,30 +82,21 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 		if (pid == -1)
 		{
 			perror("minishell: fork failed");
+			env_list->last_exit_status = 1;
 			return (EXIT_FAILURE);
 		}
 		if (pid == 0)
-		{
 			exec_command(env_list, curr_cmd);
-		}
 		waitpid(pid, &status, 0); 
-		// if (WIFEXITED(status))
-		// 	return (WEXITSTATUS(status));
-		// else if (WIFSIGNALED(status))
-		// 	return (128 + WTERMSIG(status));
-
+		printf("exit st, execve: %d\n", status); // testing: remove later
 		if (WIFEXITED(status))
 			env_list->last_exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 			env_list->last_exit_status = 128 + WTERMSIG(status);
-
 		return (env_list->last_exit_status);
 	}
 	else
-	{
 		exec_command(env_list, curr_cmd);
-		// check what needs to be freed here... if execve fails...
-	}
 	return (EXIT_FAILURE);
 }
 
