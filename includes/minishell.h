@@ -18,13 +18,14 @@
 //# include <readline/readline.h>
 //# include <readline/history.h>
 # include <stdlib.h> // exit
-# include <unistd.h> // fork, execve, access, read, write, close
+# include <unistd.h> // fork, execve, access, read, write, close, dup2, pipe
 # include <limits.h> // is it allowed? <limits.h> defines system limits like max values for integers, file paths, and system resources. for PATH_MAX: NOT IN ALL OS
 # include <stdio.h> // perror
 # include <string.h> //?? what for
 # include <errno.h> // is it allowed?
 # include <stdint.h> // for uint8_t
 # include <sys/wait.h> /// waitpid, WIFEXITED, WEXITSTATUS
+#include <fcntl.h>     // for open(), O_RDONLY, O_WRONLY, etc.
 //# include <stdbool.h>
 # include "parsing.h"
 
@@ -43,7 +44,8 @@ typedef enum e_exit_status
     EXIT_CMD_NOT_EXECUTABLE = 126,
     EXIT_CMD_NOT_FOUND = 127,
     EXIT_INVALID_EXIT_ARG = 128,
-    EXIT_SIGNAL_BASE = 128 // kill -9 => 137 = 128+9
+    EXIT_SIGNAL_BASE = 128, // kill -9 => 137 = 128+9
+	EXIT_NO_EXECUTABLE = -1
 }   t_exit_status;
 
 typedef struct s_env {
@@ -94,7 +96,8 @@ int			too_many_args(char	**input_args);
 int			print_builtin_error(const char *cmd, const char *arg, const char *msg);
 
 // execution/handle_commands.c
-int 		handle_commands(t_env_list *env, t_tree *tree, t_node *cmd_node);
+//int 		handle_command(t_env_list *env, t_tree *tree, t_node *curr_cmd);
+int 		execute_builtin(t_node *cmd_node, t_tree *tree, t_env_list *env_struct);
 
 // execution/executables/*
 int			exec_on_path(t_env_list *env_list, t_node	*curr_cmd, int is_pipe);
@@ -103,5 +106,7 @@ void		free_dbl_ptr(char **ptr);
 void		free_args(char **argv, int count);
 int			is_valid_read_or_exec_file(char *file_name, char mode);
 
+// execution/exec_pipes.c
+int         exec_pipeline(t_env_list *env, t_tree *tree);
 
 #endif

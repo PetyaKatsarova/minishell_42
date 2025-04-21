@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   main_original.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/21 17:23:19 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/21 16:34:06 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,41 +17,39 @@ static int handle_readline(t_env_list *env_struct_lst)
 {
 	while (1)
 	{
-		char *input;
-		t_token	*token_list = NULL;
+		char	*input;
+		t_token	*token_list;
 		t_tree	*tree;
+		(void) env_struct_lst;
 		t_node	*cmd_node;
-		int		exit_status;
-
+	
 		input = readline("\033[1;34mminihell$\033[0m ");
-		exit_status = -1;
-		if (!input)
+		if (!input) // TODO ??? 
 		{
-			write(STDERR_FILENO, "exit\n", 5);
-			clear_history();
+			printf("exit with no input collected.\n");
+			clear_history(); // for mem leaks
 			free_t_env(env_struct_lst);
-			return (EXIT_FAILURE);
+			return (EXIT_FAILURE); // NEED TO CLEAR ALL MALLOCS 
 		}
-		if (*input)
+		if (*input) // DO I NEED * and why
 			add_history(input);
+		token_list = NULL;
 		if (prelim_syn_check(input) < 0)
 		{
 			free(input);
 			continue;
 		}
 		lexer(&token_list, input);
+		//printlist(token_list);
 		tree = treenew(token_list);
 		parser(tree);
-		cmd_node = go_first_cmd(tree);
-		if (get_num_pipes(tree) > 0)
-			exec_pipeline(env_struct_lst, tree);
-		else if (cmd_node) // handles single commands
+		cmd_node = go_first_cmd(tree);		
+		while (cmd_node != NULL)
 		{
-			// todo: to add redirects and heredoc...
-			exit_status = execute_builtin(cmd_node, tree, env_struct_lst);
-			if (exit_status == -1)
-				exec_on_path(env_struct_lst, cmd_node, 0);
+			env_struct_lst->last_exit_status = handle_command( env_struct_lst, tree, cmd_node);
+			cmd_node = go_next_cmd(cmd_node);
 		}
+		// print_cmd_nodes(tree);
 		free_tree(tree);
 		free(input);
 	}
@@ -60,7 +58,23 @@ static int handle_readline(t_env_list *env_struct_lst)
 
 // cc -Wall -Wextra -Werror main.c -lreadline && ./a.out
 // valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes ./minishell
+
 // valgrind -s --leak-check=full --track-origins=yes ./minishell
+// ls -l | wc -l
+// ls -l | grep main
+// bla | ls -l | grep main
+// -rwxrwxrwx 1 petya petya   2448 Apr 20 18:27 main.c
+// -rwxrwxrwx 1 petya petya  12856 Apr 20 18:26 main.o
+// Command 'bla' not found, did you mean:
+
+// pwd | ls -l | cd
+// exit | echo bla | pwd
+// pwd | pwd | pwd
+// echo bla | pwd | exit
+// bash | bash | bash : shlvl 1? i am in wsl, check on linux
+// exit | echo bla | pwd
+// echo bla | pwd | wc -w
+// 3
 
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
@@ -76,10 +90,3 @@ int main(int argc, char **argv, char **envp) {
 	clear_history();
 	return (0);
 }
-
-/**
- * -- correct:
- * minihell$ ls | echo bla | bla | pwd
-/home/pekatsar/Desktop/minishell_42
-minihell: : command not found bla
- */

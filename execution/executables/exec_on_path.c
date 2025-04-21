@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/21 00:28:12 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/21 17:41:51 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,19 @@
 /**
  * Displays error message at fd 2(std err) and exits with code 127
  */
-static void	msg(char *name, char *msg)
+static int	msg(char *name, char *msg)
 {
-	ft_putstr_fd("\033[1;31mminihell: \033[0m", 2); // red for stderr
-	ft_putstr_fd(msg, 2);
-	ft_putendl_fd(name, 2);
-	exit(EXIT_CMD_NOT_FOUND);
+	(void) msg;
+	ft_putstr_fd("Command '", 2);
+	ft_putstr_fd(name, 2);
+	ft_putstr_fd("' not found\n", 2);
+	return (EXIT_CMD_NOT_FOUND);
 }
 
 /**
  * Runs the binary on the given path: /bin/ls -l, uses execve(overwrites curr process)
  */
-static void	exec_command(t_env_list *env_list, t_node *curr_cmd)
+static int	exec_command(t_env_list *env_list, t_node *curr_cmd)
 {
 	char	*cmd_path;
 	char	**args;
@@ -34,14 +35,14 @@ static void	exec_command(t_env_list *env_list, t_node *curr_cmd)
 	//int		i;
 
 	if (!curr_cmd->argv[0] || curr_cmd->argv[0][0] == '\0')
-		return ; // when press enter, no command to execute
+		return (0); // when press enter, no command to execute
 	cmd_path = get_command_path(env_list, curr_cmd->argv[0]);
 	if (!cmd_path)
 	{
 		env_list->last_exit_status = 127; // do we need this? is it a child process?
-		msg(curr_cmd->argv[0], ": command not found ");
+		msg(curr_cmd->argv[0], " command not found");
 		// what we need to free here? todo...
-		exit(127);
+		return (127);
 	}
 	args = curr_cmd->argv;
 	if (!args)
@@ -55,13 +56,13 @@ static void	exec_command(t_env_list *env_list, t_node *curr_cmd)
 		perror("Failed to convert environment variables.");
 		//free_args(args, i);
 		free(cmd_path);
-		exit(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
 	printf("I am pid %d (parent: %d)\n", getpid(), getppid()); // todo: delete
 	execve(cmd_path, args, env);
 	perror("execve failed");
 	free(cmd_path);
-	exit(EXIT_FAILURE);
+	return (EXIT_FAILURE);
 }
 /**
  * If in pipe, execve() directly with exec_command, if not: fork and execve(exec_command)
@@ -93,6 +94,7 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 	}
 	else
 		exec_command(env_list, curr_cmd);
-	return (EXIT_FAILURE);
+	
+	return (127);
 }
 

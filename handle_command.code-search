@@ -1,0 +1,35 @@
+# Query: handle_command
+# Flags: RegExp
+# ContextLines: 1
+
+7 results - 5 files
+
+main.c:
+  39  		//printf("cmd_node: %s\n", cmd_node->argv[0]);
+  40: 			env_struct_lst->last_exit_status = handle_command( env_struct_lst, tree, cmd_node, 1);
+  41  			// printf("last exit status: %d\n", env_struct_lst->last_exit_status);
+
+Makefile:
+  31  			execution/utils.c \
+  32: 			execution/handle_commands.c \
+  33  			execution/executables/exec_on_path.c \
+
+execution/exec_pipes.c:
+  41   */
+  42: // NB !! on every pipe call handle_commands
+  43  
+
+execution/handle_commands.c:
+   3  /*                                                        ::::::::            */
+   4: /*   handle_commands.c                                  :+:    :+:            */
+   5  /*                                                     +:+                    */
+
+  44  
+  45:  int	handle_command(t_env_list *env_struct, t_tree *tree, t_node *cmd_node)
+  46   {
+
+includes/minishell.h:
+  96  
+  97: // execution/handle_commands.c
+  98: int 		handle_command(t_env_list *env, t_tree *tree, t_node *cmd_node);
+  99  
