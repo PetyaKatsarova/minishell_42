@@ -18,6 +18,7 @@ SRCS = 	lexer/lexer.c \
 		parser/parser.c \
 		parser/consume_token_list.c \
 		parser/free_tree.c \
+		parser/syn_check.c \
 		test_lexer_parser/test.c \
 		test_lexer_parser/print_functions.c
 

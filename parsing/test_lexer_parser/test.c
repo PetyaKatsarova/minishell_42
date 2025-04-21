@@ -23,7 +23,10 @@ int main(void)
 
 	tree = treenew(token_list);
 
-	parser(tree);
+	if (parser(tree) < 0)
+	{
+		return (0);
+	}
 
 	print_cmd_nodes(tree);
 
