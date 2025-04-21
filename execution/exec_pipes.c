@@ -22,17 +22,22 @@ static int wait_all(pid_t *pids, int count)
 	return WEXITSTATUS(status);
 }
 
-static void handle_child(int i, int n, int **pipes, t_node *cmd,
+static void handle_child(int i, int pipe_count, int **pipes, t_node *cmd,
 	t_env_list *env, t_tree *tree)
 {
-	if (!cmd) {
+	if (!cmd)
 		exit(127);
-	}
-	if (i > 0)
+	if (i > 0 && i - 1 < pipe_count && pipes[i - 1])
+	{
 		dup2(pipes[i - 1][0], STDIN_FILENO);
-	if (i < n - 1)
+		close(pipes[i-1][0]);
+	}
+	if (i < pipe_count && pipes[i])
+	{
 		dup2(pipes[i][1], STDOUT_FILENO);
-	//for (int j = 0; j < n - 1; j++) {
+		close(pipes[i][1]);
+	}
+	//for (int j = 0; j < pipe_count; j++) {
 	//	if (pipes[j]) {
 	//		close(pipes[j][0]);
 	//		close(pipes[j][1]);
@@ -46,22 +51,37 @@ static void handle_child(int i, int n, int **pipes, t_node *cmd,
 
 int exec_pipeline(t_env_list *env, t_tree *tree)
 {
-	int n = get_num_pipes(tree) + 1;
-	int **pipes = malloc(sizeof(int *) * (n - 1));
-	pid_t *pids = malloc(sizeof(pid_t) * n);
+	int pipe_count = get_num_pipes(tree);
+	int **pipes = malloc(sizeof(int *) * pipe_count);
+	pid_t *pids = malloc(sizeof(pid_t) * (pipe_count + 1));
 	t_node *cmd = go_first_cmd(tree);
-	for (int i = 0; i < n && cmd; i++) {
-		if (i < n - 1) {
+	int i = 0;
+
+	if (!pipes || !pids)
+		return (EXIT_FAILURE);
+
+	while (cmd) {
+		if (i < pipe_count) {
 			pipes[i] = malloc(sizeof(int) * 2);
-			pipe(pipes[i]);
+			if (!pipes[i] || pipe(pipes[i]) < 0) {
+				perror("pipe");
+				exit(EXIT_FAILURE);
+			}
 		}
 		pids[i] = fork();
 		if (pids[i] == 0)
-			handle_child(i, n, pipes, cmd, env, tree);
+			handle_child(i, pipe_count, pipes, cmd, env, tree);
+		if (pids[i] > 0) {
+			if (i > 0 && pipes[i - 1])
+				close(pipes[i - 1][0]);
+			if (i < pipe_count && pipes[i])
+				close(pipes[i][1]);
+		}
 		cmd = go_next_cmd(cmd);
+		i++;
 	}
-	close_all_pipes(pipes, n - 1);
-	int result = wait_all(pids, n);
+	close_all_pipes(pipes, pipe_count);
+	int result = wait_all(pids, i);
 	free(pids);
 	return result;
 }
