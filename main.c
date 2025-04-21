@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/21 17:23:19 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/21 20:45:04 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,9 @@ static int handle_readline(t_env_list *env_struct_lst)
 // valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes ./minishell
 // valgrind -s --leak-check=full --track-origins=yes ./minishell
 
+// dont work: cat
+// 
+
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
 	(void) argv;
@@ -76,10 +79,3 @@ int main(int argc, char **argv, char **envp) {
 	clear_history();
 	return (0);
 }
-
-/**
- * -- correct:
- * minihell$ ls | echo bla | bla | pwd
-/home/pekatsar/Desktop/minishell_42
-minihell: : command not found bla
- */

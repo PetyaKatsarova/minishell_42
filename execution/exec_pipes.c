@@ -1,5 +1,3 @@
-// src/exec/exec_pipes.c
-
 #include "../includes/minishell.h"
 
 static void close_all_pipes(int **pipes, int count)
@@ -37,12 +35,6 @@ static void handle_child(int i, int pipe_count, int **pipes, t_node *cmd,
 		dup2(pipes[i][1], STDOUT_FILENO);
 		close(pipes[i][1]);
 	}
-	//for (int j = 0; j < pipe_count; j++) {
-	//	if (pipes[j]) {
-	//		close(pipes[j][0]);
-	//		close(pipes[j][1]);
-	//	}
-	//}
 	int status = execute_builtin(cmd, tree, env);
 	if (status != -1)
 		exit(status);
