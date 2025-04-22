@@ -12,6 +12,7 @@ int main(void)
 
 	if (prelim_syn_check(input) < 0)
 	{
+		free(input);
 		return (0);
 	}
 
@@ -25,6 +26,8 @@ int main(void)
 
 	if (parser(tree) < 0)
 	{
+		free_tree(tree);
+		free(input);
 		return (0);
 	}
 

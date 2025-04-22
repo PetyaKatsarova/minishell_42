@@ -7,8 +7,15 @@ static int	count_tokens(t_token *token)
 	count = 0;
 	while (token != NULL && token->token_type != TOKEN_PIPE)
 	{
-		token = token->next;
-		count++;
+		if (is_redir(token->token_type))
+		{
+			token = token->next->next;
+		}
+		else
+		{
+			token = token->next;
+			count++;
+		}
 	}
 	return (count);
 }
@@ -35,14 +42,20 @@ static void	parse_tokens(t_token **token, t_node **node)
 	(*node)->argv = make_argv(*token);
 	while (*token != NULL && (*token)->token_type != TOKEN_PIPE)
 	{
-		//if ((*token)->token_type)
-		if ((*node)->token_type == TOKEN_NULL)
+		if (is_redir((*token)->token_type) == true)
 		{
-			(*node)->token_type = (*token)->token_type;
+			*token = (*token)->next->next;
 		}
-		*((*node)->argv + i) = (*token)->lexeme;
-		*token = (*token)->next;
-		i++;
+		else
+		{
+			if ((*node)->token_type == TOKEN_NULL)
+			{
+				(*node)->token_type = (*token)->token_type;
+			}
+			*((*node)->argv + i) = (*token)->lexeme;
+			*token = (*token)->next;
+			i++;
+		}
 	}
 	*((*node)->argv + i) = NULL;
 }
