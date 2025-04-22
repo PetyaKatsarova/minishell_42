@@ -46,11 +46,11 @@ void	print_argv(t_node *node)
 	int 	i = 0;
 	bool	first = true;
 	printf("argv: ");
-	while (*(node->argv + i) != NULL)
+	while (node->argv[i] != NULL)
 	{
 		if (!first)
 			printf(", ");
-		printf("%s", *(node->argv + i));
+		printf("%s", node->argv[i]);
 		first = false;
 		i++;
 	}

@@ -48,8 +48,6 @@ SRCS	 := execution/built_ins/pwd.c \
 			parsing/parser/consume_token_list.c \
 			parsing/test_lexer_parser/print_functions.c \
 			parsing/parser/free_tree.c \
-			parsing/parser/syn_check.c \
-			parsing/parser/parser_utils.c
 			
 OBJS	 := $(SRCS:.c=.o)
 

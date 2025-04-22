@@ -23,7 +23,7 @@ static int	check_if_only_whitespace(char *input)
 	return (0);
 }
 
-static int check_pipes(e_state *state, bool *pipe_flag, char input)
+static int check_outside(e_state *state, bool *pipe_flag, char input)
 {
 	if (input == '|')
 	{
@@ -41,7 +41,7 @@ static int check_pipes(e_state *state, bool *pipe_flag, char input)
 	return (0);
 }
 
-static int	check_quotes(char *input)
+static int	scan_input(char *input)
 {
 	e_state	state;
 	bool	pipe_flag;
@@ -52,7 +52,7 @@ static int	check_quotes(char *input)
 	{
 		if (state == OUTSIDE)
 		{
-			if (check_pipes(&state, &pipe_flag, *input) < 0)
+			if (check_outside(&state, &pipe_flag, *input) < 0)
 				return (-3);
 		}
 		else if (state == INSIDE_SINGLES && *input == '\'')
@@ -76,7 +76,7 @@ int	prelim_syn_check(char *input)
 		return (-1);
 	if (check_if_only_whitespace(input) < 0)
 		return (-2);
-	res = check_quotes(input);
+	res = scan_input(input);
 	if (res == -3)
 	{
 		write(1, "syntax error: misplaced '|'\n", 28);

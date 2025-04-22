@@ -47,6 +47,7 @@ static int	countpipes(t_token *current)
 		}
 		current = current->next;
 	}
+	//printf("countpipes(): num_pipes: %d\n", num_pipes);
 	return (num_pipes);
 }
 
@@ -70,6 +71,7 @@ void	make_pipe_nodes(t_tree *tree)
 			current = current->producer;
 		}
 		i++;
+		//("made new pipe: %d\n", i);
 	}
 }
 
@@ -78,6 +80,7 @@ void	make_cmd_nodes(t_tree *tree)
 	t_node	*current;
 
 	current = go_first_pipe(tree);
+	//printf("make_cmd_nodes: went to first pipe\n");
 	if (current == NULL)
 	{
 		tree->root = nodenew(TOKEN_NULL, NULL);
