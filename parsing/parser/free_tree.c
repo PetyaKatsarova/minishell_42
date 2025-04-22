@@ -47,7 +47,7 @@ static void	free_cmds(t_tree *tree)
 }
 
 /**
- *  @brief Frees comds, pipes, tokenlist, tree if existing
+ *  Frees cmds, pipes, tokenlist, tree if existing
  */
 void	free_tree(t_tree *tree)
 {
