@@ -12,45 +12,59 @@
 
 #include "includes/minishell.h"
 
+static int	lex_and_parse(char *input, t_tree **tree)
+{
+	t_token	*token_list;
+	
+	if (prelim_syn_check(input) < 0)
+	{
+		// TODO: UPDATE LAST_EXIT_STATUS in env_struct_lst
+		free(input);
+		return (-1);
+	}
+	token_list = NULL;
+	lexer(&token_list, input);
+	*tree = treenew(token_list);
+	if (parser(*tree) < 0)
+	{
+		free_tree(*tree);
+		free(input);
+		return (-1);
+	}
+	return (0);
+}
 
 static int handle_readline(t_env_list *env_struct_lst)
 {
 	while (1)
 	{
-		char *input;
-		t_token	*token_list = NULL;
+		char	*input;
+		//t_token	*token_list;
 		t_tree	*tree;
 		t_node	*cmd_node;
-		int		exit_status;
-
+	
 		input = readline("\033[1;34mminihell$\033[0m ");
-		exit_status = -1;
-		if (!input)
+		if (!input) // TODO ??? 
 		{
-			write(STDERR_FILENO, "exit\n", 5);
-			clear_history();
+			printf("exit with no input collected.\n");
+			clear_history(); // for mem leaks
 			free_t_env(env_struct_lst);
-			return (EXIT_FAILURE);
+			// DO I NEED TO FREE TREE? YES.. TODO
+			return (EXIT_FAILURE); // NEED TO CLEAR ALL MALLOCS 
 		}
-		if (*input)
+		if (*input) // DO I NEED * and why
 			add_history(input);
-		if (prelim_syn_check(input) < 0)
+
+		if (lex_and_parse(input, &tree) < 0)
 		{
-			free(input);
 			continue;
 		}
-		lexer(&token_list, input);
-		tree = treenew(token_list);
-		parser(tree);
-		cmd_node = go_first_cmd(tree);
-		if (get_num_pipes(tree) > 0)
-			exec_pipeline(env_struct_lst, tree);
-		else if (cmd_node) // handles single commands
+		cmd_node = go_first_cmd(tree);		
+		while (cmd_node != NULL)
 		{
-			// todo: to add redirects and heredoc...
-			exit_status = execute_builtin(cmd_node, tree, env_struct_lst);
-			if (exit_status == -1)
-				exec_on_path(env_struct_lst, cmd_node, 0);
+			env_struct_lst->last_exit_status = handle_commands( env_struct_lst, tree, cmd_node);
+			cmd_node = go_next_cmd(cmd_node);
+			
 		}
 		free_tree(tree);
 		free(input);
@@ -74,7 +88,7 @@ int main(int argc, char **argv, char **envp) {
         perror("Failed to initialize environment");
         return (EXIT_FAILURE);
     }
-	handle_readline(env_struct_lst);
+	handle_readline(env_struct_lst); // question by jan: handle_readline returns an int, but we are not using the int here. Should we change handle_readline to void?
 	free_t_env(env_struct_lst); //this is done in exit.c: in case i have invalid exec path: testing
 	clear_history();
 	return (0);
