@@ -1,3 +1,25 @@
+cmd1 | cmd2 | cmd3 means
+stdout(cmd1) → stdin(cmd2) and stdout(cmd2) → stdin(cmd3)
+Example for 3 commands:
+pipe[0] connects cmd1 → cmd2
+pipe[1] connects cmd2 → cmd3
+So you need N - 1 pipes for N commands.
+ fork() → child runs handle_child(...)
+In child:
+if (i > 0 && pipes[i - 1])  // read from previous pipe
+    dup2(pipes[i - 1][0], STDIN_FILENO);
+if (i < pipe_count && pipes[i])  // write to current pipe
+    dup2(pipes[i][1], STDOUT_FILENO);
+dup2(...) replaces stdin or stdout of the process with the pipe end
+
+After redirection, the child closes the original pipe ends
+Child only keeps:
+stdin: from previous pipe’s read end
+stdout: to current pipe’s write end
+Everything else gets closed
+
+
+=============================================================================
 In a pipeline, every command runs in a subshell — including built-ins.
 Built-ins are still built-in,
 But when used in a pipe, they are run in a child shell (a subprocess),
