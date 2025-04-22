@@ -39,7 +39,7 @@ static void	parse_tokens(t_token **token, t_node **node)
 		{
 			(*node)->token_type = (*token)->token_type;
 		}
-		(*node)->argv[i] = (*token)->lexeme;
+		*((*node)->argv + i) = (*token)->lexeme;
 		*token = (*token)->next;
 		i++;
 	}
