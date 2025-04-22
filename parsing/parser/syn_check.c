@@ -1,15 +1,5 @@
 #include "../../includes/parsing.h"
 
-static bool	is_redir(e_token token_type)
-{
-	if (token_type >= TOKEN_INPUT_REDIRECT
-		&& token_type <= TOKEN_APPEND_OUTPUT_REDIRECT)
-		{
-			return (true);
-		}
-	return (false);
-}
-
 int	syn_check(t_tree *tree)
 {
 	t_token	*current;

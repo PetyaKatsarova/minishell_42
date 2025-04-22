@@ -94,6 +94,7 @@ void		make_pipe_nodes(t_tree *tree);
 void		make_cmd_nodes(t_tree *tree);
 void		free_tree(t_tree *tree);
 int			syn_check(t_tree *tree);
+bool		is_redir(e_token token_type);
 
 // test functions
 void		printlist(t_token *token_list);

@@ -35,6 +35,7 @@ static void	parse_tokens(t_token **token, t_node **node)
 	(*node)->argv = make_argv(*token);
 	while (*token != NULL && (*token)->token_type != TOKEN_PIPE)
 	{
+		//if ((*token)->token_type)
 		if ((*node)->token_type == TOKEN_NULL)
 		{
 			(*node)->token_type = (*token)->token_type;
@@ -43,7 +44,7 @@ static void	parse_tokens(t_token **token, t_node **node)
 		*token = (*token)->next;
 		i++;
 	}
-	(*node)->argv[i] = NULL;
+	*((*node)->argv + i) = NULL;
 }
 
 void	consume_token_list(t_tree *tree)
