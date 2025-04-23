@@ -11,6 +11,11 @@
 
 # include <assert.h> // remove for eval
 
+// forward declarations of structs from minishell.h
+
+struct s_env_list;
+typedef struct s_env_list t_env_list;
+
 typedef enum	e_state {
 	OUTSIDE,
 	INSIDE_SINGLES,
@@ -83,10 +88,10 @@ bool		is_special_delim(char c);
 // parser functions
 t_node		*nodenew(e_token token_type, t_node *parent);
 t_tree		*treenew(t_token *token_list);
-int			parser(t_tree *tree);
+int			parser(t_tree *tree, t_env_list *env_list);
 t_node		*go_first_pipe(t_tree *tree);
 t_node		*go_next_pipe(t_node *current);
-void		consume_token_list(t_tree *tree);
+void		consume_token_list(t_tree *tree, t_env_list *env_list);
 t_node		*go_first_cmd(t_tree *tree);
 t_node		*go_next_cmd(t_node *current);
 int			get_num_pipes(t_tree *tree);
@@ -95,6 +100,9 @@ void		make_cmd_nodes(t_tree *tree);
 void		free_tree(t_tree *tree);
 int			syn_check(t_tree *tree);
 bool		is_redir(e_token token_type);
+char		*parse_lexeme(char *lexeme, t_env_list *env_list);
+int			get_len_var(char **lexeme);
+int			get_len_var_val(char *var, t_env_list *env_list);
 
 // test functions
 void		printlist(t_token *token_list);

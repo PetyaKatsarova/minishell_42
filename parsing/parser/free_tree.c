@@ -18,18 +18,18 @@ static void	free_cmds(t_tree *tree)
 {
 	t_node	*node;
 	t_node	*next_cmd;
-	//int		i;
+	int		i;
 
 	node = go_first_cmd(tree);
 	while (node != NULL)
 	{
-		// i = 0;
-		// while (node->argv[i] != NULL)
-		// {
-		// 	free(node->argv[i]);
-		// 	node->argv[i] = NULL;
-		// 	i++;
-		// }
+		i = 0;
+		while (node->argv[i] != NULL)
+		{
+			free(node->argv[i]);
+			node->argv[i] = NULL;
+			i++;
+		}
 		free(node->argv);
 		next_cmd = go_next_cmd(node);
 		if (node->parent != NULL)

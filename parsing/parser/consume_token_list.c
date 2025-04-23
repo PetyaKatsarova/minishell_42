@@ -1,4 +1,5 @@
 #include "../../includes/parsing.h"
+#include "../../includes/minishell.h"
 
 static int	count_tokens(t_token *token)
 {
@@ -20,7 +21,7 @@ static int	count_tokens(t_token *token)
 	return (count);
 }
 
-static char	**make_argv(t_token *token)
+static char	**make_argv(t_token *token, t_tree *tree)
 {
 	int		count;
 	char	**argv;
@@ -29,17 +30,18 @@ static char	**make_argv(t_token *token)
 	argv = malloc((count + 1) * sizeof(char *));
 	if (argv == NULL)
 	{
+		free(tree); // call free_all instead
 		return (NULL); // add error handling: free all
 	}
 	return (argv);
 }
 
-static void	parse_tokens(t_token **token, t_node **node)
+static void	parse_tokens(t_token **token, t_node **node, t_tree *tree, t_env_list *env_list)
 {
 	int	i;
 
 	i = 0;
-	(*node)->argv = make_argv(*token);
+	(*node)->argv = make_argv(*token, tree);
 	while (*token != NULL && (*token)->token_type != TOKEN_PIPE)
 	{
 		if (is_redir((*token)->token_type) == true)
@@ -52,7 +54,7 @@ static void	parse_tokens(t_token **token, t_node **node)
 			{
 				(*node)->token_type = (*token)->token_type;
 			}
-			*((*node)->argv + i) = (*token)->lexeme;
+			*((*node)->argv + i) = parse_lexeme((*token)->lexeme, env_list);
 			*token = (*token)->next;
 			i++;
 		}
@@ -60,7 +62,7 @@ static void	parse_tokens(t_token **token, t_node **node)
 	*((*node)->argv + i) = NULL;
 }
 
-void	consume_token_list(t_tree *tree)
+void	consume_token_list(t_tree *tree, t_env_list *env_list)
 {
 	t_token	*token;
 	t_node	*node;
@@ -76,7 +78,7 @@ void	consume_token_list(t_tree *tree)
 		}
 		else
 		{
-			parse_tokens(&token, &node);
+			parse_tokens(&token, &node, tree, env_list);
 		}
 	}
 }

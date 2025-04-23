@@ -20,6 +20,8 @@ SRCS = 	lexer/lexer.c \
 		parser/free_tree.c \
 		parser/syn_check.c \
 		parser/parser_utils.c \
+		parser/parse_lexeme.c \
+		parser/var_expansion.c \
 		test_lexer_parser/test.c \
 		test_lexer_parser/print_functions.c
 
