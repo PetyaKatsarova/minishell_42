@@ -46,7 +46,7 @@ static void	parse_dq(char **cpy, char **lexeme, t_env_list *env_list)
 	(*lexeme)++;
 }
 
-static char	*populate_str(char *str, char *lexeme, t_env_list *env_list)
+static char	*populate_str(char *str, char *lexeme, t_env_list *env_list, t_tree *tree)
 {
 	char	*cpy;
 	
@@ -63,7 +63,10 @@ static char	*populate_str(char *str, char *lexeme, t_env_list *env_list)
 		}
 		else if (*lexeme == '$')
 		{
-			expand_var(&cpy, &lexeme, env_list);
+			if (*(lexeme + 1) == '?')
+				expand_exit_status(&cpy, &lexeme, tree);
+			else
+				expand_var(&cpy, &lexeme, env_list);
 		}
 		else
 		{
@@ -76,12 +79,12 @@ static char	*populate_str(char *str, char *lexeme, t_env_list *env_list)
 	return (str);
 }
 
-char *parse_lexeme(char *lexeme, t_env_list *env_list)
+char *parse_lexeme(char *lexeme, t_env_list *env_list, t_tree *tree)
 {
 	int		len;
 	char	*str;
 
 	str = make_str(1024);
-	str = populate_str(str, lexeme, env_list);
+	str = populate_str(str, lexeme, env_list, tree);
 	return (str);
 }

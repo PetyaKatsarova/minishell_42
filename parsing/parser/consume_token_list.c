@@ -54,7 +54,7 @@ static void	parse_tokens(t_token **token, t_node **node, t_tree *tree, t_env_lis
 			{
 				(*node)->token_type = (*token)->token_type;
 			}
-			*((*node)->argv + i) = parse_lexeme((*token)->lexeme, env_list);
+			*((*node)->argv + i) = parse_lexeme((*token)->lexeme, env_list, tree);
 			*token = (*token)->next;
 			i++;
 		}

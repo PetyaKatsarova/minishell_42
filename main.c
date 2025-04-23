@@ -15,16 +15,15 @@
 
 static int handle_readline(t_env_list *env_struct_lst)
 {
+	char *input;
+	t_token	*token_list = NULL;
+	t_tree	*tree;
+	t_node	*cmd_node;
+	int		exit_status = -1;
+	
 	while (1)
 	{
-		char *input;
-		t_token	*token_list = NULL;
-		t_tree	*tree;
-		t_node	*cmd_node;
-		int		exit_status;
-
 		input = readline("\033[1;34mminihell$\033[0m ");
-		exit_status = -1;
 		if (!input)
 		{
 			write(STDERR_FILENO, "exit\n", 5);
@@ -40,7 +39,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 			continue;
 		}
 		lexer(&token_list, input);
-		tree = treenew(token_list);
+		tree = treenew(token_list, exit_status);
 		parser(tree, env_struct_lst);
 		cmd_node = go_first_cmd(tree);
 		if (get_num_pipes(tree) > 0)

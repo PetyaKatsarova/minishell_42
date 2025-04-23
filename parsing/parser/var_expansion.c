@@ -39,6 +39,23 @@ static void	extract_var(char *str, char *var)
 	*var = '\0';
 }
 
+void	expand_exit_status(char **cpy, char **lexeme, t_tree *tree)
+{
+	char	*exit_status;
+
+	exit_status = ft_itoa(tree->exit_status);
+	if (exit_status != NULL)
+	{
+		while (*exit_status)
+		{
+			**cpy = *exit_status;
+			(*cpy)++;
+			exit_status++;
+		}
+	}
+	(*lexeme) += 2;
+}
+
 void	expand_var(char **cpy, char **lexeme, t_env_list *env_list)
 {
 	char	*var;

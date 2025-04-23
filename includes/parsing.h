@@ -57,6 +57,7 @@ typedef struct	s_token {
 // nodes for syntax tree:
 
 typedef struct	s_tree {
+	int				exit_status;
 	int				num_pipes;
 	t_token			*token_list;
 	struct s_node	*root;
@@ -87,7 +88,7 @@ bool		is_special_delim(char c);
 
 // parser functions
 t_node		*nodenew(e_token token_type, t_node *parent);
-t_tree		*treenew(t_token *token_list);
+t_tree		*treenew(t_token *token_list, int exit_status);
 int			parser(t_tree *tree, t_env_list *env_list);
 t_node		*go_first_pipe(t_tree *tree);
 t_node		*go_next_pipe(t_node *current);
@@ -100,10 +101,9 @@ void		make_cmd_nodes(t_tree *tree);
 void		free_tree(t_tree *tree);
 int			syn_check(t_tree *tree);
 bool		is_redir(e_token token_type);
-char		*parse_lexeme(char *lexeme, t_env_list *env_list);
-//int			get_len_var(char *lexeme);
-//int			get_len_var_val(char **var, t_env_list *env_list);
+char		*parse_lexeme(char *lexeme, t_env_list *env_list, t_tree *tree);
 void		expand_var(char **cpy, char **lexeme, t_env_list *env_list);
+void		expand_exit_status(char **cpy, char **lexeme, t_tree *tree);
 
 // test functions
 void		printlist(t_token *token_list);
