@@ -1,7 +1,7 @@
 #include "../../includes/parsing.h"
 #include "../../includes/minishell.h"
 
-bool	is_valid_var_char(char c)
+static bool	is_valid_var_char(char c)
 {
 	if (c >= '0' && c <= '9')
 		return (true);
@@ -14,29 +14,53 @@ bool	is_valid_var_char(char c)
 	return (false);
 }
 
-int	get_len_var(char **lexeme)
+int	get_len_var(char *str)
 {
 	int	len;
 	len = 0;
-	(*lexeme)++;
-	while (is_valid_var_char(**lexeme) == true)
+	str++;
+	while (*str != '\0' && is_valid_var_char(*str) == true)
 	{
-		(*lexeme)++;
+		str++;
 		len++;
 	}
 	return (len);
 }
 
-int	get_len_var_val(char *var, t_env_list *env_list)
+static void	extract_var(char *str, char *var)
 {
-	char	*val;
-	int		len;
-
-	val = get_env_value(env_list, var);
-	len = 0;
-	while (*val)
+	str++;
+	while (is_valid_var_char(*str))
 	{
-		len++;
+		*var = *str;
+		var++;
+		str++;
 	}
-	return (len);
+	*var = '\0';
+}
+
+void	expand_var(char **cpy, char **lexeme, t_env_list *env_list)
+{
+	char	*var;
+	char	*var_val;
+
+	var = malloc((get_len_var(*lexeme) + 1) * sizeof(char));
+	// if (var == NULL)
+	// {
+	// 	free all
+	// }
+	extract_var(*lexeme, var);
+	var_val = get_env_value(env_list, var);
+	free(var);
+	while (*var_val)
+	{
+		**cpy = *var_val;
+		(*cpy)++;
+		var_val++;
+	}
+	(*lexeme)++;
+	while (is_valid_var_char(**lexeme))
+	{
+		(*lexeme)++;
+	}
 }
