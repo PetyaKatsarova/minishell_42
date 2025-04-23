@@ -58,6 +58,9 @@ int exec_pipeline(t_env_list *env, t_tree *tree)
 	if (!pipes || !pids)
 		return (EXIT_FAILURE);
 	while (cmd) {
+			// if last cmd after pipe: run it in the parent process
+		if (go_next_cmd(cmd) == NULL && cmd->token_type == TOKEN_EXIT)
+			execute_builtin(cmd, tree, env);	
 		if (i < pipe_count) {
 			pipes[i] = malloc(sizeof(int) * 2);
 			if (!pipes[i] || pipe(pipes[i]) < 0) {

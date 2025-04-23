@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/21 17:41:51 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/23 09:53:11 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ static int	exec_command(t_env_list *env_list, t_node *curr_cmd)
  */
 int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 {
-	pid_t	pid;
-	int		status;
+	pid_t	pid = -1;
+	int		status = -1;
 
 	(void)is_pipe;
 	if (!is_pipe)

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/21 20:45:04 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/23 09:49:20 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 		{
 			// todo: to add redirects and heredoc...
 			exit_status = execute_builtin(cmd_node, tree, env_struct_lst);
+			// todo: how to implement update of shlvl?
 			if (exit_status == -1)
 				exec_on_path(env_struct_lst, cmd_node, 0);
 		}
