@@ -4,14 +4,12 @@
 static char	*make_str(int len)
 {
 	char	*str;
-	int		i;
 
 	str = malloc((len + 1) * sizeof(char));
 	if (str == NULL)
 	{
 		return (NULL); // implement error check: free all
 	}
-	i = 0;
 	return (str);
 }
 
@@ -81,7 +79,6 @@ static char	*populate_str(char *str, char *lexeme, t_env_list *env_list, t_tree 
 
 char *parse_lexeme(char *lexeme, t_env_list *env_list, t_tree *tree)
 {
-	int		len;
 	char	*str;
 
 	str = make_str(1024);
