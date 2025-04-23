@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/23 10:25:26 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/23 21:12:05 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	exec_command(t_env_list *env_list, t_node *curr_cmd)
 		env_list->last_exit_status = 127; // do we need this? is it a child process?
 		msg(curr_cmd->argv[0], " command not found");
 		// what we need to free here? todo...
-		return (127);
+		exit (127);
 	}
 	args = curr_cmd->argv;
 	if (!args)
@@ -62,7 +62,7 @@ static int	exec_command(t_env_list *env_list, t_node *curr_cmd)
 	execve(cmd_path, args, env);
 	perror("execve failed");
 	free(cmd_path);
-	return (EXIT_FAILURE);
+	exit (EXIT_FAILURE); // ??
 }
 /**
  * If in pipe, execve() directly with exec_command, if not: fork and execve(exec_command)
@@ -94,7 +94,6 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 	}
 	else
 		exec_command(env_list, curr_cmd);
-	
-	return (127);
+	exit (127); // ?? do we need this?
 }
 

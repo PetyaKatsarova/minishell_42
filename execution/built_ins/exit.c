@@ -64,7 +64,9 @@ static int	is_valid_exit_arg(char *arg)
 	}
 	return (1);
 }
-
+/**
+ * only exit typed directly (not in a pipeline) should exit your shell.
+ */
 int	do_exit(t_env_list *env_struct, t_tree *tree, t_node *cmd_node)
 {
 	int	exit_status;

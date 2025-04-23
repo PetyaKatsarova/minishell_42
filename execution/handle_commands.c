@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:38:02 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/23 10:11:25 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/23 11:36:42 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int execute_builtin(t_node *cmd_node, t_tree *tree, t_env_list *env_struct)
 		return do_echo(cmd_node->argv);
 	else if (cmd_node->token_type == TOKEN_EXPORT)
 		return do_export(cmd_node->argv, env_struct);
+	// else if (cmd_node->token_type == TOKEN_WORD) // todo: for var not exported like: var=bla, set exported=0 and
+		// return do_save_var(cmd_node->argv, env_struct);
 	else if (cmd_node->token_type == TOKEN_UNSET)
 		return do_unset(cmd_node->argv, env_struct);
 	return (EXIT_NO_EXECUTABLE);

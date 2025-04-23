@@ -6,12 +6,11 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/23 10:33:56 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/23 21:01:17 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
-
 
 static int handle_readline(t_env_list *env_struct_lst)
 {
@@ -60,8 +59,6 @@ static int handle_readline(t_env_list *env_struct_lst)
 // cc -Wall -Wextra -Werror main.c -lreadline && ./a.out
 // valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes ./minishell
 // valgrind -s --leak-check=full --track-origins=yes ./minishell
-// valgrind --leak-check=full --show-leak-kinds=all ./your_program
-
 
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
