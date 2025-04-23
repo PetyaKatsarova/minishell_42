@@ -14,7 +14,7 @@ static bool	is_valid_var_char(char c)
 	return (false);
 }
 
-int	get_len_var(char *str)
+static int	get_len_var(char *str)
 {
 	int	len;
 	len = 0;
@@ -52,11 +52,14 @@ void	expand_var(char **cpy, char **lexeme, t_env_list *env_list)
 	extract_var(*lexeme, var);
 	var_val = get_env_value(env_list, var);
 	free(var);
-	while (*var_val)
+	if (var_val != NULL)
 	{
-		**cpy = *var_val;
-		(*cpy)++;
-		var_val++;
+		while (*var_val)
+		{
+			**cpy = *var_val;
+			(*cpy)++;
+			var_val++;
+		}
 	}
 	(*lexeme)++;
 	while (is_valid_var_char(**lexeme))

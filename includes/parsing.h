@@ -101,8 +101,8 @@ void		free_tree(t_tree *tree);
 int			syn_check(t_tree *tree);
 bool		is_redir(e_token token_type);
 char		*parse_lexeme(char *lexeme, t_env_list *env_list);
-int			get_len_var(char *lexeme);
-int			get_len_var_val(char **var, t_env_list *env_list);
+//int			get_len_var(char *lexeme);
+//int			get_len_var_val(char **var, t_env_list *env_list);
 void		expand_var(char **cpy, char **lexeme, t_env_list *env_list);
 
 // test functions
