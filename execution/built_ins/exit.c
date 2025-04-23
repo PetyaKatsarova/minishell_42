@@ -14,47 +14,14 @@
 
 ls /etc
 echo $?   # 0 → success
-
-ls /no/such/dir
-echo $?   # 2 → error
-Used in scripts or interactive shells to terminate the process with a status:
-
-exit		  # exits with the last command's status
-exit 0		# success
-exit 1		# failure
-exit 42	   # custom error
- Range of Exit Codes
+Range of Exit Codes
 Valid: 0–255
-
 exit 256 → wraps to 0 (only 8 bits)
 
-
-  The exit utility shall cause the shell to exit from its current  execu‐
-	   tion environment with the exit status specified by the unsigned decimal
-	   integer n.  If the current execution environment is a subshell environ‐
-	   ment, the shell shall exit from the subshell environment with the spec‐
-	   ified exit status and continue in the environment from which that  sub‐
-	   shell  environment was invoked; otherwise, the shell utility shall ter‐
-	   minate with the specified exit status. If n is specified, but its value
-	   is not between 0 and 255 inclusively, the exit status is undefined.
-
-	   In Bash, if you write exit without specifying an exit status, the shell will exit with the exit status of the last executed command. This is the value stored in the special variable $?
-
-	   In Bash, the behavior of exit when provided with a non-numeric argument is defined. Specifically, Bash will print an error message and exit with a status of 255. 
+In Bash, the behavior of exit when provided with a non-numeric argument is defined. Specifically, Bash will print an error message and exit with a status of 255. 
 	   */
 
 #include "../../includes/minishell.h"
-
-/*
-test: exit // exit, 0
-exit 123 // exit, 123
-exit bla 123 // exit, bash: exit: bla: numeric argument required, 2
-exit 223 456 //exit
-bash: exit: too many arguments, 1
-exit 444444 // exit, 28
-exit -33 // exit, 223
-*/
-//#include <stdint.h>
 
 /**
  * Frees t_tree, env_struct_list and clears history
@@ -106,7 +73,8 @@ int	do_exit(t_env_list *env_struct, t_tree *tree, t_node *cmd_node)
 		exit_status = env_struct->last_exit_status;
 	else
 		exit_status = 0;
-	write(STDERR_FILENO, "exit\n", 5);
+	// write(STDERR_FILENO, "exit\n", 5);
+	printf("exit\n");
 	if (!cmd_node->argv[1])
 	{
 		free_exit_resources(env_struct, tree);

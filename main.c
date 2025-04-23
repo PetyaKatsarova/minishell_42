@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/21 20:45:04 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/23 10:33:56 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ static int handle_readline(t_env_list *env_struct_lst)
 			exec_pipeline(env_struct_lst, tree);
 		else if (cmd_node) // handles single commands
 		{
-			// todo: to add redirects and heredoc...
 			exit_status = execute_builtin(cmd_node, tree, env_struct_lst);
+			// todo: how to implement update of shlvl?
 			if (exit_status == -1)
 				exec_on_path(env_struct_lst, cmd_node, 0);
 		}
@@ -61,9 +61,8 @@ static int handle_readline(t_env_list *env_struct_lst)
 // cc -Wall -Wextra -Werror main.c -lreadline && ./a.out
 // valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes ./minishell
 // valgrind -s --leak-check=full --track-origins=yes ./minishell
+// valgrind --leak-check=full --show-leak-kinds=all ./your_program
 
-// dont work: cat
-// 
 
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
@@ -76,6 +75,7 @@ int main(int argc, char **argv, char **envp) {
     }
 	handle_readline(env_struct_lst);
 	free_t_env(env_struct_lst); //this is done in exit.c: in case i have invalid exec path: testing
+	// free_tree(tree); ??
 	clear_history();
 	return (0);
 }

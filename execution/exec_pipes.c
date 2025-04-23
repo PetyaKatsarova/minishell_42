@@ -20,6 +20,10 @@ static int wait_all(pid_t *pids, int count)
 	return WEXITSTATUS(status);
 }
 
+/**
+ * Creates pipe() for child[i], redirects pipe[0] to stdin & closes, pipe[1] to write stdout, closes pipe[1], after that executes command(builtin || executable)
+ * (aka: read from stdin, write to stdout and execute cmd which reads/writes to/in tty(stdin/stdiout))
+ */
 static void handle_child(int i, int pipe_count, int **pipes, t_node *cmd,
 	t_env_list *env, t_tree *tree)
 {
@@ -40,7 +44,9 @@ static void handle_child(int i, int pipe_count, int **pipes, t_node *cmd,
 		exit(status);
 	exit(exec_on_path(env, cmd, 1));
 }
-
+/**
+ * mallocs int *arr[] to store a pipe for each child process which is again malloced, loops through all cmds,  forks(creating the child processes) and executes handle_child() inside the child pr, the parent closes the corresponding pipe endings in the parent. todo -- closing all pipes... info
+ */
 int exec_pipeline(t_env_list *env, t_tree *tree)
 {
 	int pipe_count = get_num_pipes(tree);
@@ -51,8 +57,10 @@ int exec_pipeline(t_env_list *env, t_tree *tree)
 
 	if (!pipes || !pids)
 		return (EXIT_FAILURE);
-
 	while (cmd) {
+			// if last cmd after pipe: run it in the parent process
+		if (go_next_cmd(cmd) == NULL && cmd->token_type == TOKEN_EXIT)
+			execute_builtin(cmd, tree, env);	
 		if (i < pipe_count) {
 			pipes[i] = malloc(sizeof(int) * 2);
 			if (!pipes[i] || pipe(pipes[i]) < 0) {
@@ -65,9 +73,9 @@ int exec_pipeline(t_env_list *env, t_tree *tree)
 			handle_child(i, pipe_count, pipes, cmd, env, tree);
 		if (pids[i] > 0) {
 			if (i > 0 && pipes[i - 1])
-				close(pipes[i - 1][0]);
+				close(pipes[i - 1][0]); // close prev pipe read end
 			if (i < pipe_count && pipes[i])
-				close(pipes[i][1]);
+				close(pipes[i][1]); // close curr pipe write end
 		}
 		cmd = go_next_cmd(cmd);
 		i++;

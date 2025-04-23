@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/21 17:41:51 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/23 10:25:26 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	exec_command(t_env_list *env_list, t_node *curr_cmd)
 		free(cmd_path);
 		return (EXIT_FAILURE);
 	}
-	printf("I am pid %d (parent: %d)\n", getpid(), getppid()); // todo: delete
+	// printf("I am pid %d (parent: %d)\n", getpid(), getppid()); // todo: delete
 	execve(cmd_path, args, env);
 	perror("execve failed");
 	free(cmd_path);
@@ -69,8 +69,8 @@ static int	exec_command(t_env_list *env_list, t_node *curr_cmd)
  */
 int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 {
-	pid_t	pid;
-	int		status;
+	pid_t	pid = -1;
+	int		status = -1;
 
 	(void)is_pipe;
 	if (!is_pipe)
@@ -85,7 +85,7 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 		if (pid == 0)
 			exec_command(env_list, curr_cmd);
 		waitpid(pid, &status, 0); 
-		printf("exit st, execve: %d\n", status); // testing: remove later
+		// printf("exit st, execve: %d\n", status); // testing: remove later
 		if (WIFEXITED(status))
 			env_list->last_exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))

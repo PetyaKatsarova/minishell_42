@@ -1,3 +1,43 @@
+ ps aux | wc -l
+ // 76
+
+ shows all running processes, ps: process status, a all users, u userorienttated format, x (include background and nonterminal processes)
+ ps aux | less         # Scrollable list
+ps aux | grep name    # Filter by command name
+ps aux --sort=-%mem   # Sort by memory usage
+====================================================
+env | sort | head -n 5
+head filename        # First 10 lines (default)
+head -n 5 file.txt   # First 5 lines
+echo -e "a\nb\nc\nd\ne\nf" | head -n 3
+
+====================================================
+less filename
+Scroll: ↑ ↓, PgUp, PgDn
+Search: /keyword
+Quit: q
+
+ps aux | less
+=========================================================
+seq 1 5 | awk '{print $1 * 2}'
+seq 1 5
+→ Generates numbers 1 to 5
+awk '{print $1 * 2}'
+→ For each line, takes the first field ($1) and multiplies by 2.
+
+awk is a text-processing language used to:
+Scan files line by line
+Split each line into fields
+Apply patterns and actions (like filtering or math)
+
+2
+4
+6
+8
+10
+===========================================================
+
+
 Use "make -n" to see if compilation use "-Wall -Wextra -Werror". If not, select the "invalid compilation" flag.
 minishell compiles without any errors. If not, select the flag.
 The Makefile must not re-link. If not, select the flag.
