@@ -74,7 +74,7 @@ typedef struct	s_node {
 }	t_node;
 
 // lexer functions
-int			prelim_syn_check(char *input);
+int			prelim_syn_check(char *input, int *exit_status);
 void		lexer(t_token **head, char *input);
 t_token		*consume_chars(t_token *tail, char **input);
 t_token 	*consume_special_delim(t_token *tail, char **input);

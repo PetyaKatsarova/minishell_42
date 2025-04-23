@@ -15,7 +15,7 @@
 
 static int handle_readline(t_env_list *env_struct_lst)
 {
-	char *input;
+	char 	*input;
 	t_token	*token_list = NULL;
 	t_tree	*tree;
 	t_node	*cmd_node;
@@ -33,7 +33,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 		}
 		if (*input)
 			add_history(input);
-		if (prelim_syn_check(input) < 0)
+		if (prelim_syn_check(input, &exit_status) != 0)
 		{
 			free(input);
 			continue;

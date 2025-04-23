@@ -18,7 +18,7 @@ static int	check_if_only_whitespace(char *input)
 	}
 	if (*input == '\0')
 	{
-		return (-2);
+		return (-1);
 	}
 	return (0);
 }
@@ -28,7 +28,7 @@ static int check_pipes(e_state *state, bool *pipe_flag, char input)
 	if (input == '|')
 	{
 		if (*pipe_flag == true)
-			return (-3);
+			return (3);
 		else
 			*pipe_flag = true;
 	}
@@ -52,8 +52,8 @@ static int	check_quotes(char *input)
 	{
 		if (state == OUTSIDE)
 		{
-			if (check_pipes(&state, &pipe_flag, *input) < 0)
-				return (-3);
+			if (check_pipes(&state, &pipe_flag, *input) != 0)
+				return (3);
 		}
 		else if (state == INSIDE_SINGLES && *input == '\'')
 			state = OUTSIDE;
@@ -62,30 +62,36 @@ static int	check_quotes(char *input)
 		input++;
 	}
 	if (pipe_flag == true)
-		return (-3);
+		return (3);
 	if (state != OUTSIDE)
-		return (-4);
+		return (4);
 	return (0);
 }
 
-int	prelim_syn_check(char *input)
+int	prelim_syn_check(char *input, int *exit_status)
 {
 	int	res;
 
-	if (check_if_empty(input) < 0)
-		return (-1);
-	if (check_if_only_whitespace(input) < 0)
-		return (-2);
-	res = check_quotes(input);
-	if (res == -3)
+	if (check_if_empty(input) != 0)
 	{
-		write(1, "syntax error: misplaced '|'\n", 28);
-		return (-3);
+		return (*exit_status = 0, 1);
 	}
-	if (res == -4)
+	if (check_if_only_whitespace(input) != 0)
 	{
+		return (*exit_status = 0, 1);
+	}
+	res = check_quotes(input);
+	if (res == 3)
+	{
+		*exit_status = 2;
+		write(1, "syntax error: misplaced '|'\n", 28);
+		return (2);
+	}
+	if (res == 4)
+	{
+		*exit_status = 2;
 		write(1, "syntax error: open quotes\n", 26);
-		return (-4);
+		return (2);
 	}
 	return (0);
 }
