@@ -83,7 +83,7 @@ bool		is_special_delim(char c);
 // parser functions
 t_node		*nodenew(e_token token_type, t_node *parent);
 t_tree		*treenew(t_token *token_list);
-void		parser(t_tree *tree);
+int			parser(t_tree *tree);
 t_node		*go_first_pipe(t_tree *tree);
 t_node		*go_next_pipe(t_node *current);
 void		consume_token_list(t_tree *tree);
@@ -93,6 +93,8 @@ int			get_num_pipes(t_tree *tree);
 void		make_pipe_nodes(t_tree *tree);
 void		make_cmd_nodes(t_tree *tree);
 void		free_tree(t_tree *tree);
+int			syn_check(t_tree *tree);
+bool		is_redir(e_token token_type);
 
 // test functions
 void		printlist(t_token *token_list);

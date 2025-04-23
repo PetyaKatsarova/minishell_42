@@ -18,7 +18,7 @@ t_node	*go_first_cmd(t_tree *tree)
 	{
 		current = tree->root;
 	}
-	if (current->token_type == TOKEN_PIPE)
+	if (current != NULL && current->token_type == TOKEN_PIPE)
 	{
 		current = current->producer;
 	}
