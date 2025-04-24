@@ -67,7 +67,8 @@ static int	get_type(char *str)
 
 static void	parse_tokens(t_token **token, t_node **node, t_tree *tree, t_env_list *env_list)
 {
-	int	i;
+	t_node	*tail_redir_node;
+	int		i;
 
 	i = 0;
 	(*node)->argv = make_argv(*token, tree);
@@ -75,6 +76,17 @@ static void	parse_tokens(t_token **token, t_node **node, t_tree *tree, t_env_lis
 	{
 		if (is_redir((*token)->token_type) == true)
 		{
+			if ((*node)->redirects == NULL)
+			{
+				(*node)->redirects = nodenew((*token)->token_type, *node);
+				tail_redir_node = (*node)->redirects;
+			}
+			else
+			{
+				tail_redir_node->redirects = nodenew((*token)->token_type, *node);
+				tail_redir_node = tail_redir_node->redirects;
+			}
+			tail_redir_node->redir_path = (*token)->next->lexeme;
 			*token = (*token)->next->next;
 		}
 		else
