@@ -78,12 +78,12 @@ static void	parse_tokens(t_token **token, t_node **node, t_tree *tree, t_env_lis
 		{
 			if ((*node)->redirects == NULL)
 			{
-				(*node)->redirects = nodenew((*token)->token_type, *node);
+				(*node)->redirects = nodenew((*token)->token_type, NULL);
 				tail_redir_node = (*node)->redirects;
 			}
 			else
 			{
-				tail_redir_node->redirects = nodenew((*token)->token_type, *node);
+				tail_redir_node->redirects = nodenew((*token)->token_type, NULL);
 				tail_redir_node = tail_redir_node->redirects;
 			}
 			tail_redir_node->redir_path = parse_lexeme((*token)->next->lexeme, env_list, tree);

@@ -42,11 +42,10 @@ void	print_state(e_state state)
 
 void	print_argv(t_node *node)
 {
-
 	int 	i = 0;
 	bool	first = true;
 	printf("argv: ");
-	while (*(node->argv + i) != NULL)
+	while (node->argv != NULL && *(node->argv + i) != NULL)
 	{
 		if (!first)
 			printf(", ");
@@ -67,12 +66,14 @@ void	print_node(t_node *node)
 	printf("producer: %p\n", node->producer);
 	printf("consumer: %p\n", node->consumer);
 	printf("redirects: %p\n", node->redirects);
+	printf("redir_path: %s\n", node->redir_path);
 	printf("\n");
 }
 
 void	print_cmd_nodes(t_tree *tree)
 {
 	t_node	*current;
+	t_node	*redir;
 	int		count;
 
 	current = go_first_cmd(tree);
@@ -81,6 +82,12 @@ void	print_cmd_nodes(t_tree *tree)
 	{
 		printf("CMD %d", count);
 		print_node(current);
+		redir = go_next_redir(current);
+		while (redir != NULL)
+		{
+			print_node(redir);
+			redir = go_next_redir(redir);
+		}
 		current = go_next_cmd(current);
 		count++;
 	}

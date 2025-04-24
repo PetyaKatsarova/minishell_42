@@ -97,6 +97,7 @@ t_node		*go_next_pipe(t_node *current);
 void		consume_token_list(t_tree *tree, t_env_list *env_list);
 t_node		*go_first_cmd(t_tree *tree);
 t_node		*go_next_cmd(t_node *current);
+t_node 		*go_next_redir(t_node *current);
 int			get_num_pipes(t_tree *tree);
 void		make_pipe_nodes(t_tree *tree);
 void		make_cmd_nodes(t_tree *tree);
