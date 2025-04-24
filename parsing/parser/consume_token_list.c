@@ -104,7 +104,7 @@ void	consume_token_list(t_tree *tree, t_env_list *env_list)
 		else
 		{
 			parse_tokens(&token, &node, tree, env_list);
-			node->token_type = get_type(node->argv[0]);
+			node->token_type = get_type(*(node->argv + 0));
 		}
 	}
 }
