@@ -14,6 +14,8 @@ static char	*make_str(int len)
 
 static void	copy_sq(char **cpy, char **input)
 {
+	**cpy = **input;
+	(*cpy)++;
 	(*input)++;
 	while (**input != '\'')
 	{
@@ -21,6 +23,8 @@ static void	copy_sq(char **cpy, char **input)
 		(*cpy)++;
 		(*input)++;
 	}
+	**cpy = **input;
+	(*cpy)++;
 	(*input)++;
 }
 
@@ -64,7 +68,6 @@ void	lexer(t_token **head, char *input, t_env_list *env_list, int exit_status)
 	first = true;
 	str = expand_vars(input, env_list, exit_status);
 	cpy = str;
-	printf("str: %s\n", str);
 	while (*cpy != '\0')
 	{
 		while (is_whitespace(*cpy) == true)
