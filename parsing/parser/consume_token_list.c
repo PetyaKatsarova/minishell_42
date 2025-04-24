@@ -86,12 +86,13 @@ static void	parse_tokens(t_token **token, t_node **node, t_tree *tree, t_env_lis
 				tail_redir_node->redirects = nodenew((*token)->token_type, *node);
 				tail_redir_node = tail_redir_node->redirects;
 			}
-			tail_redir_node->redir_path = (*token)->next->lexeme;
+			tail_redir_node->redir_path = parse_lexeme((*token)->next->lexeme, env_list, tree);
 			*token = (*token)->next->next;
 		}
 		else
 		{
 			*((*node)->argv + i) = parse_lexeme((*token)->lexeme, env_list, tree);
+			(*node)->token_type = (*token)->token_type;
 			*token = (*token)->next;
 			i++;
 		}
@@ -116,7 +117,10 @@ void	consume_token_list(t_tree *tree, t_env_list *env_list)
 		else
 		{
 			parse_tokens(&token, &node, tree, env_list);
-			node->token_type = get_type(*(node->argv + 0));
+			if (node->token_type == TOKEN_WORD)
+			{
+				node->token_type = get_type(*(node->argv + 0));
+			}
 		}
 	}
 }
