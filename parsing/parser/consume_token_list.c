@@ -36,6 +36,35 @@ static char	**make_argv(t_token *token, t_tree *tree)
 	return (argv);
 }
 
+static int	my_strcmp(char *s1, char *s2)
+{
+	while (*s1 && *s1 == *s2)
+	{
+		s1++;
+		s2++;
+	}
+	return (*s1 - *s2);
+}
+
+static int	get_type(char *str)
+{
+	if (my_strcmp(str, "echo") == 0)
+		return (TOKEN_ECHO);
+	if (my_strcmp(str, "cd") == 0)
+		return (TOKEN_CD);
+	if (my_strcmp(str, "pwd") == 0)
+		return (TOKEN_PWD);
+	if (my_strcmp(str, "export") == 0)
+		return (TOKEN_EXPORT);
+	if (my_strcmp(str, "unset") == 0)
+		return (TOKEN_UNSET);
+	if (my_strcmp(str, "env") == 0)
+		return (TOKEN_ENV);
+	if (my_strcmp(str, "exit") == 0)
+		return (TOKEN_EXIT);
+	return (TOKEN_WORD);
+}
+
 static void	parse_tokens(t_token **token, t_node **node, t_tree *tree, t_env_list *env_list)
 {
 	int	i;
@@ -50,10 +79,6 @@ static void	parse_tokens(t_token **token, t_node **node, t_tree *tree, t_env_lis
 		}
 		else
 		{
-			if ((*node)->token_type == TOKEN_NULL)
-			{
-				(*node)->token_type = (*token)->token_type;
-			}
 			*((*node)->argv + i) = parse_lexeme((*token)->lexeme, env_list, tree);
 			*token = (*token)->next;
 			i++;
@@ -79,6 +104,7 @@ void	consume_token_list(t_tree *tree, t_env_list *env_list)
 		else
 		{
 			parse_tokens(&token, &node, tree, env_list);
+			node->token_type = get_type(node->argv[0]);
 		}
 	}
 }

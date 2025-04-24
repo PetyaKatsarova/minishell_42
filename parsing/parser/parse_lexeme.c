@@ -69,7 +69,7 @@ char *parse_lexeme(char *lexeme, t_env_list *env_list, t_tree *tree)
 {
 	char	*str;
 
-	str = make_str(1024);
+	str = make_str(ft_strlen(lexeme));
 	str = populate_str(str, lexeme, env_list, tree);
 	return (str);
 }
