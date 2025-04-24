@@ -27,6 +27,8 @@ static int wait_all(pid_t *pids, int count)
 static void handle_child(int i, int pipe_count, int **pipes, t_node *cmd,
 	t_env_list *env, t_tree *tree)
 {
+	int st;
+	
 	if (!cmd)
 		exit(127);
 	if (i > 0 && i - 1 < pipe_count && pipes[i - 1])
@@ -40,9 +42,9 @@ static void handle_child(int i, int pipe_count, int **pipes, t_node *cmd,
 		close(pipes[i][1]);
 	}
 	int status = execute_builtin(cmd, tree, env);
-	if (status != -1)
-		exit(status);
-	exit(exec_on_path(env, cmd, 1));
+	if (status != EXIT_CMD_NOT_FOUND)
+		exit(EXIT_CMD_NOT_FOUND);
+	exec_on_path(env, cmd, 1);
 }
 /**
  * mallocs int *arr[] to store a pipe for each child process which is again malloced, loops through all cmds,  forks(creating the child processes) and executes handle_child() inside the child pr, the parent closes the corresponding pipe endings in the parent. todo -- closing all pipes... info
@@ -79,6 +81,7 @@ int exec_pipeline(t_env_list *env, t_tree *tree)
 	}
 	close_all_pipes(pipes, pipe_count);
 	int result = wait_all(pids, i);
+	env->last_exit_status = result;
 	free(pids);
 	return result;
 }

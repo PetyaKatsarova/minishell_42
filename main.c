@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/23 21:01:17 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/24 18:22:30 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 	t_token	*token_list = NULL;
 	t_tree	*tree;
 	t_node	*cmd_node;
-	int		exit_status = -1;
+	int		exit_status = 0;
 	
 	while (1)
 	{
@@ -42,24 +42,31 @@ static int handle_readline(t_env_list *env_struct_lst)
 		parser(tree, env_struct_lst);
 		cmd_node = go_first_cmd(tree);
 		if (get_num_pipes(tree) > 0)
-			exec_pipeline(env_struct_lst, tree);
+			exit_status = exec_pipeline(env_struct_lst, tree);
 		else if (cmd_node) // handles single commands
 		{
-			exit_status = execute_builtin(cmd_node, tree, env_struct_lst);
-			// todo: how to implement update of shlvl?
-			if (exit_status == -1)
-				exec_on_path(env_struct_lst, cmd_node, 0);
+			if (cmd_node->token_type == TOKEN_WORD)
+				exit_status = exec_on_path(env_struct_lst, cmd_node, 0);
+			else
+				exit_status = execute_builtin(cmd_node, tree, env_struct_lst);
 		}
+		env_struct_lst->last_exit_status = exit_status;
 		free_tree(tree);
 		free(input);
 	}
-	return (0);
+	return (exit_status);
 }
 
 // cc -Wall -Wextra -Werror main.c -lreadline && ./a.out
 // valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes ./minishell
 // valgrind -s --leak-check=full --track-origins=yes ./minishell
 
+/**
+ * !!
+ * $? always reflects the success of the last command, not the exit code that command used to exit its shell.
+The shell doesn’t inherit the internal exit code of the exited subshell as its own $?
+
+ */
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
 	(void) argv;
@@ -75,3 +82,9 @@ int main(int argc, char **argv, char **envp) {
 	clear_history();
 	return (0);
 }
+/**
+ * Command	What Happens	$?
+bla	command not found	127
+exit	Exits with code 127	—
+echo $?	Doesn't run — shell has exited 
+ */
