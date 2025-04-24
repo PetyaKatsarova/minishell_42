@@ -39,7 +39,7 @@ static char	*expand_vars(char *input, t_env_list *env_list, int exit_status)
 	{
 		if (*input == '\'')
 			copy_sq(&cpy, &input);
-		if (*input == '$')
+		else if (*input == '$')
 		{
 			if (*(input + 1) == '?')
 				expand_exit_status(&cpy, &input, exit_status);
