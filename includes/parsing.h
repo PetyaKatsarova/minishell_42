@@ -75,7 +75,7 @@ typedef struct	s_node {
 
 // lexer functions
 int			prelim_syn_check(char *input, int *exit_status);
-void		lexer(t_token **head, char *input);
+void		lexer(t_token **head, char *input, t_env_list *env_list, int exit_status);
 t_token		*consume_chars(t_token *tail, char **input);
 t_token 	*consume_special_delim(t_token *tail, char **input);
 t_token		*tokennew(t_token *tail, char *lexeme, e_token token_type);
@@ -85,6 +85,8 @@ void		free_list(t_token **head);
 bool		is_whitespace(char c);
 int			set_state(e_state state, char c);
 bool		is_special_delim(char c);
+void		expand_exit_status(char **cpy, char **lexeme, int exit_status);
+void		expand_var(char **cpy, char **lexeme, t_env_list *env_list);
 
 // parser functions
 t_node		*nodenew(e_token token_type, t_node *parent);
@@ -102,8 +104,6 @@ void		free_tree(t_tree *tree);
 int			syn_check(t_tree *tree);
 bool		is_redir(e_token token_type);
 char		*parse_lexeme(char *lexeme, t_env_list *env_list, t_tree *tree);
-void		expand_var(char **cpy, char **lexeme, t_env_list *env_list);
-void		expand_exit_status(char **cpy, char **lexeme, t_tree *tree);
 
 // test functions
 void		printlist(t_token *token_list);

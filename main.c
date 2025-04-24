@@ -37,7 +37,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 			free(input);
 			continue;
 		}
-		lexer(&token_list, input);
+		lexer(&token_list, input, env_struct_lst, exit_status);
 		tree = treenew(token_list, exit_status);
 		parser(tree, env_struct_lst);
 		cmd_node = go_first_cmd(tree);

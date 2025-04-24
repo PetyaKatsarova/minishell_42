@@ -39,34 +39,34 @@ static void	extract_var(char *str, char *var)
 	*var = '\0';
 }
 
-void	expand_exit_status(char **cpy, char **lexeme, t_tree *tree)
+void	expand_exit_status(char **cpy, char **input, int exit_status)
 {
-	char	*exit_status;
+	char	*str_exit_status;
 
-	exit_status = ft_itoa(tree->exit_status);
-	if (exit_status != NULL)
+	str_exit_status = ft_itoa(exit_status);
+	if (str_exit_status != NULL)
 	{
-		while (*exit_status)
+		while (*str_exit_status)
 		{
-			**cpy = *exit_status;
+			**cpy = *str_exit_status;
 			(*cpy)++;
-			exit_status++;
+			str_exit_status++;
 		}
 	}
-	(*lexeme) += 2;
+	(*input) += 2;
 }
 
-void	expand_var(char **cpy, char **lexeme, t_env_list *env_list)
+void	expand_var(char **cpy, char **input, t_env_list *env_list)
 {
 	char	*var;
 	char	*var_val;
 
-	var = malloc((get_len_var(*lexeme) + 1) * sizeof(char));
+	var = malloc((get_len_var(*input) + 1) * sizeof(char));
 	// if (var == NULL)
 	// {
 	// 	free all
 	// }
-	extract_var(*lexeme, var);
+	extract_var(*input, var);
 	var_val = get_env_value(env_list, var);
 	free(var);
 	if (var_val != NULL)
@@ -78,9 +78,9 @@ void	expand_var(char **cpy, char **lexeme, t_env_list *env_list)
 			var_val++;
 		}
 	}
-	(*lexeme)++;
-	while (is_valid_var_char(**lexeme))
+	(*input)++;
+	while (is_valid_var_char(**input))
 	{
-		(*lexeme)++;
+		(*input)++;
 	}
 }

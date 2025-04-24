@@ -12,7 +12,7 @@
 
 NAME	 := minishell
 CC	   := cc
-CFLAGS   := -g -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS   := -g #-Wall -Wextra -Werror -g #-fsanitize=address
 LIBFT	:= libs/libft
 
 HEADERS  := -I ./include -I $(LIBFT)/include
@@ -41,6 +41,7 @@ SRCS	 := execution/built_ins/pwd.c \
 			parsing/lexer/consume_input.c \
 			parsing/lexer/utils.c \
 			parsing/lexer/list_utils.c \
+			parsing/lexer/var_exp.c \
 			parsing/parser/tree_utils.c \
 			parsing/parser/tree_navigation.c \
 			parsing/parser/tree_interface.c \
@@ -51,7 +52,6 @@ SRCS	 := execution/built_ins/pwd.c \
 			parsing/parser/parser_utils.c \
 			parsing/parser/syn_check.c \
 			parsing/parser/parse_lexeme.c \
-			parsing/parser/var_expansion.c \
 			
 OBJS	 := $(SRCS:.c=.o)
 

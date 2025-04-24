@@ -30,11 +30,6 @@ static void	parse_dq(char **cpy, char **lexeme, t_env_list *env_list)
 	(*lexeme)++;
 	while (**lexeme != '\"')
 	{
-		if (**lexeme == '$')
-		{
-			expand_var(cpy, lexeme, env_list);
-		}
-		else
 		{
 			**cpy = **lexeme;
 			(*cpy)++;
@@ -58,13 +53,6 @@ static char	*populate_str(char *str, char *lexeme, t_env_list *env_list, t_tree 
 		else if (*lexeme == '\"')
 		{
 			parse_dq(&cpy, &lexeme, env_list);
-		}
-		else if (*lexeme == '$')
-		{
-			if (*(lexeme + 1) == '?')
-				expand_exit_status(&cpy, &lexeme, tree);
-			else
-				expand_var(&cpy, &lexeme, env_list);
 		}
 		else
 		{
