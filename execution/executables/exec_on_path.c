@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/25 19:03:09 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/25 19:18:06 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static int	exec_command(t_env_list *env_list, t_node *curr_cmd)
 	execve(cmd_path, args, env);
 	perror("execve failed");
 	free(cmd_path);
+	free_t_env(env_list);
 	exit (EXIT_FAILURE);
 }
 /**

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/25 18:38:11 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/25 19:19:37 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 //export b | export bb | echo | b | pwd | cat main.c | grep main.c
 
 
-//valgrind --track-fds=yes --trace-children=yes --log-fd=2 ./minishell
+//valgrind --track-fds=yes --trace-children=yes --log-fd=2 ./minishell  // this is only for fds
 /**
  * !! NB!!
  * This is also fine.
@@ -83,17 +83,21 @@ static int handle_readline(t_env_list *env_struct_lst)
 No `definitely lost` memory → **no real leaks**.
 **Conclusion:** everything’s working as expected.
 1 std FD → stdout (you ran under Valgrind, which redirects others).
-
 3 inherited FDs:
-
 fd 103: /usr/share/code/v8_context_snapshot.bin (VSCode-related).
-
 fd 38: /dev/ptmx (pseudo-terminal for VSCode terminal).
-
 fd 37: VSCode terminal log (ptyhost.log).
+
+!!!
+still reachable: 213,740 bytes in 406 blocks
+That memory was not freed, but still reachable at program exit — meaning:
+You didn’t free() everything.
+But you kept pointers to those blocks.
+Valgrind doesn’t treat this as a leak, since OS will reclaim it anyway.
  */
 
 
+// valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes ./minishell
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
 	(void) argv;
@@ -105,13 +109,6 @@ int main(int argc, char **argv, char **envp) {
     }
 	handle_readline(env_struct_lst);
 	free_t_env(env_struct_lst); //this is done in exit.c: in case i have invalid exec path: testing
-	// free_tree(tree); ??
 	clear_history();
 	return (0);
 }
-/**
- * Command	What Happens	$?
-bla	command not found	127
-exit	Exits with code 127	—
-echo $?	Doesn't run — shell has exited 
- */

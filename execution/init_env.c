@@ -15,14 +15,15 @@ t_env_list *copy_env(char **env)
 	int		 len = env_len(env);
 	t_env_list *env_list = malloc(sizeof(t_env_list));
 
-	env_list->vars = malloc(sizeof(t_env) * (len + 10)); // reserve extra space **todo** is good idea? was + 10
+	env_list->vars = malloc(sizeof(t_env) * (len + 10));
 	if (!env_list || !env_list->vars)
+	{
+		free(env_list); // todo.... do i nned to do this?
 		return NULL;
-
+	}
 	env_list->size = 0;
 	env_list->capacity = len + 10;
 	env_list->last_exit_status = 0;
-
 	while (env[i])
 	{
 		char *delim = ft_strchr(env[i], '=');
