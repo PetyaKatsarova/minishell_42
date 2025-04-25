@@ -44,7 +44,8 @@ typedef enum e_exit_status
     EXIT_CMD_NOT_EXECUTABLE = 126,
     EXIT_CMD_NOT_FOUND = 127,
     EXIT_INVALID_EXIT_ARG = 128,
-    EXIT_SIGNAL_BASE = 128, // kill -9 => 137 = 128+9
+    EXIT_SIGNAL_BASE = 128, // kill -9 => 137 = 128+
+	ERROR_ON_SPLIT = -1
 }   t_exit_status;
 
 typedef struct s_env {

@@ -27,7 +27,9 @@ static	int	append_replace_envvar(char *argv, t_env_list *env_struct)
 	key_val = ft_split(argv, '=');
 	if (!key_val)
 	{
-		// do sth...
+		perror("Error in splitting export var.");
+		perror ("export: 'badinput': not a valid identifier"); // tood: which to keep
+		return (ERROR_ON_SPLIT);
 	}
 	set_env_value(env_struct, key_val[0], key_val[1]);
 	// deal with invalid ...
@@ -50,7 +52,10 @@ int	do_export(char **input_args, t_env_list *env_struct)
 	{
 		while (input_args[i])
 		{
-			append_replace_envvar(input_args[i], env_struct);
+			if (append_replace_envvar(input_args[i], env_struct) == ERROR_ON_SPLIT)
+			{
+				return (ERROR_ON_SPLIT);
+			}
 			i++;
 		}
 	}

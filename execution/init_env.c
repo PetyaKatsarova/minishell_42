@@ -1,6 +1,3 @@
-#include "../includes/minishell.h"
-
-
 
 #include "../includes/minishell.h"
 
@@ -90,37 +87,37 @@ static int	expand_env_capacity(t_env_list *env)
  * @brief TODO: CANT USE REALLOC
  * @details if key, updates val, if key=null, adds new key=val with malloc
 	 */
-	void	set_env_value(t_env_list *env, const char *key, const char *val)
+void	set_env_value(t_env_list *env, const char *key, const char *val)
+{
+	size_t	i;
+	size_t	len;
+
+	if (!key || !env)
+		return ;
+	len = ft_strlen(key);
+	i = 0;
+	while (i < env->size)
 	{
-		size_t	i;
-		size_t	len;
-	
-		if (!key || !env)
-			return ;
-		len = ft_strlen(key);
-		i = 0;
-		while (i < env->size)
+		if (ft_strncmp(env->vars[i].key, key, len) == 0
+			&& env->vars[i].key[len] == '\0')
 		{
-			if (ft_strncmp(env->vars[i].key, key, len) == 0
-				&& env->vars[i].key[len] == '\0')
+			if (val)
 			{
-				if (val)
-				{
-					free(env->vars[i].value);
-					env->vars[i].value = ft_strdup(val);
-				}
-				return ;
+				free(env->vars[i].value);
+				env->vars[i].value = ft_strdup(val);
 			}
-			i++;
+			return ;
 		}
-		if (env->size + 1 >= env->capacity && expand_env_capacity(env))
-			return (ft_putstr_fd("minishell: env full\n", 2));
-		env->vars[env->size].key = ft_strdup(key);
-		env->vars[env->size].value = val ? ft_strdup(val) : NULL;
-		env->vars[env->size].exported = 1;
-		env->size++;
-		env->vars[env->size].key = NULL;
+		i++;
 	}
+	if (env->size + 1 >= env->capacity && expand_env_capacity(env))
+		return (ft_putstr_fd("minishell: env full\n", 2));
+	env->vars[env->size].key = ft_strdup(key);
+	env->vars[env->size].value = val ? ft_strdup(val) : NULL;
+	env->vars[env->size].exported = 1;
+	env->size++;
+	env->vars[env->size].key = NULL;
+}
 	
 	
 
