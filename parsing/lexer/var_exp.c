@@ -39,6 +39,22 @@ static void	extract_var(char *str, char *var)
 	*var = '\0';
 }
 
+static void	copy_char(char **cpy, char **str, char **input, size_t *size)
+{
+	**cpy = **input;
+	(*cpy)++;
+	(*input)++;
+	if ((size_t)(*cpy - *str) >= *size - 1)
+	{
+		*str = realloc_str(size, *str);
+		*cpy = *str;
+		while (**cpy != '\0')
+		{
+			(*cpy)++;
+		}
+	}
+}
+
 void	expand_exit_status(char **cpy, char **input, char **str, size_t *size, int exit_status)
 {
 	char	*str_exit_status;
@@ -50,10 +66,7 @@ void	expand_exit_status(char **cpy, char **input, char **str, size_t *size, int 
 	{
 		while (*str_exit_status)
 		{
-			**cpy = *str_exit_status;
-			(*cpy)++;
-			str_exit_status++;
-			check_if_size_reached(cpy, str, size);
+			copy_char(cpy, str, &str_exit_status, size);
 		}
 	}
 	free(orig);
@@ -77,10 +90,7 @@ void	expand_var(char **cpy, char **input, char **str, size_t *size, t_env_list *
 	{
 		while (*var_val)
 		{
-			**cpy = *var_val;
-			(*cpy)++;
-			var_val++;
-			check_if_size_reached(cpy, str, size);
+			copy_char(cpy, str, &var_val, size);
 		}
 	}
 	(*input)++;
