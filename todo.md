@@ -12,3 +12,5 @@
 4. deal with $var, $?, $$(maybe not needed?): parsing person to do?
 
 5. update SHLVL accordingly on every run of shell in shell and exitting
+
+6. Running several commands with pipes leads to invalid attempts to close FDs that have already been closed. Other FDs are left open.

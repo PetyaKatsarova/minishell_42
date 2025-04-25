@@ -96,7 +96,6 @@ int			too_many_args(char	**input_args);
 int			print_builtin_error(const char *cmd, const char *arg, const char *msg);
 
 // execution/handle_commands.c
-//int 		handle_command(t_env_list *env, t_tree *tree, t_node *curr_cmd);
 int 		execute_builtin(t_node *cmd_node, t_tree *tree, t_env_list *env_struct);
 
 // execution/executables/*
