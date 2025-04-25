@@ -1,29 +1,10 @@
 
 #include "../../includes/minishell.h"
 
-/**
- * if token=export and argv[1] has = and !argv[2]
- * 
- * export var1=bla var2=bla2
- * 
- * Check if key already exists → update value and return.
-
-Check if size >= capacity → return error or handle manually.
-
-Add new t_env entry at size++.
-
-Null-terminate vars[size].key = NULL.
-
-
-
- */
-
 static	int	append_replace_envvar(char *argv, t_env_list *env_struct)
 {
-	int		i;
 	char		**key_val;
 
-	i = 0;
 	key_val = ft_split(argv, '=');
 	if (!key_val)
 	{
@@ -32,7 +13,6 @@ static	int	append_replace_envvar(char *argv, t_env_list *env_struct)
 		return (ERROR_ON_SPLIT);
 	}
 	set_env_value(env_struct, key_val[0], key_val[1]);
-	// deal with invalid ...
 	free(key_val[0]);
 	if (key_val[1])
 	free(key_val[1]);
