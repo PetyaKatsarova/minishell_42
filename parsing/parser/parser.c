@@ -4,7 +4,7 @@
 /**
  * manipulates tree: make_pipe_nodes, make_cmd_nodes, consume_token_list
  */
-int	parser(t_tree *tree, t_env_list *env_list)
+int	parser(t_tree *tree)
 {
 	if (syn_check(tree) < 0)
 	{
@@ -12,6 +12,6 @@ int	parser(t_tree *tree, t_env_list *env_list)
 	}
 	make_pipe_nodes(tree);
 	make_cmd_nodes(tree);
-	consume_token_list(tree, env_list);
+	consume_token_list(tree);
 	return (0);
 }

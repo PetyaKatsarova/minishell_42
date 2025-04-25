@@ -28,18 +28,46 @@ static void	copy_sq(char **cpy, char **input)
 	(*input)++;
 }
 
+static void	copy_dq(char **cpy, char **input, t_env_list *env_list, int exit_status)
+{
+	**cpy = **input;
+	(*cpy)++;
+	(*input)++;
+	while (**input != '\"')
+	{
+		if (**input == '$')
+		{
+			if (**(input + 1) == '?')
+				expand_exit_status(cpy, input, exit_status);
+			else
+				expand_var(cpy, input, env_list);
+		}
+		else
+		{
+			**cpy = **input;
+			(*cpy)++;
+			(*input)++;
+		}
+	}
+	**cpy = **input;
+	(*cpy)++;
+	(*input)++;
+}
+
 static char	*expand_vars(char *input, t_env_list *env_list, int exit_status)
 {
 	char	*str;
 	char	*cpy;
 
-	str = make_str(131072);
+	str = make_str(1024);
 	cpy = str;
 	while (*input)
 	{
 		if (*input == '\'')
 			copy_sq(&cpy, &input);
-		if (*input == '$')
+		else if (*input == '\"')
+			copy_dq(&cpy, &input, env_list, exit_status);
+		else if (*input == '$')
 		{
 			if (*(input + 1) == '?')
 				expand_exit_status(&cpy, &input, exit_status);
