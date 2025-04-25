@@ -1,15 +1,53 @@
 #include "../../includes/parsing.h"
 
-static char	*make_str(int len)
+static char	*make_str(size_t size)
 {
 	char	*str;
+	char	*cpy;
 
-	str = malloc((len) * sizeof(char));
+	str = malloc((size) * sizeof(char));
 	if (str == NULL)
 	{
 		return (NULL); // implement error check: free all
 	}
+	cpy = str;
+	while (size > 0)
+	{
+		*cpy = '\0';
+		cpy++;
+		size--;
+	}
 	return (str);
+}
+
+static char	*realloc_str(size_t *size, char *str)
+{
+	char	*orig;
+	char	*new;
+	char	*cpy;
+
+	*size = *size * 2;
+	new = malloc((*size) * sizeof(char));
+	if (new == NULL)
+	{
+		return (NULL); // implement error check: free all
+	}
+	cpy = new;
+	orig = str;
+	while (*str)
+	{
+		*cpy = *str;
+		cpy++;
+		str++;
+	}
+	while (cpy < (new + *size))
+	{
+		*cpy = '\0';
+		cpy++;
+	}
+	free(orig);
+	printf("reallocated\n");
+	return (new);
 }
 
 static void	copy_sq(char **cpy, char **input)
@@ -58,8 +96,10 @@ static char	*expand_vars(char *input, t_env_list *env_list, int exit_status)
 {
 	char	*str;
 	char	*cpy;
+	size_t	size;
 
-	str = make_str(1024);
+	size = 2;
+	str = make_str(size);
 	cpy = str;
 	while (*input)
 	{
@@ -79,6 +119,13 @@ static char	*expand_vars(char *input, t_env_list *env_list, int exit_status)
 			*cpy = *input;
 			cpy++;
 			input++;
+		}
+		if ((size_t)(cpy - str) >= size - 1)
+		{
+			str = realloc_str(&size, str);
+			cpy = str;
+			while (*cpy != '\0')
+				cpy++;
 		}
 	}
 	*cpy = '\0';
