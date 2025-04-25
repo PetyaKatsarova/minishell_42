@@ -42,8 +42,10 @@ static void	extract_var(char *str, char *var)
 void	expand_exit_status(char **cpy, char **input, int exit_status)
 {
 	char	*str_exit_status;
+	char	*orig;
 
 	str_exit_status = ft_itoa(exit_status);
+	orig = str_exit_status;
 	if (str_exit_status != NULL)
 	{
 		while (*str_exit_status)
@@ -53,6 +55,7 @@ void	expand_exit_status(char **cpy, char **input, int exit_status)
 			str_exit_status++;
 		}
 	}
+	free(orig);
 	(*input) += 2;
 }
 
