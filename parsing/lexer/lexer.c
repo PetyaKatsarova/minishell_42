@@ -20,13 +20,13 @@ static char	*make_str(size_t size)
 	return (str);
 }
 
-static char	*realloc_str(size_t *size, char *str)
+char	*realloc_str(size_t *size, char *str)
 {
 	char	*orig;
 	char	*new;
 	char	*cpy;
 
-	*size = *size * 2;
+	*size = *size + 8;
 	new = malloc((*size) * sizeof(char));
 	if (new == NULL)
 	{
@@ -50,7 +50,20 @@ static char	*realloc_str(size_t *size, char *str)
 	return (new);
 }
 
-static void	copy_sq(char **cpy, char **input)
+void	check_if_size_reached(char **cpy, char **str, size_t *size)
+{
+	if ((size_t)(*cpy - *str) >= *size - 4)
+	{
+		*str = realloc_str(size, *str);
+		*cpy = *str;
+		while (**cpy != '\0')
+		{
+			(*cpy)++;
+		}
+	}
+}
+
+static void	copy_sq(char **cpy, char **input, char **str, size_t *size)
 {
 	**cpy = **input;
 	(*cpy)++;
@@ -60,13 +73,14 @@ static void	copy_sq(char **cpy, char **input)
 		**cpy = **input;
 		(*cpy)++;
 		(*input)++;
+		check_if_size_reached(cpy, str, size);
 	}
 	**cpy = **input;
 	(*cpy)++;
 	(*input)++;
 }
 
-static void	copy_dq(char **cpy, char **input, t_env_list *env_list, int exit_status)
+static void	copy_dq(char **cpy, char **input, char **str, size_t *size, t_env_list *env_list, int exit_status)
 {
 	**cpy = **input;
 	(*cpy)++;
@@ -75,16 +89,17 @@ static void	copy_dq(char **cpy, char **input, t_env_list *env_list, int exit_sta
 	{
 		if (**input == '$')
 		{
-			if (**(input + 1) == '?')
-				expand_exit_status(cpy, input, exit_status);
+			if (*(*input + 1) == '?')
+				expand_exit_status(cpy, input, str, size, exit_status);
 			else
-				expand_var(cpy, input, env_list);
+				expand_var(cpy, input, str, size, env_list);
 		}
 		else
 		{
 			**cpy = **input;
 			(*cpy)++;
 			(*input)++;
+			check_if_size_reached(cpy, str, size);
 		}
 	}
 	**cpy = **input;
@@ -98,34 +113,28 @@ static char	*expand_vars(char *input, t_env_list *env_list, int exit_status)
 	char	*cpy;
 	size_t	size;
 
-	size = 2;
+	size = 8;
 	str = make_str(size);
 	cpy = str;
 	while (*input)
 	{
 		if (*input == '\'')
-			copy_sq(&cpy, &input);
+			copy_sq(&cpy, &input, &str, &size);
 		else if (*input == '\"')
-			copy_dq(&cpy, &input, env_list, exit_status);
+			copy_dq(&cpy, &input, &str, &size, env_list, exit_status);
 		else if (*input == '$')
 		{
 			if (*(input + 1) == '?')
-				expand_exit_status(&cpy, &input, exit_status);
+				expand_exit_status(&cpy, &input, &str, &size, exit_status);
 			else
-				expand_var(&cpy, &input, env_list);
+				expand_var(&cpy, &input, &str, &size, env_list);
 		}
 		else
 		{
 			*cpy = *input;
 			cpy++;
 			input++;
-		}
-		if ((size_t)(cpy - str) >= size - 1)
-		{
-			str = realloc_str(&size, str);
-			cpy = str;
-			while (*cpy != '\0')
-				cpy++;
+			check_if_size_reached(&cpy, &str, &size);
 		}
 	}
 	*cpy = '\0';

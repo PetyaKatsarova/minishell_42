@@ -39,7 +39,7 @@ static void	extract_var(char *str, char *var)
 	*var = '\0';
 }
 
-void	expand_exit_status(char **cpy, char **input, int exit_status)
+void	expand_exit_status(char **cpy, char **input, char **str, size_t *size, int exit_status)
 {
 	char	*str_exit_status;
 	char	*orig;
@@ -53,13 +53,14 @@ void	expand_exit_status(char **cpy, char **input, int exit_status)
 			**cpy = *str_exit_status;
 			(*cpy)++;
 			str_exit_status++;
+			check_if_size_reached(cpy, str, size);
 		}
 	}
 	free(orig);
 	(*input) += 2;
 }
 
-void	expand_var(char **cpy, char **input, t_env_list *env_list)
+void	expand_var(char **cpy, char **input, char **str, size_t *size, t_env_list *env_list)
 {
 	char	*var;
 	char	*var_val;
@@ -79,6 +80,7 @@ void	expand_var(char **cpy, char **input, t_env_list *env_list)
 			**cpy = *var_val;
 			(*cpy)++;
 			var_val++;
+			check_if_size_reached(cpy, str, size);
 		}
 	}
 	(*input)++;

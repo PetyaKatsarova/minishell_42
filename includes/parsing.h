@@ -85,8 +85,10 @@ void		free_list(t_token **head);
 bool		is_whitespace(char c);
 int			set_state(e_state state, char c);
 bool		is_special_delim(char c);
-void		expand_exit_status(char **cpy, char **lexeme, int exit_status);
-void		expand_var(char **cpy, char **lexeme, t_env_list *env_list);
+void		expand_exit_status(char **cpy, char **input, char **str, size_t *size, int exit_status);
+void		expand_var(char **cpy, char **lexeme, char **str, size_t *size, t_env_list *env_list);
+void		check_if_size_reached(char **cpy, char **str, size_t *size);
+char		*realloc_str(size_t *size, char *str);
 
 // parser functions
 t_node		*nodenew(e_token token_type, t_node *parent);
