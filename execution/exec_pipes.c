@@ -27,7 +27,7 @@ static int wait_all(pid_t *pids, int count)
 static void handle_child(int i, int pipe_count, int **pipes, t_node *cmd,
 	t_env_list *env, t_tree *tree)
 {
-	int st;
+	int status;
 	
 	if (!cmd)
 		exit(127);
@@ -41,7 +41,7 @@ static void handle_child(int i, int pipe_count, int **pipes, t_node *cmd,
 		dup2(pipes[i][1], STDOUT_FILENO);
 		close(pipes[i][1]);
 	}
-	int status = execute_builtin(cmd, tree, env);
+	status = execute_builtin(cmd, tree, env);
 	if (status != EXIT_CMD_NOT_FOUND)
 		exit(EXIT_CMD_NOT_FOUND);
 	exec_on_path(env, cmd, 1);

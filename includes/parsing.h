@@ -91,7 +91,7 @@ void		expand_var(char **cpy, char **lexeme, t_env_list *env_list);
 // parser functions
 t_node		*nodenew(e_token token_type, t_node *parent);
 t_tree		*treenew(t_token *token_list, int exit_status);
-int			parser(t_tree *tree, t_env_list *env_list);
+int			parser(t_tree *tree);
 t_node		*go_first_pipe(t_tree *tree);
 t_node		*go_next_pipe(t_node *current);
 void		consume_token_list(t_tree *tree);
