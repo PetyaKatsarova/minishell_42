@@ -49,3 +49,8 @@ t_node *go_next_cmd(t_node *current)
 	}
 	return (current);
 }
+
+t_node *go_next_redir(t_node *current)
+{
+	return (current->redirects);
+}

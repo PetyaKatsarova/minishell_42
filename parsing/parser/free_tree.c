@@ -14,23 +14,42 @@ static void	free_pipes(t_tree *tree)
 	}
 }
 
+static void	free_redirs(t_node *node)
+{
+	t_node	*next;
+
+	while (node != NULL)
+	{
+		next = node->redirects;
+		free(node->redir_path);
+		free(node);
+		node = next;
+	}
+}
+
+static void	free_argv(t_node *node)
+{
+	int	i;
+
+	i = 0;
+	while (node->argv[i] != NULL)
+	{
+		free(node->argv[i]);
+		i++;
+	}
+	free(node->argv);
+}
+
 static void	free_cmds(t_tree *tree)
 {
 	t_node	*node;
 	t_node	*next_cmd;
-	int		i;
 
 	node = go_first_cmd(tree);
 	while (node != NULL)
 	{
-		i = 0;
-		while (node->argv[i] != NULL)
-		{
-			free(node->argv[i]);
-			node->argv[i] = NULL;
-			i++;
-		}
-		free(node->argv);
+		free_argv(node);
+		free_redirs(node->redirects);
 		next_cmd = go_next_cmd(node);
 		if (node->parent != NULL)
 		{
