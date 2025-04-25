@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/25 11:14:05 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/25 15:28:00 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ static int handle_readline(t_env_list *env_struct_lst)
 		tree = treenew(token_list, exit_status);
 		parser(tree);
 		cmd_node = go_first_cmd(tree);
+		//print_token_type(cmd_node->token_type);
+		printf("argv=%s, argv[1]=%s\n", cmd_node->argv[0], cmd_node->argv[1]);
 		if (get_num_pipes(tree) > 0)
 			exit_status = exec_pipeline(env_struct_lst, tree);
 		else if (cmd_node) // handles single commands

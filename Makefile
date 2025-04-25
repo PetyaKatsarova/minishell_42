@@ -35,7 +35,6 @@ SRCS	 := execution/built_ins/pwd.c \
 			execution/executables/parse_path.c \
 			execution/executables/helpers.c \
 			execution/executables/manage_files.c \
-			#excecution/built_ins/add_envvar_no_export.c \
 			main.c \
 			parsing/lexer/lexer.c \
 			parsing/lexer/prelim_syn_check.c \
