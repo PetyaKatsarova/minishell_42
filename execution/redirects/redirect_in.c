@@ -89,3 +89,4 @@ open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		redir = redir->redirects;
 	}
 }
+// test
