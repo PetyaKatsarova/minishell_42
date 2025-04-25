@@ -25,7 +25,7 @@ static void	parse_sq(char **cpy, char **lexeme)
 	(*lexeme)++;
 }
 
-static void	parse_dq(char **cpy, char **lexeme, t_env_list *env_list)
+static void	parse_dq(char **cpy, char **lexeme)
 {
 	(*lexeme)++;
 	while (**lexeme != '\"')
@@ -39,7 +39,7 @@ static void	parse_dq(char **cpy, char **lexeme, t_env_list *env_list)
 	(*lexeme)++;
 }
 
-static char	*populate_str(char *str, char *lexeme, t_env_list *env_list, t_tree *tree)
+static char	*populate_str(char *str, char *lexeme)
 {
 	char	*cpy;
 	
@@ -52,7 +52,7 @@ static char	*populate_str(char *str, char *lexeme, t_env_list *env_list, t_tree 
 		}
 		else if (*lexeme == '\"')
 		{
-			parse_dq(&cpy, &lexeme, env_list);
+			parse_dq(&cpy, &lexeme);
 		}
 		else
 		{
@@ -65,11 +65,11 @@ static char	*populate_str(char *str, char *lexeme, t_env_list *env_list, t_tree 
 	return (str);
 }
 
-char *parse_lexeme(char *lexeme, t_env_list *env_list, t_tree *tree)
+char *parse_lexeme(char *lexeme)
 {
 	char	*str;
 
 	str = make_str(ft_strlen(lexeme));
-	str = populate_str(str, lexeme, env_list, tree);
+	str = populate_str(str, lexeme);
 	return (str);
 }

@@ -44,7 +44,6 @@ static void	free_cmds(t_tree *tree)
 {
 	t_node	*node;
 	t_node	*next_cmd;
-	int		i;
 
 	node = go_first_cmd(tree);
 	while (node != NULL)
