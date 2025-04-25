@@ -6,36 +6,16 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/18 15:12:55 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/18 15:12:59 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/25 10:39:48 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #define CWD_MAX 1024
 
-/*
-cd
-Use the command cd to move the working directory and check if you are in the right directory with /bin/ls: !!NB!! /bin/ls is the actual binary of the ls command — the one that lists files.
-Repeat multiple times with working and not working cd
-Also, try '.' and '..' as arguments.
-pwd
-Use the command pwd.
-Repeat multiple times in different directories.
-Relative Path
-Execute commands but this time use a relative path.
-Repeat multiple times in different directories with a complex relative path (lots of ..).
-Environment path
-Execute commands but this time without any path (ls, wc, awk and so forth).
-Unset the $PATH and ensure commands are not working anymore.
-Set the $PATH to a multiple directory value (directory1:directory2) and ensure that directories are checked in
-order from left to right.
-bash: cd: HOME not set
-
-1. cd ✓
-2. cd ~ ✓
-3 !! todo: cd bla: 4 bytes leaked in 1 allocation
-*/
-
+/**
+ * Parses full command path in the **result, returns exit_success(0) or failure(1)
+ */
 static int	cd_to_home_or_join(char *rest, char *home, char **result)
 {
 	if (rest[0] == '\0')

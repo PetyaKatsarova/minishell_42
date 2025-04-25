@@ -6,21 +6,11 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/18 15:13:09 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/18 15:13:17 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/25 10:29:23 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-echo -n // -n dont output the trailing newline, echo - display a line of text
-Execute the echo command with or without arguments, or the -n option.
-Repeat multiple times with different arguments.
-*/
-
 #include "../../includes/minishell.h"
-
-/*
-echo -n -nnnnnnnnnnnnnn bla: handle TODO undefined behavior
-*/
 
 /*
 	Returns 1(true) if the string ends after ns and starts with -, otherwise 0(false).
