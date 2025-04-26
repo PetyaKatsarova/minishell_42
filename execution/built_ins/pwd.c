@@ -16,7 +16,7 @@ int	get_pwd(char **argv)
 {
 	char	buff[PATH_MAX + 1];
 
-	if (argv[1])
+	if (argv[2])
 	{
 		write(STDERR_FILENO, "minihell: pwd: invalid option\n", 30);
 		return (1);

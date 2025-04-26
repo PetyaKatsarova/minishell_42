@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/25 19:19:37 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/26 09:54:48 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ Valgrind doesn’t treat this as a leak, since OS will reclaim it anyway.
 
 
 // valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes ./minishell
+
+// valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes ./minihell
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
 	(void) argv;
