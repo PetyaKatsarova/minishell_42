@@ -29,7 +29,7 @@ char	*realloc_str(size_t *size, char *str)
 
 	*size = *size * 2;
 	new = alloc_str(*size);
-	cpy = new;	printf("reallocated\n");
+	cpy = new;
 	orig = str;
 	while (*str)
 	{
