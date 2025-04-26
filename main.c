@@ -38,6 +38,13 @@ static int handle_readline(t_env_list *env_struct_lst)
 			continue;
 		}
 		lexer(&token_list, input, env_struct_lst, exit_status);
+		exit_status = syn_check(&token_list);
+		if (exit_status != 0)
+		{
+			free_list(&token_list);
+			free(input);
+			continue;
+		}
 		tree = treenew(token_list, exit_status);
 		parser(tree);
 		//print_cmd_nodes(tree);

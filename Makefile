@@ -44,6 +44,7 @@ SRCS	 := execution/built_ins/pwd.c \
 			parsing/lexer/var_expansion.c \
 			parsing/lexer/var_expansion2.c \
 			parsing/lexer/var_expansion_utils.c \
+			parsing/lexer/syn_check.c \
 			parsing/parser/tree_utils.c \
 			parsing/parser/tree_navigation.c \
 			parsing/parser/tree_interface.c \
@@ -52,7 +53,6 @@ SRCS	 := execution/built_ins/pwd.c \
 			parsing/test_lexer_parser/print_functions.c \
 			parsing/parser/free_tree.c \
 			parsing/parser/parser_utils.c \
-			parsing/parser/syn_check.c \
 			parsing/parser/parse_lexeme.c \
 			
 OBJS	 := $(SRCS:.c=.o)
