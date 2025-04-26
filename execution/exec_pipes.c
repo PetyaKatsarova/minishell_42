@@ -64,6 +64,7 @@ int exec_pipeline(t_env_list *env, t_tree *tree)
 			pipes[i] = malloc(sizeof(int) * 2);
 			if (!pipes[i] || pipe(pipes[i]) < 0) {
 				perror("pipe");
+				close_all_pipes(pipes, i); // todo ...
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -79,9 +80,10 @@ int exec_pipeline(t_env_list *env, t_tree *tree)
 		cmd = go_next_cmd(cmd);
 		i++;
 	}
-	close_all_pipes(pipes, pipe_count);
+	// close_all_pipes(pipes, pipe_count);
 	int result = wait_all(pids, i);
 	env->last_exit_status = result;
 	free(pids);
+	free(pipes);
 	return result;
 }
