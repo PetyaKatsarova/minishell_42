@@ -12,14 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-/* perror the msg, frees t_env cpy and exits_failure */
-int err_malloc(t_env_list *cpy, char *msg)
-{
-	perror(msg);
-	if (cpy)
-		free_t_env(cpy);
-	exit(EXIT_FAILURE);
-}
 static void helper_sort(t_env_list *cpy, t_env_list *env_struct, int i)
 {
 		if (!cpy->vars[i].key)

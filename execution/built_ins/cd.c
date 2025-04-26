@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   cd.c                                               :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/18 15:12:55 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/25 10:39:48 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/26 08:26:39 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define CWD_MAX 1024
 
 /**
- * Parses full command path in the **result, returns exit_success(0) or failure(1)
+ * Parses full command path in the **result, returns exit_success/0  or failure/1
  */
 static int	cd_to_home_or_join(char *rest, char *home, char **result)
 {
@@ -93,7 +93,6 @@ int do_cd(char **input_args, t_env_list *env)
     }
 	if (getcwd(cwd, CWD_MAX))
 		set_env_value(env, "PWD", cwd);
-	free(result);
-	return (EXIT_SUCCESS);
+	return (free(result), EXIT_SUCCESS);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   env.c                                              :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/17 11:56:26 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/25 10:34:59 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/26 08:45:17 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,35 +15,21 @@
 /*
 _=/usr/bin/env_lst
 the last command run was /usr/bin/env_lst, and _ was set to that.
-echo hello world
-echo $_
-In Bash, the special variable _ holds:
-The last argument to the last executed command.
-
-**TODO**: check if is set to the last command
-Handle Extra Arguments:
-
-If the user passes extra arguments to the env command (e.g., env ls or env echo $HOME), you need to detect these arguments and execute the corresponding command using execve.
-Error Handling:
-
-You should handle cases where env_lst is NULL or improperly initialized.
-The function currently always returns 0. You might need to return an appropriate error code if something goes wrong.
-Special Variable _:
-You need to ensure that the special variable _ is updated to the last executed command.
-Test the get_env_lst function with and without extra arguments.
-Ensure the _ variable is updated correctly after executing a command.
-
 */
 
-int	get_env(t_env_list *env_struct)
+int	get_env(char **argv, t_env_list *env_struct)
 {
 	size_t	i;
 
-	// Check for missing PATH
 	i = 0;
+	if (!env_struct || !env_struct->vars)
+	{
+		write(STDERR_FILENO, "minihell: env: Environment not initialized\n", 44);
+		return (EXIT_FAILURE);
+	}
 	while (i < env_struct->size && ft_strncmp(env_struct->vars[i].key, "PATH", 4))
 		i++;
-	if (i == env_struct->size || !env_struct->vars[i].value)
+	if (i == env_struct->size || !env_struct->vars[i].value ||argv[1])
 	{
 		write(STDERR_FILENO, "minihell: env: No such file or directory\n", 41);
 		return (127);

@@ -29,6 +29,7 @@
 //# include <stdbool.h>
 # include "parsing.h"
 
+
 # ifndef PATH_MAX
 #  define PATH_MAX 4096
 # endif
@@ -45,7 +46,7 @@ typedef enum e_exit_status
     EXIT_CMD_NOT_FOUND = 127,
     EXIT_INVALID_EXIT_ARG = 128,
     EXIT_SIGNAL_BASE = 128, // kill -9 => 137 = 128+
-	ERROR_ON_SPLIT = -1
+	ERROR_ON_SPLIT = -1,
 }   t_exit_status;
 
 typedef struct s_env {
@@ -71,7 +72,7 @@ typedef struct s_env_list {
 int			get_pwd();
 int		 	do_cd(char **argv, t_env_list *env);
 int		 	do_echo(char **args);
-int		 	get_env(t_env_list   *env_struct);
+int		 	get_env(char **argv, t_env_list   *env_struct);
 int		 	do_export(char  **input_args, t_env_list *env_struct);
 int		 	do_exit(t_env_list *env_struct, t_tree *tree, t_node *cmd_node);
 int		 	do_unset(char **input_args, t_env_list *env_struct);

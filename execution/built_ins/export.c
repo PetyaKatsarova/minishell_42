@@ -1,6 +1,15 @@
 
 #include "../../includes/minishell.h"
 
+/* perror the msg, frees t_env cpy and exits_failure */
+int err_malloc(t_env_list *cpy, char *msg)
+{
+	perror(msg);
+	if (cpy)
+		free_t_env(cpy);
+	exit(EXIT_FAILURE);
+}
+
 static	int	append_replace_envvar(char *argv, t_env_list *env_struct)
 {
 	char		**key_val;
@@ -15,11 +24,9 @@ static	int	append_replace_envvar(char *argv, t_env_list *env_struct)
 	set_env_value(env_struct, key_val[0], key_val[1]);
 	free(key_val[0]);
 	if (key_val[1])
-	free(key_val[1]);
+		free(key_val[1]);
 	return (0);
 }
-
-
 
 int	do_export(char **input_args, t_env_list *env_struct)
 {
@@ -34,7 +41,7 @@ int	do_export(char **input_args, t_env_list *env_struct)
 		{
 			if (append_replace_envvar(input_args[i], env_struct) == ERROR_ON_SPLIT)
 			{
-				return (ERROR_ON_SPLIT);
+				return (EXIT_FAILURE);
 			}
 			i++;
 		}
@@ -49,10 +56,3 @@ int	do_export(char **input_args, t_env_list *env_struct)
 	free_t_env(sorted_env);
 	return (EXIT_SUCCESS);
 }
-
-/*
-In most shells (like Bash), _ is a special variable that holds the last argument of the last executed command or the absolute path of the current shell or script.
-When you run a shell or execute a command, _ is updated to reflect the path of the shell binary or the last executed command.
-In this case, _ is set to the path of your minishell binary:
-"/home/pekatsar/Desktop/minishell_42/./minishell".
-*/

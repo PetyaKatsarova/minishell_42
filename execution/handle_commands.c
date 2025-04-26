@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:38:02 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/24 18:00:01 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/26 08:36:33 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int execute_builtin(t_node *cmd_node, t_tree *tree, t_env_list *env_struct)
 	else if (cmd_node->token_type == TOKEN_CD)
 		return do_cd(cmd_node->argv, env_struct);
 	else if (cmd_node->token_type == TOKEN_ENV)
-		return get_env(env_struct);
+		return get_env(cmd_node->argv, env_struct);
 	else if (cmd_node->token_type == TOKEN_ECHO)
 		return do_echo(cmd_node->argv);
 	else if (cmd_node->token_type == TOKEN_EXPORT)

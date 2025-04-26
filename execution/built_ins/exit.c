@@ -12,15 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-/*
-The exit status message should be sent to the standard error stream (stderr), not the standard output (stdout).
-write() allows you to specify the file descriptor directly (STDERR_FILENO for error messages), ensuring that the message goes to the error stream.
-Exit status 255: Commonly used for indicating an error or abnormal termination, but it is not defined by the system. Some programs or shells use 255 to signal specific conditions like:
-A fatal error or critical failure in the program.
-A "command not found" situation in shells like Bash (when the program cannot be located).
-Programs that exit after receiving a signal or exception.
-*/
-
 /**
  * Frees t_tree, env_struct_list and clears history
  */
@@ -33,7 +24,8 @@ static void	free_exit_resources(t_env_list *env_struct, t_tree *tree)
 }
 
 /**
- * Frees tree and env_struct, prints err exit(exit_failure) & prints exit err and frees resources
+ * Frees tree, history and env_struct, prints err exit too many args
+ * and exits with EXIT_FAILURE.
  */
 static void	handle_too_many_args(t_env_list *env_struct, t_tree *tree)
 {
@@ -99,4 +91,3 @@ int	do_exit(t_env_list *env_struct, t_tree *tree, t_node *cmd_node)
 	free_exit_resources(env_struct, tree);
 	exit(exit_status);
 }
-

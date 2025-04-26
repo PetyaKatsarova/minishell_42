@@ -3,17 +3,17 @@
 /*                                                        ::::::::            */
 /*   echo.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/18 15:13:09 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/25 10:29:23 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/26 08:27:41 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /*
-	Returns 1(true) if the string ends after ns and starts with -, otherwise 0(false).
+	Returns 1/true if the string ends after ns and starts with -, otherwise 0/false.
 */
 static int	is_echo_n_flag(char *str)
 {
