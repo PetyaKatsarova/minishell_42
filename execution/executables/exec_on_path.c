@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/25 19:18:06 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/26 20:24:50 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void close_all_pipe_fds(void)
 {
 	int	fd;
 
-	fd = 3;
+	fd = 0;
 	while (fd < 1024) // skip stdin, stdout, stderr
 	{
 		close(fd);
