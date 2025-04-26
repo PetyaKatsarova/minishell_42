@@ -87,8 +87,12 @@ int			set_state(e_state state, char c);
 bool		is_special_delim(char c);
 void		expand_exit_status(char **cpy, char **input, char **str, size_t *size, int exit_status);
 void		expand_var(char **cpy, char **lexeme, char **str, size_t *size, t_env_list *env_list);
-//void		check_if_size_reached(char **cpy, char **str, size_t *size);
+char		*expand_vars(char *input, t_env_list *env_list, int exit_status);
 char		*realloc_str(size_t *size, char *str);
+void		copy_char(char **cpy, char **str, char **input, size_t *size);
+char		*realloc_str(size_t *size, char *str);
+char		*alloc_str(size_t size);
+bool		is_valid_var_char(char c);
 
 // parser functions
 t_node		*nodenew(e_token token_type, t_node *parent);

@@ -1,19 +1,6 @@
 #include "../../includes/parsing.h"
 #include "../../includes/minishell.h"
 
-static bool	is_valid_var_char(char c)
-{
-	if (c >= '0' && c <= '9')
-		return (true);
-	if (c >= 'A' && c <= 'Z')
-		return (true);
-	if (c >= 'a' && c <= 'z')
-		return (true);
-	if (c == '_')
-		return (true);
-	return (false);
-}
-
 static int	get_len_var(char *str)
 {
 	int	len;
@@ -39,25 +26,9 @@ static void	extract_var(char *str, char *var)
 	*var = '\0';
 }
 
-static void	copy_char(char **cpy, char **str, char **input, size_t *size)
-{
-	**cpy = **input;
-	(*cpy)++;
-	(*input)++;
-	if ((size_t)(*cpy - *str) >= *size - 1)
-	{
-		*str = realloc_str(size, *str);
-		*cpy = *str;
-		while (**cpy != '\0')
-		{
-			(*cpy)++;
-		}
-	}
-}
-
 void	expand_exit_status(char **cpy, char **input, char **str, size_t *size, int exit_status)
 {
-	char	*str_exit_status;
+	char	*str_exit_status;//void		check_if_size_reached(char **cpy, char **str, size_t *size);
 	char	*orig;
 
 	str_exit_status = ft_itoa(exit_status);
