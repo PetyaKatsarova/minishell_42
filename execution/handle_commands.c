@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:38:02 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/26 17:55:05 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/26 18:10:01 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int execute_builtin(t_node *cmd_node, t_tree *tree, t_env_list *env_struct)
 	if (cmd_node->token_type == TOKEN_EXIT)
 		return do_exit(env_struct, tree, cmd_node);
 	else if (cmd_node->token_type == TOKEN_PWD)
-		return get_pwd(char **argv);
+		return get_pwd(cmd_node->argv);
 	else if (cmd_node->token_type == TOKEN_CD)
 		return do_cd(cmd_node->argv, env_struct);
 	else if (cmd_node->token_type == TOKEN_ENV)
@@ -29,8 +29,6 @@ int execute_builtin(t_node *cmd_node, t_tree *tree, t_env_list *env_struct)
 		return do_echo(cmd_node->argv);
 	else if (cmd_node->token_type == TOKEN_EXPORT)
 		return do_export(cmd_node->argv, env_struct);
-	// else if (cmd_node->token_type == TOKEN_WORD) // todo: for var not exported like: var=bla, set exported=0 and
-		// return do_save_var(cmd_node->argv, env_struct);
 	else if (cmd_node->token_type == TOKEN_UNSET)
 		return do_unset(cmd_node->argv, env_struct);
 	return (EXIT_CMD_NOT_FOUND);

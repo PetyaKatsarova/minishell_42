@@ -20,7 +20,7 @@ int err_malloc(t_env_list *cpy, char *msg)
 	exit(EXIT_FAILURE);
 }
 
-static int is_valisd_identifier(char *str)
+static int is_valid_identifier(char *str)
 {
 	int	i;
 
