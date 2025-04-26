@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/26 09:54:48 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/26 10:08:57 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,46 +60,8 @@ static int handle_readline(t_env_list *env_struct_lst)
 }
 
 // cc -Wall -Wextra -Werror main.c -lreadline && ./a.out
-// valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes ./minishell
-// valgrind -s --leak-check=full --track-origins=yes ./minishell
-
-//valgrind --tool=memcheck --track-fds=yes --trace-children=yes ./minishell
-
-//export b | export bb | echo | b | pwd | cat main.c | grep main.c
-
-
-//valgrind --track-fds=yes --trace-children=yes --log-fd=2 ./minishell  // this is only for fds
-/**
- * !! NB!!
- * This is also fine.
-
-🔹 `in use at exit: 26,383 bytes in 24 blocks`  
- → This memory is **still reachable**, not leaked.  
- → It’s **held by `ls`**, likely for caching, internal buffers, or locale settings.
-
-🔹 `total heap usage: 258 allocs, 234 frees`  
- → Normal behavior: many programs allocate memory and let the OS clean it up on exit.
-
-No `definitely lost` memory → **no real leaks**.
-**Conclusion:** everything’s working as expected.
-1 std FD → stdout (you ran under Valgrind, which redirects others).
-3 inherited FDs:
-fd 103: /usr/share/code/v8_context_snapshot.bin (VSCode-related).
-fd 38: /dev/ptmx (pseudo-terminal for VSCode terminal).
-fd 37: VSCode terminal log (ptyhost.log).
-
-!!!
-still reachable: 213,740 bytes in 406 blocks
-That memory was not freed, but still reachable at program exit — meaning:
-You didn’t free() everything.
-But you kept pointers to those blocks.
-Valgrind doesn’t treat this as a leak, since OS will reclaim it anyway.
+/** valgrind --tool=memcheck --track-fds=yes --trace-children=yes ./minishell
  */
-
-
-// valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes ./minishell
-
-// valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes ./minihell
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
 	(void) argv;
@@ -112,5 +74,6 @@ int main(int argc, char **argv, char **envp) {
 	handle_readline(env_struct_lst);
 	free_t_env(env_struct_lst); //this is done in exit.c: in case i have invalid exec path: testing
 	clear_history();
+	rl_clear_history(); // todo: rmv !!! not allowed, this is for mem leak checks
 	return (0);
 }
