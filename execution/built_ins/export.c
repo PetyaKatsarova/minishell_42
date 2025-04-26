@@ -20,10 +20,8 @@ Null-terminate vars[size].key = NULL.
 
 static	int	append_replace_envvar(char *argv, t_env_list *env_struct)
 {
-	int		i;
 	char		**key_val;
 
-	i = 0;
 	key_val = ft_split(argv, '=');
 	if (!key_val)
 	{
