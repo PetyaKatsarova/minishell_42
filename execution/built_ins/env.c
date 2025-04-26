@@ -6,16 +6,15 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/17 11:56:26 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/18 15:46:58 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/25 10:34:59 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /*
-!!NB!!
 _=/usr/bin/env_lst
-Means the last command run was /usr/bin/env_lst, and _ was set to that.
+the last command run was /usr/bin/env_lst, and _ was set to that.
 echo hello world
 echo $_
 In Bash, the special variable _ holds:
@@ -28,11 +27,8 @@ If the user passes extra arguments to the env command (e.g., env ls or env echo 
 Error Handling:
 
 You should handle cases where env_lst is NULL or improperly initialized.
-Return Value:
-
 The function currently always returns 0. You might need to return an appropriate error code if something goes wrong.
 Special Variable _:
-
 You need to ensure that the special variable _ is updated to the last executed command.
 Test the get_env_lst function with and without extra arguments.
 Ensure the _ variable is updated correctly after executing a command.
@@ -49,14 +45,15 @@ int	get_env(t_env_list *env_struct)
 		i++;
 	if (i == env_struct->size || !env_struct->vars[i].value)
 	{
-		write(STDERR_FILENO, "minihell: env: No such file or directory\n", 41); // TODO !! MINIHELL
+		write(STDERR_FILENO, "minihell: env: No such file or directory\n", 41);
 		return (127);
 	}
 
 	i = 0;
 	while (i < env_struct->size)
 	{
-		if (env_struct->vars[i].key && env_struct->vars[i].value)
+		if (env_struct->vars[i].key && env_struct->vars[i].value
+			&& env_struct->vars[i].exported)
 			printf("%s=%s\n", env_struct->vars[i].key, env_struct->vars[i].value);
 		i++;
 	}

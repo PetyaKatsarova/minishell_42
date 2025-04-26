@@ -20,6 +20,18 @@ int err_malloc(t_env_list *cpy, char *msg)
 		free_t_env(cpy);
 	exit(EXIT_FAILURE);
 }
+static void helper_sort(t_env_list *cpy, t_env_list *env_struct, int i)
+{
+		if (!cpy->vars[i].key)
+			err_malloc(cpy, "minishell: malloc failed");
+		if (env_struct->vars[i].value)
+			cpy->vars[i].value = ft_strdup(env_struct->vars[i].value); // protect the strdup: todo....
+		else
+			cpy->vars[i].value = NULL;
+		if (env_struct->vars[i].value && !cpy->vars[i].value)
+			err_malloc(cpy, "minishell: malloc failed");
+		cpy->vars[i].exported = env_struct->vars[i].exported;
+}
 
 t_env_list *cpy_env_list(t_env_list *env_struct)
 {
@@ -38,15 +50,7 @@ t_env_list *cpy_env_list(t_env_list *env_struct)
 	while (i < cpy->size)
 	{
 		cpy->vars[i].key = ft_strdup(env_struct->vars[i].key);
-		if (!cpy->vars[i].key)
-			err_malloc(cpy, "minishell: malloc failed");
-		if (env_struct->vars[i].value)
-			cpy->vars[i].value = ft_strdup(env_struct->vars[i].value); // protect the strdup: todo....
-		else
-			cpy->vars[i].value = NULL;
-		if (env_struct->vars[i].value && !cpy->vars[i].value)
-			err_malloc(cpy, "minishell: malloc failed");
-		cpy->vars[i].exported = env_struct->vars[i].exported;
+		helper_sort(cpy, env_struct, i);
 		i++;
 	}
 	cpy->vars[i].key = NULL;

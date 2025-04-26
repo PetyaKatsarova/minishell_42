@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/23 21:12:05 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/25 19:03:09 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,18 @@ static int	msg(char *name, char *msg)
 	return (EXIT_CMD_NOT_FOUND);
 }
 
+static void close_all_pipe_fds(void)
+{
+	int	fd;
+
+	fd = 3;
+	while (fd < 1024) // skip stdin, stdout, stderr
+	{
+		close(fd);
+		fd++;
+	}
+}
+
 /**
  * Runs the binary on the given path: /bin/ls -l, uses execve(overwrites curr process)
  */
@@ -39,30 +51,24 @@ static int	exec_command(t_env_list *env_list, t_node *curr_cmd)
 	cmd_path = get_command_path(env_list, curr_cmd->argv[0]);
 	if (!cmd_path)
 	{
-		env_list->last_exit_status = 127; // do we need this? is it a child process?
+		env_list->last_exit_status = EXIT_CMD_NOT_FOUND;
 		msg(curr_cmd->argv[0], " command not found");
-		// what we need to free here? todo...
-		exit (127);
+		close_all_pipe_fds();
+		exit (EXIT_CMD_NOT_FOUND);
 	}
 	args = curr_cmd->argv;
-	if (!args)
-	{
-		//helper_free(args, i, cmd_path);
-		//	ASK JAN: DO STH: FREE_TREE(TREE)??
-	}
+	//if (!args) todo...
 	env = converted_env(env_list);
-	if (!env) // todo: to handle later
+	if (!env)
 	{
 		perror("Failed to convert environment variables.");
-		//free_args(args, i);
 		free(cmd_path);
 		return (EXIT_FAILURE);
 	}
-	// printf("I am pid %d (parent: %d)\n", getpid(), getppid()); // todo: delete
 	execve(cmd_path, args, env);
 	perror("execve failed");
 	free(cmd_path);
-	exit (EXIT_FAILURE); // ??
+	exit (EXIT_FAILURE);
 }
 /**
  * If in pipe, execve() directly with exec_command, if not: fork and execve(exec_command)
@@ -79,7 +85,7 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 		if (pid == -1)
 		{
 			perror("minishell: fork failed");
-			env_list->last_exit_status = 1;
+			env_list->last_exit_status = EXIT_FAILURE;
 			return (EXIT_FAILURE);
 		}
 		if (pid == 0)
@@ -94,6 +100,6 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 	}
 	else
 		exec_command(env_list, curr_cmd);
-	exit (127); // ?? do we need this?
+	exit (EXIT_CMD_NOT_FOUND); // ?? do we need this?
 }
 

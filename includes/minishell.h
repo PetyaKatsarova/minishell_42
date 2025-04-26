@@ -44,7 +44,8 @@ typedef enum e_exit_status
     EXIT_CMD_NOT_EXECUTABLE = 126,
     EXIT_CMD_NOT_FOUND = 127,
     EXIT_INVALID_EXIT_ARG = 128,
-    EXIT_SIGNAL_BASE = 128, // kill -9 => 137 = 128+9
+    EXIT_SIGNAL_BASE = 128, // kill -9 => 137 = 128+
+	ERROR_ON_SPLIT = -1
 }   t_exit_status;
 
 typedef struct s_env {
@@ -62,8 +63,8 @@ typedef struct s_env_list {
 	size_t  size;
 	size_t  capacity;
 	int	 	last_exit_status; //Every time a command runs → set shell->last_status = exit_code
-	int 	shlvl; // shell level, increase every time ./minishell is run
-	int  	is_child; // 1 if child process, 0 if parent, default is 0
+	//int 	shlvl; // shell level, increase every time ./minishell is run
+	//int  	is_child; // 1 if child process, 0 if parent, default is 0
 } t_env_list;
 
 // execution/built_ins/*
@@ -96,7 +97,6 @@ int			too_many_args(char	**input_args);
 int			print_builtin_error(const char *cmd, const char *arg, const char *msg);
 
 // execution/handle_commands.c
-//int 		handle_command(t_env_list *env, t_tree *tree, t_node *curr_cmd);
 int 		execute_builtin(t_node *cmd_node, t_tree *tree, t_env_list *env_struct);
 
 // execution/executables/*
