@@ -92,22 +92,22 @@ static int	append_replace_envvar(char *argv, t_env_list *env_struct)
 	free(value);
 	return (EXIT_SUCCESS);
 }
-
+// bl=1=2= lv = lv ec=1+2 + 2
 int	do_export(char **input_args, t_env_list *env_struct)
 {
 	int			i;
 	t_env_list	*sorted_env;
+	int			has_error;
 
-	i = 1; // 0 is export cmd
+	i = 1;
+	has_error = 0;
 	sorted_env = NULL;
 	if (input_args[1])
 	{
 		while (input_args[i])
 		{
 			if (append_replace_envvar(input_args[i], env_struct) == EXIT_FAILURE)
-			{
-				return (EXIT_FAILURE);
-			}
+				has_error = 1;
 			i++;
 		}
 	}
@@ -117,7 +117,10 @@ int	do_export(char **input_args, t_env_list *env_struct)
 		if (!sorted_env)
 			err_malloc(NULL, "minishell: sorted env-struct failed");
 		print_env_export(sorted_env);
+		free_t_env(sorted_env);
 	}
-	free_t_env(sorted_env);
+	if (has_error)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
+
