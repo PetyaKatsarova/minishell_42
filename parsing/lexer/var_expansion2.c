@@ -44,6 +44,38 @@ void	expand_exit_status(char **cpy, char **input, char **str, size_t *size, int 
 	(*input) += 2;
 }
 
+static void	parse_var_val(char **cpy, char **str, char **var_val, size_t *size)
+{
+	bool	in_word;
+
+	in_word = false;
+	while (**var_val)
+	{
+		if (is_whitespace(**var_val) == false && in_word == false)
+		{
+			**cpy = '\"';
+			(*cpy)++;
+			in_word = true;
+		}
+		else if (is_whitespace(**var_val) == true && in_word == true)
+		{
+			**cpy = '\"';
+			(*cpy)++;
+			in_word = false;
+		}
+		else
+		{
+			copy_char(cpy, str, var_val, size);
+		}
+	}
+	if (in_word == true)
+	{
+		**cpy = '\"';
+		(*cpy)++;
+		in_word = false;
+	}
+}
+
 void	expand_var(char **cpy, char **input, char **str, size_t *size, t_env_list *env_list)
 {
 	char	*var;
@@ -61,7 +93,7 @@ void	expand_var(char **cpy, char **input, char **str, size_t *size, t_env_list *
 	{
 		while (*var_val)
 		{
-			copy_char(cpy, str, &var_val, size);
+			parse_var_val(cpy, str, &var_val, size);
 		}
 	}
 	(*input)++;
