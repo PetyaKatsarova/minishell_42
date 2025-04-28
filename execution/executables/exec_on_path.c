@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/26 21:44:01 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/28 17:13:46 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 		}
 		if (pid == 0)
 		{
-			apply_redirections(curr_cmd);
 			exec_command(env_list, curr_cmd);
 		}
 		waitpid(pid, &status, 0); 
@@ -104,7 +103,6 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 	}
 	else
 	{
-		apply_redirections(curr_cmd);
 		exec_command(env_list, curr_cmd);
 	}
 		
