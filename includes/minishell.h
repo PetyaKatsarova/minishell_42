@@ -98,13 +98,15 @@ int			print_builtin_error(const char *cmd, const char *arg, const char *msg);
 int 		execute_builtin(t_node *cmd_node, t_tree *tree, t_env_list *env_struct);
 
 // execution/executables/*
+void        close_all_pipe_fds(void);
 int			exec_on_path(t_env_list *env_list, t_node	*curr_cmd, int is_pipe);
 char		*get_command_path(t_env_list *env, char *cmd_no_flag);
 void		free_dbl_ptr(char **ptr);
 void		free_args(char **argv, int count);
 int			is_valid_read_or_exec_file(char *file_name, char mode);
 
-// execution/exec_pipes.c
+// execution/exec_pipes.c, redirects.c
 int         exec_pipeline(t_env_list *env, t_tree *tree);
+void        apply_redirections(t_node *cmd);
 
 #endif

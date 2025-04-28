@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/26 20:24:50 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/26 21:44:01 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	msg(char *name, char *msg)
 	return (EXIT_CMD_NOT_FOUND);
 }
 
-static void close_all_pipe_fds(void)
+void close_all_pipe_fds(void)
 {
 	int	fd;
 
@@ -90,7 +90,10 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 			return (EXIT_FAILURE);
 		}
 		if (pid == 0)
+		{
+			apply_redirections(curr_cmd);
 			exec_command(env_list, curr_cmd);
+		}
 		waitpid(pid, &status, 0); 
 		// printf("exit st, execve: %d\n", status); // testing: remove later
 		if (WIFEXITED(status))
@@ -100,7 +103,11 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 		return (env_list->last_exit_status);
 	}
 	else
+	{
+		apply_redirections(curr_cmd);
 		exec_command(env_list, curr_cmd);
+	}
+		
 	exit (EXIT_CMD_NOT_FOUND); // ?? do we need this?
 }
 

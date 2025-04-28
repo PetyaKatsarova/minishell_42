@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/26 20:42:04 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/28 16:37:36 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 			exit_status = exec_pipeline(env_struct_lst, tree);
 		else if (cmd_node) // handles single commands
 		{
-			if (cmd_node->token_type == TOKEN_WORD)
+			if (cmd_node->token_type == TOKEN_WORD) // add logic to handle all the redirects...
 				exit_status = exec_on_path(env_struct_lst, cmd_node, 0);
 			else
 				exit_status = execute_builtin(cmd_node, tree, env_struct_lst);
@@ -74,8 +74,7 @@ int main(int argc, char **argv, char **envp) {
         return (EXIT_FAILURE);
     }
 	handle_readline(env_struct_lst);
-	free_t_env(env_struct_lst); //this is done in exit.c: in case i have invalid exec path: testing
+	free_t_env(env_struct_lst);
 	clear_history();
-	rl_clear_history(); // todo: rmv !!! not allowed, this is for mem leak checks
 	return (0);
 }

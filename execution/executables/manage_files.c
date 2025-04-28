@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   manage_files.c                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:33:51 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/17 11:58:45 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/04/26 21:28:06 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

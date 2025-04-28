@@ -31,6 +31,7 @@ SRCS	 := execution/built_ins/pwd.c \
 			execution/utils.c \
 			execution/exec_pipes.c \
 			execution/handle_commands.c \
+			execution/redirects.c \
 			execution/executables/exec_on_path.c \
 			execution/executables/parse_path.c \
 			execution/executables/helpers.c \
