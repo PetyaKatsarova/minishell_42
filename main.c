@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/28 17:17:02 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/28 18:52:28 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ static int handle_readline(t_env_list *env_struct_lst)
  valgrind --leak-check=full --show-leak-kinds=all ./minishell
  */
 
- // TODO: TO FIX: minihell$ echo \ | grep \
-grep: Trailing backslash
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
 	(void) argv;

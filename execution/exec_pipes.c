@@ -1,16 +1,23 @@
 #include "../includes/minishell.h"
 
+/**
+ * Closes both ends of pipe[] and frees pipes[i] abd pipes
+ */
 static void close_all_pipes(int **pipes, int count)
 {
-	for (int i = 0; i < count; i++) {
-		if (pipes[i]) {
-			close(pipes[i][0]);
-			close(pipes[i][1]);
-			free(pipes[i]);
-		}
-	}
-	free(pipes);
+    if (!pipes)
+        return;
+    for (int i = 0; i < count; i++) {
+        if (pipes[i]) {
+            close(pipes[i][0]);
+            close(pipes[i][1]);
+            free(pipes[i]);
+        }
+    }
+    free(pipes);
 }
+
+
 
 static int wait_all(pid_t *pids, int count)
 {
@@ -26,98 +33,74 @@ static int wait_all(pid_t *pids, int count)
  */
 static void handle_child(int i, int pipe_count, int **pipes, pid_t *pids, t_node *cmd, t_env_list *env, t_tree *tree)
 {
-	int status;
-
 	if (!cmd)
 		exit(127);
-	if (i > 0 && i - 1 < pipe_count && pipes[i - 1])
-	{
+
+	if (i > 0 && pipes[i - 1])
 		dup2(pipes[i - 1][0], STDIN_FILENO);
-		close(pipes[i - 1][0]);
-	}
 	if (i < pipe_count && pipes[i])
-	{
 		dup2(pipes[i][1], STDOUT_FILENO);
-		close(pipes[i][1]);
-	}
-	status = execute_builtin(cmd, tree, env);
+
+	close_all_pipes(pipes, pipe_count);
+	free(pids);
+
+	int status = execute_builtin(cmd, tree, env);
 	if (status != EXIT_CMD_NOT_FOUND)
 		exit(status);
 	exec_on_path(env, cmd, 1);
-	close_all_pipes(pipes, pipe_count);
-	free(pids);
 	exit(EXIT_CMD_NOT_FOUND);
 }
-
-/**
- * If exists, frees pipes and pids
- */
-static void free_pipes_and_pids(int **pipes, int pcount, pid_t *pids)
-{
-	int i;
-
-	i = 0;
-	if (pipes)
-	{
-		while (i < pcount)
-		{
-			if (pipes[i])
-				free(pipes[i]);
-			i++;
-		}
-		free(pipes);
-	}
-	if (pids)
-		free(pids);
-}
-
 
 int exec_pipeline(t_env_list *env, t_tree *tree)
 {
 	int pipe_count = get_num_pipes(tree);
-	int **pipes = malloc(sizeof(int *) * pipe_count);
+	int **pipes = malloc(sizeof(int *) * (pipe_count));
+    for (int i = 0; i < pipe_count; i++)
+    {
+        pipes[i] = NULL;
+    }
+       
 	pid_t *pids = malloc(sizeof(pid_t) * (pipe_count + 1));
 	t_node *cmd = go_first_cmd(tree);
-	int i;
-	
-	i = 0;
+	int i = 0;
+
 	if (!pipes || !pids)
-		return (EXIT_FAILURE); // todo: no clean her for pipes and pids...
-	while (cmd) {
-		if (i < pipe_count) {
+		exit(EXIT_FAILURE);
+
+	while (cmd)
+	{
+		if (i < pipe_count)
+		{
 			pipes[i] = malloc(sizeof(int) * 2);
 			if (!pipes[i] || pipe(pipes[i]) < 0)
 			{
 				perror("pipe");
-				free_pipes_and_pids(pipes, pipe_count, pids);
 				exit(EXIT_FAILURE);
 			}
 		}
 		pids[i] = fork();
-		if (pids[i] == -1) {
+		if (pids[i] == -1)
+		{
 			perror("fork");
-			close_all_pipes(pipes, pipe_count);
-			free_pipes_and_pids(pipes, pipe_count, pids);
 			exit(EXIT_FAILURE);
 		}
 		if (pids[i] == 0)
 			handle_child(i, pipe_count, pipes, pids, cmd, env, tree);
-		if (pids[i] > 0) {
-			if (i > 0 && pipes[i - 1]) {
-				close(pipes[i - 1][0]);
-				close(pipes[i - 1][1]);
-			}
-			if (i < pipe_count && pipes[i]) {
-				close(pipes[i][0]);
-				close(pipes[i][1]);
-			}
+		if (i > 0 && pipes[i - 1])
+		{
+			close(pipes[i - 1][0]);
+			close(pipes[i - 1][1]);
+			// free(pipes[i - 1]);
 		}
 		cmd = go_next_cmd(cmd);
 		i++;
 	}
-	int result = wait_all(pids, i);
-	env->last_exit_status = result;
+
+	int status = wait_all(pids, i);
+	env->last_exit_status = status;
+    close_all_pipes(pipes, pipe_count);
 	free(pids);
-	free(pipes);
-	return result;
+	return status;
 }
+
+

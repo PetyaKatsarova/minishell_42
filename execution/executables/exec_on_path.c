@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/28 17:13:46 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/28 18:54:23 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	exec_command(t_env_list *env_list, t_node *curr_cmd)
 	{
 		env_list->last_exit_status = EXIT_CMD_NOT_FOUND;
 		msg(curr_cmd->argv[0], " command not found");
-		close_all_pipe_fds();
+		// close_all_pipe_fds();
 		exit (EXIT_CMD_NOT_FOUND);
 	}
 	args = curr_cmd->argv;
