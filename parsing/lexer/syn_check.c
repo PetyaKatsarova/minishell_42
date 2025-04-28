@@ -1,20 +1,20 @@
 #include "../../includes/parsing.h"
 
-int	syn_check(t_tree *tree)
+int	syn_check(t_token **head)
 {
 	t_token	*current;
 	bool	redir_flag;
 
-	current = tree->token_list;
+	current = *head;
 	redir_flag = false;
 	while (current != NULL)
 	{
 		if (redir_flag == true)
 		{
 			if (is_redir(current->token_type))
-				return (write(1, "syntax error: unexpected redir\n", 32), -1);
+				return (write(1, "syntax error: unexpected redir\n", 32), 2);
 			else if (current->token_type == TOKEN_PIPE)
-				return (write(1, "syntax error: unexpected '|'\n", 30), -1);
+				return (write(1, "syntax error: unexpected '|'\n", 30), 2);
 			else
 				redir_flag = false;
 		}
@@ -23,6 +23,6 @@ int	syn_check(t_tree *tree)
 		current = current->next;
 	}
 	if (redir_flag == true)
-		return (write(1, "syntax error: unexpected end of line\n", 37), -1);
+		return (write(1, "syntax error: unexpected end of line\n", 37), 2);
 	return (0);
 }

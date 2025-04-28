@@ -1,7 +1,7 @@
 #include "../../includes/parsing.h"
 #include "../../includes/minishell.h"
 
-static char	*make_str(int len)
+static char	*allocate_str(int len)
 {
 	char	*str;
 
@@ -69,7 +69,7 @@ char *parse_lexeme(char *lexeme)
 {
 	char	*str;
 
-	str = make_str(ft_strlen(lexeme));
+	str = allocate_str(ft_strlen(lexeme));
 	str = populate_str(str, lexeme);
 	return (str);
 }

@@ -1,19 +1,6 @@
 #include "../../includes/parsing.h"
 #include "../../includes/minishell.h"
 
-static bool	is_valid_var_char(char c)
-{
-	if (c >= '0' && c <= '9')
-		return (true);
-	if (c >= 'A' && c <= 'Z')
-		return (true);
-	if (c >= 'a' && c <= 'z')
-		return (true);
-	if (c == '_')
-		return (true);
-	return (false);
-}
-
 static int	get_len_var(char *str)
 {
 	int	len;
@@ -39,9 +26,9 @@ static void	extract_var(char *str, char *var)
 	*var = '\0';
 }
 
-void	expand_exit_status(char **cpy, char **input, int exit_status)
+void	expand_exit_status(char **cpy, char **input, char **str, size_t *size, int exit_status)
 {
-	char	*str_exit_status;
+	char	*str_exit_status;//void		check_if_size_reached(char **cpy, char **str, size_t *size);
 	char	*orig;
 
 	str_exit_status = ft_itoa(exit_status);
@@ -50,16 +37,14 @@ void	expand_exit_status(char **cpy, char **input, int exit_status)
 	{
 		while (*str_exit_status)
 		{
-			**cpy = *str_exit_status;
-			(*cpy)++;
-			str_exit_status++;
+			copy_char(cpy, str, &str_exit_status, size);
 		}
 	}
 	free(orig);
 	(*input) += 2;
 }
 
-void	expand_var(char **cpy, char **input, t_env_list *env_list)
+void	expand_var(char **cpy, char **input, char **str, size_t *size, t_env_list *env_list)
 {
 	char	*var;
 	char	*var_val;
@@ -76,9 +61,7 @@ void	expand_var(char **cpy, char **input, t_env_list *env_list)
 	{
 		while (*var_val)
 		{
-			**cpy = *var_val;
-			(*cpy)++;
-			var_val++;
+			copy_char(cpy, str, &var_val, size);
 		}
 	}
 	(*input)++;

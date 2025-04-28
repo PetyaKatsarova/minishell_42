@@ -85,13 +85,20 @@ void		free_list(t_token **head);
 bool		is_whitespace(char c);
 int			set_state(e_state state, char c);
 bool		is_special_delim(char c);
-void		expand_exit_status(char **cpy, char **lexeme, int exit_status);
-void		expand_var(char **cpy, char **lexeme, t_env_list *env_list);
+void		expand_exit_status(char **cpy, char **input, char **str, size_t *size, int exit_status);
+void		expand_var(char **cpy, char **lexeme, char **str, size_t *size, t_env_list *env_list);
+char		*expand_vars(char *input, t_env_list *env_list, int exit_status);
+char		*realloc_str(size_t *size, char *str);
+void		copy_char(char **cpy, char **str, char **input, size_t *size);
+char		*realloc_str(size_t *size, char *str);
+char		*alloc_str(size_t size);
+bool		is_valid_var_char(char c);
+int			syn_check(t_token **head);
 
 // parser functions
 t_node		*nodenew(e_token token_type, t_node *parent);
 t_tree		*treenew(t_token *token_list, int exit_status);
-int			parser(t_tree *tree);
+void		parser(t_tree *tree);
 t_node		*go_first_pipe(t_tree *tree);
 t_node		*go_next_pipe(t_node *current);
 void		consume_token_list(t_tree *tree);
@@ -102,7 +109,6 @@ int			get_num_pipes(t_tree *tree);
 void		make_pipe_nodes(t_tree *tree);
 void		make_cmd_nodes(t_tree *tree);
 void		free_tree(t_tree *tree);
-int			syn_check(t_tree *tree);
 bool		is_redir(e_token token_type);
 char		*parse_lexeme(char *lexeme);
 
