@@ -41,9 +41,6 @@ SRCS	 := execution/built_ins/pwd.c \
 			parsing/lexer/consume_input.c \
 			parsing/lexer/utils.c \
 			parsing/lexer/list_utils.c \
-			parsing/lexer/var_expansion.c \
-			parsing/lexer/var_expansion2.c \
-			parsing/lexer/var_expansion_utils.c \
 			parsing/lexer/syn_check.c \
 			parsing/parser/tree_utils.c \
 			parsing/parser/tree_navigation.c \

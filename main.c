@@ -37,7 +37,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 			free(input);
 			continue;
 		}
-		lexer(&token_list, input, env_struct_lst, exit_status);
+		lexer(&token_list, input);
 		exit_status = syn_check(&token_list);
 		if (exit_status != 0)
 		{
@@ -46,9 +46,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 			continue;
 		}
 		tree = treenew(token_list, exit_status);
-		parser(tree);
-		printlist(token_list);
-		print_cmd_nodes(tree);
+		parser(tree, env_struct_lst);
 		cmd_node = go_first_cmd(tree);
 		if (get_num_pipes(tree) > 0)
 			exit_status = exec_pipeline(env_struct_lst, tree);
