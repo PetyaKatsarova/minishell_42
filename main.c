@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/29 20:25:08 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/29 21:20:40 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,12 @@
 // 		cmd = go_next_cmd(cmd);
 // 	}
 // }
+/**
+ * 		// printlist(token_list);
+		//print_cmd_nodes(tree);
+					// apply_redirections(cmd_node); bad: overwrites parent output!!
+			// print_redirects(cmd_node);
+ */
 
 
 
@@ -100,17 +106,13 @@ static int handle_readline(t_env_list *env_struct_lst)
 		}
 		tree = treenew(token_list, exit_status);
 		parser(tree, env_struct_lst);
-		// printlist(token_list);
-		//print_cmd_nodes(tree);
-		print_cmd_nodes_readable(tree);
+		// print_cmd_nodes_readable(tree);
 		cmd_node = go_first_cmd(tree);
 		
 		if (get_num_pipes(tree) > 0)
 			exit_status = exec_pipeline(env_struct_lst, tree);
 		else if (cmd_node) // handles single commands
 		{
-			// apply_redirections(cmd_node); bad: overwrites parent output!!
-			// print_redirects(cmd_node);
 			if (cmd_node->token_type == TOKEN_WORD) // add logic to handle all the redirects...
 				exit_status = exec_on_path(env_struct_lst, cmd_node, 0);
 			else
