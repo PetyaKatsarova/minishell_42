@@ -55,13 +55,13 @@ static void	expand_variable(char **cpy, char **lexeme, t_env_list *env_list)
 
 	var = get_variable(*lexeme);
 	var_val = get_env_value(env_list, var);
-	(*lexeme)++;
 	while (var_val != NULL && *var_val != '\0')
 	{
 		**cpy = *var_val;
 		(*cpy)++;
 		var_val++;
 	}
+	(*lexeme)++;
 	while (is_valid_var_char(**lexeme))
 	{
 		(*lexeme)++;
@@ -69,9 +69,37 @@ static void	expand_variable(char **cpy, char **lexeme, t_env_list *env_list)
 	free(var);
 }
 
-static void	expand(char **cpy, char **lexeme, t_env_list *env_list)
+static void	expand_exit_status(char **cpy, char **lexeme, int exit_status)
 {
-	expand_variable(cpy, lexeme, env_list);
+	char	*exit_status_str;
+	char	*cpy_exit_status_str;
+
+	exit_status_str = ft_itoa(exit_status);
+	if (exit_status_str == NULL)
+	{
+		return ; // implement exit error
+	}
+	cpy_exit_status_str = exit_status_str;
+	while (*cpy_exit_status_str != '\0')
+	{
+		**cpy = *cpy_exit_status_str;
+		(*cpy)++;
+		cpy_exit_status_str++;
+	}
+	(*lexeme) += 2;
+	free(exit_status_str);
+}
+
+static void	expand(char **cpy, char **lexeme, t_env_list *env_list, int exit_status)
+{
+	if (*(*lexeme + 1) == '?')
+	{
+		expand_exit_status(cpy, lexeme, exit_status);
+	}
+	else
+	{
+		expand_variable(cpy, lexeme, env_list);
+	}
 }
 
 static void	parse_sq(char **cpy, char **lexeme)
@@ -86,14 +114,14 @@ static void	parse_sq(char **cpy, char **lexeme)
 	(*lexeme)++;
 }
 
-static void	parse_dq(char **cpy, char **lexeme, t_env_list *env_list)
+static void	parse_dq(char **cpy, char **lexeme, t_env_list *env_list, int exit_status)
 {
 	(*lexeme)++;
 	while (**lexeme != '\"')
 	{
 		if (**lexeme == '$')
 		{
-			expand_variable(cpy, lexeme, env_list);
+			expand(cpy, lexeme, env_list, exit_status);
 		}
 		else
 		{
@@ -105,7 +133,7 @@ static void	parse_dq(char **cpy, char **lexeme, t_env_list *env_list)
 	(*lexeme)++;
 }
 
-static char	*populate_str(char *str, char *lexeme, t_env_list *env_list)
+static char	*populate_str(char *str, char *lexeme, t_env_list *env_list, int exit_status)
 {
 	char	*cpy;
 	
@@ -118,11 +146,11 @@ static char	*populate_str(char *str, char *lexeme, t_env_list *env_list)
 		}
 		else if (*lexeme == '\"')
 		{
-			parse_dq(&cpy, &lexeme, env_list);
+			parse_dq(&cpy, &lexeme, env_list, exit_status);
 		}
 		else if (*lexeme == '$')
 		{
-			expand(&cpy, &lexeme, env_list);
+			expand(&cpy, &lexeme, env_list, exit_status);
 		}
 		else
 		{
@@ -135,11 +163,11 @@ static char	*populate_str(char *str, char *lexeme, t_env_list *env_list)
 	return (str);
 }
 
-char *parse_lexeme(char *lexeme, t_env_list *env_list)
+char *parse_lexeme(char *lexeme, t_env_list *env_list, int exit_status)
 {
 	char	*str;
 
-	str = allocate_str(1024);
-	str = populate_str(str, lexeme, env_list);
+	str = allocate_str(4096);
+	str = populate_str(str, lexeme, env_list, exit_status);
 	return (str);
 }

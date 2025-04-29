@@ -85,9 +85,9 @@ void		free_list(t_token **head);
 bool		is_whitespace(char c);
 int			set_state(e_state state, char c);
 bool		is_special_delim(char c);
-void		expand_exit_status(char **cpy, char **input, char **str, size_t *size, int exit_status);
-void		expand_var(char **cpy, char **lexeme, char **str, size_t *size, t_env_list *env_list);
-int			syn_check(t_token **head);
+//void		expand_exit_status(char **cpy, char **input, char **str, size_t *size, int exit_status);
+//void		expand_var(char **cpy, char **lexeme, char **str, size_t *size, t_env_list *env_list);
+int			syn_check(t_token *current);
 
 // parser functions
 t_node		*nodenew(e_token token_type, t_node *parent);
@@ -104,7 +104,7 @@ void		make_pipe_nodes(t_tree *tree);
 void		make_cmd_nodes(t_tree *tree);
 void		free_tree(t_tree *tree);
 bool		is_redir(e_token token_type);
-char		*parse_lexeme(char *lexeme, t_env_list *env_list);
+char		*parse_lexeme(char *lexeme, t_env_list *env_list, int exit_status);
 
 // test functions
 void		printlist(t_token *token_list);

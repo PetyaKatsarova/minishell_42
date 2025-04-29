@@ -38,9 +38,9 @@ static int handle_readline(t_env_list *env_struct_lst)
 			continue;
 		}
 		lexer(&token_list, input);
-		exit_status = syn_check(&token_list);
-		if (exit_status != 0)
+		if (syn_check(token_list) != 0)
 		{
+			exit_status = 2;
 			free_list(&token_list);
 			free(input);
 			continue;

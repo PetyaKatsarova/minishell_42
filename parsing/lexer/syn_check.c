@@ -1,11 +1,9 @@
 #include "../../includes/parsing.h"
 
-int	syn_check(t_token **head)
+int	syn_check(t_token *current)
 {
-	t_token	*current;
 	bool	redir_flag;
 
-	current = *head;
 	redir_flag = false;
 	while (current != NULL)
 	{
