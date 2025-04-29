@@ -113,5 +113,8 @@ void		print_state(e_state state);
 void		print_argv(t_node *node);
 void		print_node(t_node *node);
 void		print_cmd_nodes(t_tree *tree);
+void		print_redir_node(t_node *node);
+void		print_cmd_nodes_readable(t_tree *tree);
+void		print_cmd_node_readable(t_node *node);
 
 #endif
