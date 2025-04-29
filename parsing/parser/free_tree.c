@@ -1,4 +1,4 @@
-#include "../parsing.h"
+#include "../../includes/parsing.h"
 
 static void	free_pipes(t_tree *tree)
 {
@@ -65,9 +65,6 @@ static void	free_cmds(t_tree *tree)
 	}
 }
 
-/**
- *  Frees cmds, pipes, tokenlist, tree if existing
- */
 void	free_tree(t_tree *tree)
 {
 	free_cmds(tree);
