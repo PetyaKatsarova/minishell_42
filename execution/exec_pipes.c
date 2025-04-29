@@ -1,7 +1,7 @@
 #include "../includes/minishell.h"
 
 /**
- * Closes both ends of pipe[] and frees pipes[i] abd pipes
+ * Closes both ends of pipe[] and frees pipes[i] and pipes
  */
 static void close_all_pipes(int **pipes, int count)
 {
@@ -88,9 +88,8 @@ int exec_pipeline(t_env_list *env, t_tree *tree)
 			handle_child(i, pipe_count, pipes, pids, cmd, env, tree);
 		if (i > 0 && pipes[i - 1])
 		{
-			close(pipes[i - 1][0]);
+			close(pipes[i - 1][0]); // close both ends of prev pipe
 			close(pipes[i - 1][1]);
-			// free(pipes[i - 1]);
 		}
 		cmd = go_next_cmd(cmd);
 		i++;

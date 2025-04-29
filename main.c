@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/28 18:52:28 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/29 17:17:30 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 		}
 		tree = treenew(token_list, exit_status);
 		parser(tree);
-		//print_cmd_nodes(tree);
+		// print_cmd_nodes(tree);
 		cmd_node = go_first_cmd(tree);
 		if (get_num_pipes(tree) > 0)
 			exit_status = exec_pipeline(env_struct_lst, tree);
@@ -71,6 +71,9 @@ static int handle_readline(t_env_list *env_struct_lst)
  * valgrind --track-fds=yes --trace-children=yes ./minishell
 
  valgrind --leak-check=full --show-leak-kinds=all ./minishell
+
+ valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./minishell
+ll
  */
 
 int main(int argc, char **argv, char **envp) {
