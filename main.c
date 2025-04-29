@@ -37,16 +37,21 @@ static int handle_readline(t_env_list *env_struct_lst)
 			free(input);
 			continue;
 		}
-		lexer(&token_list, input, env_struct_lst, exit_status);
-		exit_status = syn_check(&token_list);
-		if (exit_status != 0)
+		lexer(&token_list, input);
+		if (syn_check(token_list) != 0)
 		{
+			exit_status = 2;
 			free_list(&token_list);
 			free(input);
 			continue;
 		}
 		tree = treenew(token_list, exit_status);
+<<<<<<< HEAD
 		parser(tree);
+=======
+		parser(tree, env_struct_lst);
+		// printlist(token_list);
+>>>>>>> 647bbbe798f52427ad6ea1ee148682b96213667f
 		// print_cmd_nodes(tree);
 		cmd_node = go_first_cmd(tree);
 		if (get_num_pipes(tree) > 0)
