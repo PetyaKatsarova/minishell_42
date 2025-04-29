@@ -22,6 +22,8 @@ static int	is_echo_n_flag(char *str)
 	i = 1;
 	if (str[0] != '-')
 		return (0);
+	if (str[1] != 'n')
+		return (0);
 	while (str[i] == 'n')
 		i++;
 	return (str[i] == '\0');
