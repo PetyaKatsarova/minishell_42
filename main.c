@@ -6,11 +6,64 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/29 17:17:30 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/29 20:25:08 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
+
+
+// debug_utils.c
+#include "includes/minishell.h"
+
+// void	print_redirect_type(e_token token_type)
+// {
+// 	if (token_type == TOKEN_INPUT_REDIRECT)
+// 		printf("< INPUT\n");
+// 	else if (token_type == TOKEN_OUTPUT_REDIRECT)
+// 		printf("> OUTPUT\n");
+// 	else if (token_type == TOKEN_APPEND_OUTPUT_REDIRECT)
+// 		printf(">> APPEND OUTPUT\n");
+// 	else if (token_type == TOKEN_HEREDOC)
+// 		printf("<< HEREDOC\n");
+// 	else
+// 		printf("Unknown redirect type (%d)\n", token_type);
+// }
+
+// void	print_redirects(t_node *cmd_node)
+// {
+// 	t_node *redir = cmd_node->redirects;
+// 	if (!redir)
+// 	{
+// 		printf("No redirects for this command.\n");
+// 		return;
+// 	}
+// 	printf("--- Redirects ---\n");
+// 	while (redir)
+// 	{
+// 		printf("Redirect path: %s\n", redir->redir_path);
+// 		printf("Redirect type: ");
+// 		print_redirect_type(redir->token_type);
+// 		redir = redir->redirects;
+// 	}
+// 	printf("------------------\n");
+// }
+
+
+// void	print_all_cmds_and_redirects(t_tree *tree)
+// {
+// 	t_node *cmd = go_first_cmd(tree);
+// 	int i = 0;
+// 	while (cmd)
+// 	{
+// 		printf("[CMD %d]\n", i++);
+// 		print_node(cmd);
+// 		print_redirects(cmd);
+// 		cmd = go_next_cmd(cmd);
+// 	}
+// }
+
+
 
 static int handle_readline(t_env_list *env_struct_lst)
 {
@@ -50,10 +103,13 @@ static int handle_readline(t_env_list *env_struct_lst)
 		// printlist(token_list);
 		// print_cmd_nodes(tree);
 		cmd_node = go_first_cmd(tree);
+		
 		if (get_num_pipes(tree) > 0)
 			exit_status = exec_pipeline(env_struct_lst, tree);
 		else if (cmd_node) // handles single commands
 		{
+			// apply_redirections(cmd_node); bad: overwrites parent output!!
+			// print_redirects(cmd_node);
 			if (cmd_node->token_type == TOKEN_WORD) // add logic to handle all the redirects...
 				exit_status = exec_on_path(env_struct_lst, cmd_node, 0);
 			else

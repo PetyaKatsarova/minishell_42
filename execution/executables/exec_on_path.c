@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/10 17:07:36 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/28 18:54:23 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/29 20:22:22 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void close_all_pipe_fds(void)
 {
 	int	fd;
 
-	fd = 0;
+	fd = 3;
 	while (fd < 1024) // skip stdin, stdout, stderr
 	{
 		close(fd);
@@ -91,6 +91,7 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 		}
 		if (pid == 0)
 		{
+			apply_redirections(curr_cmd);
 			exec_command(env_list, curr_cmd);
 		}
 		waitpid(pid, &status, 0); 

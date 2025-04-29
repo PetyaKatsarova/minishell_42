@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/11 11:38:02 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/28 17:13:13 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/29 20:33:50 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
  */
 int execute_builtin(t_node *cmd_node, t_tree *tree, t_env_list *env_struct)
 {
+	apply_redirections(cmd_node);
 	if (cmd_node->token_type == TOKEN_EXIT)
 		return do_exit(env_struct, tree, cmd_node);
 	else if (cmd_node->token_type == TOKEN_PWD)

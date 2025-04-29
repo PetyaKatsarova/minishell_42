@@ -30,7 +30,9 @@ static void	free_exit_resources(t_env_list *env_struct, t_tree *tree)
 static void	handle_too_many_args(t_env_list *env_struct, t_tree *tree)
 {
 	print_builtin_error("exit", NULL, "too many arguments");
-	free_exit_resources(env_struct, tree);
+	(void)env_struct;
+	(void)tree;
+	// free_exit_resources(env_struct, tree);
 	exit(EXIT_FAILURE);
 }
 

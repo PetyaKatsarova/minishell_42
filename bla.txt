@@ -1,2 +1,5 @@
 bla
-[?2004h[1;34mminihell$[0m [H[2J[1;34mminihell$[0m ^C[?2004l
+tra la la
+line 3
+ yes!!
+ 
