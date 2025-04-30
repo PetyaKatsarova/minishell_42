@@ -9,8 +9,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# include <assert.h> // remove for eval
-
 // forward declarations of structs from minishell.h
 
 struct s_env_list;
@@ -118,8 +116,9 @@ void		exit_failure_parser(t_parsing_data *data);
 int			get_type(char *str);
 char		**make_argv(t_token *token, t_parsing_data *data);
 bool		is_valid_var_char(char c);
-void		copy_char(char **target, char **source);
-char		*allocate_str(size_t len, t_parsing_data *data);
+void		copy_char(char **target, char **source, t_parsing_data *data);
+char		*allocate_str(t_parsing_data *data);
+char		*reallocate_str(char *str, t_parsing_data *data);
 void		expand_variable(char **cpy, char **lexeme, t_parsing_data *data);
 void		expand_exit_status(char **cpy, char **lexeme, t_parsing_data *data);
 

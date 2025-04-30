@@ -49,7 +49,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 		parser(input, exit_status, tree, env_struct_lst);
 		// printlist(token_list);
 		//print_cmd_nodes(tree);
-		print_cmd_nodes_readable(tree);
+		//print_cmd_nodes_readable(tree);
 		cmd_node = go_first_cmd(tree);
 		if (get_num_pipes(tree) > 0)
 			exit_status = exec_pipeline(env_struct_lst, tree);

@@ -2,25 +2,6 @@
 #include "../../../includes/minishell.h"
 #include "../../../includes/parsing.h"
 
-bool	is_redir(e_token token_type)
-{
-	if (token_type >= TOKEN_INPUT_REDIRECT
-		&& token_type <= TOKEN_APPEND_OUTPUT_REDIRECT)
-		{
-			return (true);
-		}
-	return (false);
-}
-
-void	exit_failure_parser(t_parsing_data *data)
-{
-	clear_history();
-	free_t_env(data->env_list);
-	free_tree(data->tree);
-	free(data->input);
-	exit(EXIT_FAILURE);
-}
-
 static int	my_strcmp(char *s1, char *s2)
 {
 	while (*s1 && *s1 == *s2)
