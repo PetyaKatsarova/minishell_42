@@ -52,6 +52,7 @@ SRCS	 := execution/built_ins/pwd.c \
 			parsing/parser/free_tree.c \
 			parsing/parser/parser_utils.c \
 			parsing/parser/parse_lexeme.c \
+			parsing/parser/parsing_utils.c
 			
 OBJS	 := $(SRCS:.c=.o)
 

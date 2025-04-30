@@ -21,7 +21,7 @@ static int	count_tokens(t_token *token)
 	return (count);
 }
 
-static char	**make_argv(t_token *token, t_tree *tree)
+static char	**make_argv(t_token *token, t_parsing_data *data)
 {
 	int		count;
 	char	**argv;
@@ -30,7 +30,7 @@ static char	**make_argv(t_token *token, t_tree *tree)
 	argv = malloc((count + 1) * sizeof(char *));
 	if (argv == NULL)
 	{
-		free(tree); // call free_all instead
+		free(data); // call free_all instead
 		return (NULL); // add error handling: free all
 	}
 	return (argv);
@@ -65,13 +65,13 @@ static int	get_type(char *str)
 	return (TOKEN_WORD);
 }
 
-static void	parse_tokens(t_token **token, t_node **node, t_tree *tree, t_env_list *env_list)
+static void	parse_tokens(t_token **token, t_node **node, t_parsing_data *data)
 {
 	t_node	*tail_redir_node;
 	int		i;
 
 	i = 0;
-	(*node)->argv = make_argv(*token, tree);
+	(*node)->argv = make_argv(*token, data);
 	while (*token != NULL && (*token)->token_type != TOKEN_PIPE)
 	{
 		if (is_redir((*token)->token_type) == true)
@@ -86,12 +86,12 @@ static void	parse_tokens(t_token **token, t_node **node, t_tree *tree, t_env_lis
 				tail_redir_node->redirects = nodenew((*token)->token_type, NULL);
 				tail_redir_node = tail_redir_node->redirects;
 			}
-			tail_redir_node->redir_path = parse_lexeme((*token)->next->lexeme, env_list, tree->exit_status);
+			tail_redir_node->redir_path = parse_lexeme((*token)->next->lexeme, data);
 			*token = (*token)->next->next;
 		}
 		else
 		{
-			*((*node)->argv + i) = parse_lexeme((*token)->lexeme, env_list, tree->exit_status);
+			*((*node)->argv + i) = parse_lexeme((*token)->lexeme, data);
 			(*node)->token_type = (*token)->token_type;
 			*token = (*token)->next;
 			i++;
@@ -100,13 +100,13 @@ static void	parse_tokens(t_token **token, t_node **node, t_tree *tree, t_env_lis
 	*((*node)->argv + i) = NULL;
 }
 
-void	consume_token_list(t_tree *tree, t_env_list *env_list)
+void	consume_token_list(t_parsing_data *data)
 {
 	t_token	*token;
 	t_node	*node;
 
-	token = tree->token_list;
-	node = go_first_cmd(tree);
+	token = data->tree->token_list;
+	node = go_first_cmd(data->tree);
 	while (token != NULL)
 	{
 		if (token->token_type == TOKEN_PIPE)
@@ -116,7 +116,7 @@ void	consume_token_list(t_tree *tree, t_env_list *env_list)
 		}
 		else
 		{
-			parse_tokens(&token, &node, tree, env_list);
+			parse_tokens(&token, &node, data);
 			if (node->token_type == TOKEN_WORD)
 			{
 				node->token_type = get_type(*(node->argv + 0));

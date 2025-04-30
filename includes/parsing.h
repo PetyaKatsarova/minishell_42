@@ -57,7 +57,6 @@ typedef struct	s_token {
 // nodes for syntax tree:
 
 typedef struct	s_tree {
-	int				exit_status;
 	int				num_pipes;
 	t_token			*token_list;
 	struct s_node	*root;
@@ -72,6 +71,17 @@ typedef struct	s_node {
 	struct s_node	*redirects;
 	char			*redir_path;
 }	t_node;
+
+// data container for lexeme parsing
+
+typedef struct	s_parsing_data {
+	char		*new;
+	int			exit_status;
+	size_t		size;
+	t_env_list	*env_list;
+	t_tree		*tree;
+}	t_parsing_data;
+
 
 // lexer functions
 int			prelim_syn_check(char *input, int *exit_status);
@@ -91,11 +101,11 @@ int			syn_check(t_token *current);
 
 // parser functions
 t_node		*nodenew(e_token token_type, t_node *parent);
-t_tree		*treenew(t_token *token_list, int exit_status);
-void		parser(t_tree *tree, t_env_list *env_list);
+t_tree		*treenew(t_token *token_list);
+void		parser(int exit_status, t_tree *tree, t_env_list *env_list);
 t_node		*go_first_pipe(t_tree *tree);
 t_node		*go_next_pipe(t_node *current);
-void		consume_token_list(t_tree *tree, t_env_list *env_list);
+void		consume_token_list(t_parsing_data *data);
 t_node		*go_first_cmd(t_tree *tree);
 t_node		*go_next_cmd(t_node *current);
 t_node 		*go_next_redir(t_node *current);
@@ -104,7 +114,7 @@ void		make_pipe_nodes(t_tree *tree);
 void		make_cmd_nodes(t_tree *tree);
 void		free_tree(t_tree *tree);
 bool		is_redir(e_token token_type);
-char		*parse_lexeme(char *lexeme, t_env_list *env_list, int exit_status);
+char		*parse_lexeme(char *lexeme, t_parsing_data *data);
 
 // test functions
 void		printlist(t_token *token_list);

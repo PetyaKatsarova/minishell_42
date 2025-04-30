@@ -19,7 +19,7 @@ t_node	*nodenew(e_token token_type, t_node *parent)
 	return (new_node);
 }
 
-t_tree	*treenew(t_token *token_list, int exit_status)
+t_tree	*treenew(t_token *token_list)
 {
 	t_tree	*new_tree;
 
@@ -28,7 +28,6 @@ t_tree	*treenew(t_token *token_list, int exit_status)
 	{
 		return (NULL); // add error handling: free all
 	}
-	new_tree->exit_status = exit_status;
 	new_tree->num_pipes = 0;
 	new_tree->token_list = token_list;
 	new_tree->root = NULL;

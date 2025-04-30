@@ -14,6 +14,13 @@ static bool	is_valid_var_char(char c)
 	return (false);
 }
 
+static void	copy_char(char **target, char **source)
+{
+	**target = **source;
+	(*target)++;
+	(*source)++;
+}
+
 static char	*allocate_str(size_t len)
 {
 	char	*str;
@@ -48,18 +55,16 @@ static char	*get_variable(char *lexeme)
 	return (var);
 }
 
-static void	expand_variable(char **cpy, char **lexeme, t_env_list *env_list)
+static void	expand_variable(char **cpy, char **lexeme, t_parsing_data *data)
 {
 	char	*var;
 	char	*var_val;
 
 	var = get_variable(*lexeme);
-	var_val = get_env_value(env_list, var);
+	var_val = get_env_value(data->env_list, var);
 	while (var_val != NULL && *var_val != '\0')
 	{
-		**cpy = *var_val;
-		(*cpy)++;
-		var_val++;
+		copy_char(cpy, &var_val);
 	}
 	(*lexeme)++;
 	while (is_valid_var_char(**lexeme))
@@ -69,12 +74,12 @@ static void	expand_variable(char **cpy, char **lexeme, t_env_list *env_list)
 	free(var);
 }
 
-static void	expand_exit_status(char **cpy, char **lexeme, int exit_status)
+static void	expand_exit_status(char **cpy, char **lexeme, t_parsing_data *data)
 {
 	char	*exit_status_str;
 	char	*cpy_exit_status_str;
 
-	exit_status_str = ft_itoa(exit_status);
+	exit_status_str = ft_itoa(data->exit_status);
 	if (exit_status_str == NULL)
 	{
 		return ; // implement exit error
@@ -82,29 +87,25 @@ static void	expand_exit_status(char **cpy, char **lexeme, int exit_status)
 	cpy_exit_status_str = exit_status_str;
 	while (*cpy_exit_status_str != '\0')
 	{
-		**cpy = *cpy_exit_status_str;
-		(*cpy)++;
-		cpy_exit_status_str++;
+		copy_char(cpy, &cpy_exit_status_str);
 	}
 	(*lexeme) += 2;
 	free(exit_status_str);
 }
 
-static void	expand(char **cpy, char **lexeme, t_env_list *env_list, int exit_status)
+static void	expand(char **cpy, char **lexeme, t_parsing_data *data)
 {
 	if (*(*lexeme + 1) == '?')
 	{
-		expand_exit_status(cpy, lexeme, exit_status);
+		expand_exit_status(cpy, lexeme, data);
 	}
 	else if (is_valid_var_char(*(*lexeme + 1)) == false)
 	{
-		**cpy = **lexeme;
-		(*cpy)++;
-		(*lexeme)++;
+		copy_char(cpy, lexeme);
 	}
 	else
 	{
-		expand_variable(cpy, lexeme, env_list);
+		expand_variable(cpy, lexeme, data);
 	}
 }
 
@@ -113,37 +114,33 @@ static void	parse_sq(char **cpy, char **lexeme)
 	(*lexeme)++;
 	while (**lexeme != '\'')
 	{
-		**cpy = **lexeme;
-		(*cpy)++;
-		(*lexeme)++;
+		copy_char(cpy, lexeme);
 	}
 	(*lexeme)++;
 }
 
-static void	parse_dq(char **cpy, char **lexeme, t_env_list *env_list, int exit_status)
+static void	parse_dq(char **cpy, char **lexeme, t_parsing_data *data)
 {
 	(*lexeme)++;
 	while (**lexeme != '\"')
 	{
 		if (**lexeme == '$')
 		{
-			expand(cpy, lexeme, env_list, exit_status);
+			expand(cpy, lexeme, data);
 		}
 		else
 		{
-			**cpy = **lexeme;
-			(*cpy)++;
-			(*lexeme)++;
+			copy_char(cpy, lexeme);
 		}
 	}
 	(*lexeme)++;
 }
 
-static char	*populate_str(char *str, char *lexeme, t_env_list *env_list, int exit_status)
+static void	populate_new(char *lexeme, t_parsing_data *data)
 {
 	char	*cpy;
 	
-	cpy = str;
+	cpy = data->new;
 	while (*lexeme)
 	{
 		if (*lexeme == '\'')
@@ -152,28 +149,27 @@ static char	*populate_str(char *str, char *lexeme, t_env_list *env_list, int exi
 		}
 		else if (*lexeme == '\"')
 		{
-			parse_dq(&cpy, &lexeme, env_list, exit_status);
+			parse_dq(&cpy, &lexeme, data);
 		}
 		else if (*lexeme == '$')
 		{
-			expand(&cpy, &lexeme, env_list, exit_status);
+			expand(&cpy, &lexeme, data);
 		}
 		else
 		{
-			*cpy = *lexeme;
-			cpy++;
-			lexeme++;
+			copy_char(&cpy, &lexeme);
 		}
 	}
 	*cpy = '\0';
-	return (str);
 }
 
-char *parse_lexeme(char *lexeme, t_env_list *env_list, int exit_status)
+char *parse_lexeme(char *lexeme, t_parsing_data *data)
 {
-	char	*str;
-
-	str = allocate_str(4096);
-	str = populate_str(str, lexeme, env_list, exit_status);
-	return (str);
+	data->new = allocate_str(data->size);
+	if (data->new == NULL)
+	{
+		return (NULL); // handle error
+	}
+	populate_new(lexeme, data);
+	return (data->new);
 }
