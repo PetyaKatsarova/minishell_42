@@ -18,37 +18,34 @@ void free_arr(char **arr)
 	free(arr);
 }
 /**
- * Frees t_env_list, protects if key, val or list is null
+ * Frees t_env_list, checks if !envstrct || !env_struct->vars, if so, return.
  */
-//void free_t_env(t_env_list *env_struct)
-//{
-//	size_t i = 0;
-//	while (i < env_struct->size)
-//	{
-//		free(env_struct->vars[i].key);
-//		if (env_struct->vars[i].value)
-//			free(env_struct->vars[i].value);
-//		i++;
-//	}
-//	free(env_struct->vars);
-//	free(env_struct);
-//}
 void	free_t_env(t_env_list *env_struct)
 {
 	size_t	i;
 
 	if (!env_struct || !env_struct->vars)
 		return;
+
 	i = 0;
 	while (i < env_struct->size)
 	{
 		if (env_struct->vars[i].key)
+		{
 			free(env_struct->vars[i].key);
+			env_struct->vars[i].key = NULL;
+		}
 		if (env_struct->vars[i].value)
+		{
 			free(env_struct->vars[i].value);
+			env_struct->vars[i].value = NULL;
+		}
 		i++;
 	}
 	free(env_struct->vars);
+	env_struct->vars = NULL;
+
 	free(env_struct);
 }
+
 

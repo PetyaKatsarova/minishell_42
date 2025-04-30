@@ -89,6 +89,8 @@ void		set_env_value(t_env_list *env_list, const char *key, const char *val);
 char		*get_env_value(t_env_list *env_list, const char *key);
 t_env_list  *copy_env(char **env);
 char 		**converted_env(t_env_list *env_struct);
+int         env_len(char **env);
+void        free_env_entry(t_env *entry);
 
 // execution/utils.c
 int			too_many_args(char	**input_args);
@@ -96,6 +98,7 @@ int			print_builtin_error(const char *cmd, const char *arg, const char *msg);
 
 // execution/handle_commands.c
 int 		execute_builtin(t_node *cmd_node, t_tree *tree, t_env_list *env_struct);
+int         handle_single_command(t_env_list *env_struct, t_tree *tree, t_node *cmd_node);
 
 // execution/executables/*
 void        close_all_pipe_fds(void);
@@ -107,6 +110,6 @@ int			is_valid_read_or_exec_file(char *file_name, char mode);
 
 // execution/exec_pipes.c, redirects.c
 int         exec_pipeline(t_env_list *env, t_tree *tree);
-void        apply_redirections(t_node *cmd);
+int        apply_redirections(t_node *cmd);
 
 #endif

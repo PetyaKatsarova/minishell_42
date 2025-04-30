@@ -1,17 +1,6 @@
 
 #include "../../includes/minishell.h"
 
-/* perror the msg, frees t_env cpy and exits_failure */
-/**
- * 1.export var = hello' should print a syntax error and return the prompt. In our minishell, it causes valgrind errors and exports both 'var' and 'hi' as variables without assigning a value to either.
- * 
-2.Each exported variable causes definitely lost leaks.
-3.'export var=hi=hi=hi=' should export a variable with name 'var' and value 'hi=hi=hi='. Our minishell currently exports the variable 'var' with value 'hi'. The rest of the string is thrown away. This means our variable cannot store any value containing an '='
-4. Another example: '2 + 2 = 4' is truncated to '2 + 2 '.
- 5.According to the bash reference, variable names may only contain digits, letters (lower- and uppercase), and underscores. This is not super important, however.
-
- 1. c
- */
 int err_malloc(t_env_list *cpy, char *msg)
 {
 	perror(msg);
@@ -92,7 +81,7 @@ static int	append_replace_envvar(char *argv, t_env_list *env_struct)
 	free(value);
 	return (EXIT_SUCCESS);
 }
-// bl=1=2= lv = lv ec=1+2 + 2
+
 int	do_export(char **input_args, t_env_list *env_struct)
 {
 	int			i;

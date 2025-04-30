@@ -32,7 +32,6 @@ static void	handle_too_many_args(t_env_list *env_struct, t_tree *tree)
 	print_builtin_error("exit", NULL, "too many arguments");
 	(void)env_struct;
 	(void)tree;
-	// free_exit_resources(env_struct, tree);
 	exit(EXIT_FAILURE);
 }
 
@@ -76,7 +75,8 @@ int	do_exit(t_env_list *env_struct, t_tree *tree, t_node *cmd_node)
 		exit_status = env_struct->last_exit_status;
 	else
 		exit_status = 0;
-	printf("exit\n");
+	// printf("exit\n");
+	write(STDERR_FILENO, "exit\n", 5);
 	if (!cmd_node->argv[1])
 	{
 		free_exit_resources(env_struct, tree);

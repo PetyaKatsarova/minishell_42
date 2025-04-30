@@ -22,43 +22,30 @@ void	perror_and_exit(const char *message, int exit_code)
 	exit(exit_code);
 }
 
-/**
- * If redirection token: checks if valid fileredirects <,>,>>
- * todo: check valid redirect for cases like: cat < , < file, etc...
- */
-void	apply_redirections(t_node *cmd)
+static void	try_redirect(t_node *redir, int fd_target, int flags)
 {
-	t_node	*redir;
-	int		fd;
+	int fd = open(redir->redir_path, flags, 0644);
+	if (fd < 0 || dup2(fd, fd_target) == -1)
+		perror_and_exit(redir->redir_path, EXIT_FAILURE);
+	close(fd);
+}
 
-	redir = go_next_redir(cmd);
+int apply_redirections(t_node *cmd)
+{
+	t_node *redir = go_next_redir(cmd);
 	while (redir)
 	{
-		fd = -1;
 		if (redir->token_type == TOKEN_INPUT_REDIRECT)
 		{
 			is_valid_read_or_exec_file(redir->redir_path, 'r');
-			fd = open(redir->redir_path, O_RDONLY);
+			try_redirect(redir, STDIN_FILENO, O_RDONLY);
 		}
 		else if (redir->token_type == TOKEN_OUTPUT_REDIRECT)
-			fd = open(redir->redir_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			try_redirect(redir, STDOUT_FILENO, O_WRONLY | O_CREAT | O_TRUNC);
 		else if (redir->token_type == TOKEN_APPEND_OUTPUT_REDIRECT)
-			fd = open(redir->redir_path, O_WRONLY | O_CREAT | O_APPEND, 0644);
-
-		if (fd < 0)
-			perror_and_exit(redir->redir_path, 1);
-
-		if (redir->token_type == TOKEN_INPUT_REDIRECT)
-		{
-			if (dup2(fd, STDIN_FILENO) == -1)
-				perror_and_exit("dup2 error (input)", 1);
-		}
-		else
-		{
-			if (dup2(fd, STDOUT_FILENO) == -1)
-				perror_and_exit("dup2 error (output)", 1);
-		}
-		close(fd);
+			try_redirect(redir, STDOUT_FILENO, O_WRONLY | O_CREAT | O_APPEND);
 		redir = redir->redirects;
 	}
+	return (EXIT_SUCCESS);
 }
+

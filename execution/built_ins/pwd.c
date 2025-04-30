@@ -15,6 +15,8 @@
 int	get_pwd(char **argv)
 {
 	char	buff[PATH_MAX + 1];
+	size_t	len;
+
 	if (argv && !argv[1])
 	{
 		if (!getcwd(buff, PATH_MAX + 1))
@@ -22,13 +24,14 @@ int	get_pwd(char **argv)
 			perror("minishell: error pwd");
 			return (EXIT_FAILURE);
 		}
-		printf("%s\n", buff);
+		len = strlen(buff);
+		write(STDOUT_FILENO, buff, len);
+		write(STDOUT_FILENO, "\n", 1);
 	}
 	else
 	{
-		write(STDERR_FILENO, "minihell: pwd: invalid option\n", 30);
+		write(STDERR_FILENO, "minisell: pwd: invalid option\n", 30);
 		return (1);
 	}
-
 	return (EXIT_SUCCESS);
 }

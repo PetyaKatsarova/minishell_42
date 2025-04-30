@@ -28,6 +28,7 @@ SRCS	 := execution/built_ins/pwd.c \
 			execution/built_ins/export.c \
 			execution/freeing.c \
 			execution/init_env.c \
+			execution/init_env_helpers.c \
 			execution/utils.c \
 			execution/exec_pipes.c \
 			execution/handle_commands.c \

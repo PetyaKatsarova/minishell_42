@@ -1,7 +1,7 @@
 
 #include "../includes/minishell.h"
 
-static int env_len(char **env)
+int env_len(char **env)
 {
 	int i = 0;
 	while (env[i])
@@ -9,21 +9,27 @@ static int env_len(char **env)
 	return i;
 }
 
+
 t_env_list *copy_env(char **env)
 {
-	int		 i = 0;
-	int		 len = env_len(env);
+	int i = 0;
+	int len = env_len(env);
+
 	t_env_list *env_list = malloc(sizeof(t_env_list));
+	if (!env_list)
+		return NULL;
 
 	env_list->vars = malloc(sizeof(t_env) * (len + 10));
-	if (!env_list || !env_list->vars)
+	if (!env_list->vars)
 	{
-		free(env_list); // todo.... do i nned to do this?
+		free(env_list);
 		return NULL;
 	}
+
 	env_list->size = 0;
 	env_list->capacity = len + 10;
 	env_list->last_exit_status = 0;
+
 	while (env[i])
 	{
 		char *delim = ft_strchr(env[i], '=');
@@ -45,6 +51,7 @@ t_env_list *copy_env(char **env)
 	env_list->vars[env_list->size].key = NULL;
 	return env_list;
 }
+
 
 char *get_env_value(t_env_list *env_list, const char *key)
 {

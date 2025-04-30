@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/29 21:20:40 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/30 20:11:30 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,14 +109,15 @@ static int handle_readline(t_env_list *env_struct_lst)
 		// print_cmd_nodes_readable(tree);
 		cmd_node = go_first_cmd(tree);
 		
-		if (get_num_pipes(tree) > 0)
+		if (get_num_pipes(tree) > 0) // todo apply redirections to all pipes
 			exit_status = exec_pipeline(env_struct_lst, tree);
 		else if (cmd_node) // handles single commands
 		{
-			if (cmd_node->token_type == TOKEN_WORD) // add logic to handle all the redirects...
-				exit_status = exec_on_path(env_struct_lst, cmd_node, 0);
-			else
-				exit_status = execute_builtin(cmd_node, tree, env_struct_lst);
+			exit_status = handle_single_command(env_struct_lst, tree, cmd_node);
+			// if (cmd_node->token_type == TOKEN_WORD) // add logic to handle all the redirects...
+			// 	exit_status = exec_on_path(env_struct_lst, cmd_node, 0);
+			// else
+			// 	exit_status = execute_builtin(cmd_node, tree, env_struct_lst);
 		}
 		env_struct_lst->last_exit_status = exit_status;
 		free_tree(tree);
@@ -133,8 +134,15 @@ static int handle_readline(t_env_list *env_struct_lst)
  valgrind --leak-check=full --show-leak-kinds=all ./minishell
 
  valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./minishell
-ll
  */
+
+ /**
+  * !!NB!!
+  * Ensure your user has this line in their ~/.inputrc:
+set enable-bracketed-paste on
+Or programmatically set it up in C:
+rl_variable_bind("enable-bracketed-paste", "on");
+  */
 
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
@@ -146,7 +154,8 @@ int main(int argc, char **argv, char **envp) {
         return (EXIT_FAILURE);
     }
 	handle_readline(env_struct_lst);
-	free_t_env(env_struct_lst);
+	// free_t_env(env_struct_lst);
+	env_struct_lst = NULL;
 	clear_history();
 	return (0);
 }

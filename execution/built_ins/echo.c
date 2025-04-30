@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/18 15:13:09 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/26 08:27:41 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/04/30 15:55:50 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,25 @@
 */
 static int	is_echo_n_flag(char *str)
 {
-	size_t	i;
+	size_t	i = 1;
 
-	i = 1;
-	if (str[0] != '-')
-		return (0);
-	if (str[1] != 'n')
+	if (!str || str[0] != '-' || str[1] != 'n')
 		return (0);
 	while (str[i] == 'n')
 		i++;
 	return (str[i] == '\0');
 }
 
+static void	write_str(const char *s)
+{
+	write(STDOUT_FILENO, s, ft_strlen(s));
+}
+
 int	do_echo(char **argv)
 {
-	size_t	i;
-	int		newline;
+	size_t	i = 1;
+	int		newline = 1;
 
-	i = 1;
-	newline = 1;
 	while (argv[i] && is_echo_n_flag(argv[i]))
 	{
 		newline = 0;
@@ -43,13 +43,13 @@ int	do_echo(char **argv)
 	}
 	while (argv[i])
 	{
-		printf("%s", argv[i]);
+		write_str(argv[i]);
 		if (argv[i + 1])
-			printf(" ");
+			write(STDOUT_FILENO, " ", 1);
 		i++;
 	}
 	if (newline)
-		printf("\n");
+		write(STDOUT_FILENO, "\n", 1);
 
 	return (EXIT_SUCCESS);
 }
