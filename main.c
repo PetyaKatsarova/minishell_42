@@ -45,9 +45,17 @@ static int handle_readline(t_env_list *env_struct_lst)
 			free(input);
 			continue;
 		}
+<<<<<<< HEAD
 		tree = treenew(token_list, exit_status);
 		parser(tree, env_struct_lst);
 		// print_cmd_nodes_readable(tree);
+=======
+		tree = treenew(token_list, env_struct_lst, input);
+		parser(input, exit_status, tree, env_struct_lst);
+		// printlist(token_list);
+		//print_cmd_nodes(tree);
+		//print_cmd_nodes_readable(tree);
+>>>>>>> 202304f8836fd66f9e841738c22e297469fa2921
 		cmd_node = go_first_cmd(tree);
 		
 		if (get_num_pipes(tree) > 0) // todo apply redirections to all pipes

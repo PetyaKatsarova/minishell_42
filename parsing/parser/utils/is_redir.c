@@ -1,4 +1,5 @@
-#include "../../includes/parsing.h"
+#include "../../../includes/minishell.h"
+#include "../../../includes/parsing.h"
 
 bool	is_redir(e_token token_type)
 {

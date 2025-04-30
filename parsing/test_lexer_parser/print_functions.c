@@ -133,7 +133,7 @@ void	print_cmd_nodes_readable(t_tree *tree)
 		redir = go_next_redir(current);
 		if (redir != NULL)
 		{
-			printf("     REDIRECTIONS:\n");
+			printf("     REDIRECTIONS CMD %d:\n", count);
 		}
 		while (redir != NULL)
 		{

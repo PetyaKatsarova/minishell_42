@@ -5,9 +5,10 @@ t_token	*tokennew(t_token *tail, char *lexeme, e_token token_type)
 	t_token	*new_token;
 
 	new_token = malloc(sizeof(t_token));
+	//new_token = NULL;
 	if (new_token == NULL)
 	{
-		return (NULL); // add error handling: free all
+		return (NULL);
 	}
 	new_token->lexeme = lexeme;
 	new_token->token_type = token_type;
