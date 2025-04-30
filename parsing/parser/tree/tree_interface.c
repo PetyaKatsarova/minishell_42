@@ -1,4 +1,4 @@
-#include "../../includes/parsing.h"
+#include "../../../includes/parsing.h"
 
 int	get_num_pipes(t_tree *tree)
 {

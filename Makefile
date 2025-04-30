@@ -37,23 +37,24 @@ SRCS	 := execution/built_ins/pwd.c \
 			execution/executables/helpers.c \
 			execution/executables/manage_files.c \
 			main.c \
-			parsing/lexer/lexer.c \
+			parsing/lexer/lexer_main.c \
 			parsing/lexer/prelim_syn_check.c \
 			parsing/lexer/consume_input.c \
 			parsing/lexer/utils.c \
 			parsing/lexer/list_utils.c \
 			parsing/lexer/syn_check.c \
-			parsing/parser/tree_utils.c \
-			parsing/parser/tree_navigation.c \
-			parsing/parser/tree_interface.c \
-			parsing/parser/parser.c \
-			parsing/parser/consume_token_list.c \
+			parsing/parser/tree/tree_utils.c \
+			parsing/parser/tree/tree_navigation.c \
+			parsing/parser/tree/tree_interface.c \
+			parsing/parser/parser_main.c \
+			parsing/parser/parse_token_list.c \
 			parsing/test_lexer_parser/print_functions.c \
-			parsing/parser/free_tree.c \
-			parsing/parser/parser_utils.c \
+			parsing/parser/tree/tree_free.c \
+			parsing/parser/utils/parser_utils_1.c \
+			parsing/parser/utils/parser_utils_2.c \
+			parsing/parser/utils/parser_utils_3.c \
 			parsing/parser/parse_lexeme.c \
-			parsing/parser/parsing_utils.c
-			
+
 OBJS	 := $(SRCS:.c=.o)
 
 # Default target to build everything

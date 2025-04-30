@@ -1,4 +1,4 @@
-#include "../../includes/parsing.h"
+#include "../../../includes/parsing.h"
 
 static void	free_pipes(t_tree *tree)
 {

@@ -1,5 +1,5 @@
-#include "../../includes/minishell.h"
-#include "../../includes/parsing.h"
+#include "../../../includes/minishell.h"
+#include "../../../includes/parsing.h"
 
 t_node	*nodenew(e_token token_type, t_node *parent, t_parsing_data *data)
 {
@@ -9,11 +9,7 @@ t_node	*nodenew(e_token token_type, t_node *parent, t_parsing_data *data)
 	//new_node = NULL;
 	if (new_node == NULL)
 	{
-		clear_history();
-		free_t_env(data->env_list);
-		free_tree(data->tree);
-		free(data->input);
-		exit(EXIT_FAILURE);
+		exit_failure_parser(data);
 	}
 	new_node->parent = parent;
 	new_node->token_type = token_type;

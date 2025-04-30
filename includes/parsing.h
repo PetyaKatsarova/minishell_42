@@ -96,8 +96,6 @@ void		free_list(t_token **head);
 bool		is_whitespace(char c);
 int			set_state(e_state state, char c);
 bool		is_special_delim(char c);
-//void		expand_exit_status(char **cpy, char **input, char **str, size_t *size, int exit_status);
-//void		expand_var(char **cpy, char **lexeme, char **str, size_t *size, t_env_list *env_list);
 int			syn_check(t_token *current);
 
 // parser functions
@@ -116,6 +114,14 @@ void		make_cmd_nodes(t_parsing_data *data);
 void		free_tree(t_tree *tree);
 bool		is_redir(e_token token_type);
 char		*parse_lexeme(char *lexeme, t_parsing_data *data);
+void		exit_failure_parser(t_parsing_data *data);
+int			get_type(char *str);
+char		**make_argv(t_token *token, t_parsing_data *data);
+bool		is_valid_var_char(char c);
+void		copy_char(char **target, char **source);
+char		*allocate_str(size_t len, t_parsing_data *data);
+void		expand_variable(char **cpy, char **lexeme, t_parsing_data *data);
+void		expand_exit_status(char **cpy, char **lexeme, t_parsing_data *data);
 
 // test functions
 void		printlist(t_token *token_list);
