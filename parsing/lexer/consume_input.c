@@ -9,9 +9,7 @@ t_token	*consume_chars(t_token *tail, char **cpy)
 
 	lexeme = malloc((getwordlen(*cpy) + 1) * sizeof(char));
 	if (lexeme == NULL)
-	{
 		return (NULL);
-	}
 	cpy_lexeme = lexeme;
 	state = set_state(OUTSIDE, **cpy);
 	while (isendword(state, **cpy) == false)
@@ -24,10 +22,7 @@ t_token	*consume_chars(t_token *tail, char **cpy)
 	*cpy_lexeme = '\0';
 	new_token = tokennew(tail, lexeme, TOKEN_WORD);
 	if (new_token == NULL)
-	{
-		free(lexeme);
-		return (NULL);
-	}
+		return (free(lexeme), NULL);
 	return (new_token);
 }
 

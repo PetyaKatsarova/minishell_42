@@ -8,6 +8,30 @@ static void	exit_failure(t_token **head, char *input)
 	exit(EXIT_FAILURE);
 }
 
+static void	process_char(char **cpy, t_token **tail, t_token **head, char *input)
+{
+	while (is_whitespace(**cpy) == true)
+	{
+		(*cpy)++;
+	}
+	if (is_special_delim(**cpy) == true)
+	{
+		*tail = consume_special_delim(*tail, cpy);
+		if (*tail == NULL)
+		{
+			exit_failure(head, input);
+		}
+	}
+	else if (**cpy != '\0')
+	{
+		*tail = consume_chars(*tail, cpy);
+		if (*tail == NULL)
+		{
+			exit_failure(head, input);
+		}
+	}
+}
+
 void	lexer(t_token **head, char *input)
 {
 	t_token *tail;
@@ -19,26 +43,7 @@ void	lexer(t_token **head, char *input)
 	cpy = input;
 	while (*cpy != '\0')
 	{
-		while (is_whitespace(*cpy) == true)
-		{
-			cpy++;
-		}
-		if (is_special_delim(*cpy) == true)
-		{
-			tail = consume_special_delim(tail, &cpy);
-			if (tail == NULL)
-			{
-				exit_failure(head, input);
-			}
-		}
-		else if (*cpy != '\0')
-		{
-			tail = consume_chars(tail, &cpy);
-			if (tail == NULL)
-			{
-				exit_failure(head, input);
-			}
-		}
+		process_char(&cpy, &tail, head, input);
 		if (first == true)
 		{
 			*head = tail;
