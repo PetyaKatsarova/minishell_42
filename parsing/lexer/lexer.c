@@ -1,5 +1,13 @@
 #include "../../includes/parsing.h"
 
+static void	exit_failure(t_token **head, char *input)
+{
+	free_list(head);
+	free(input);
+	clear_history();
+	exit(EXIT_FAILURE);
+}
+
 void	lexer(t_token **head, char *input)
 {
 	t_token *tail;
@@ -20,10 +28,7 @@ void	lexer(t_token **head, char *input)
 			tail = consume_special_delim(tail, &cpy);
 			if (tail == NULL)
 			{
-				free_list(head);
-				free(input);
-				clear_history();
-				exit(EXIT_FAILURE);
+				exit_failure(head, input);
 			}
 		}
 		else if (*cpy != '\0')
@@ -31,10 +36,7 @@ void	lexer(t_token **head, char *input)
 			tail = consume_chars(tail, &cpy);
 			if (tail == NULL)
 			{
-				free_list(head);
-				free(input);
-				clear_history();
-				exit(EXIT_FAILURE);
+				exit_failure(head, input);
 			}
 		}
 		if (first == true)
