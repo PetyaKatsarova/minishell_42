@@ -21,19 +21,25 @@ static void	copy_char(char **target, char **source)
 	(*source)++;
 }
 
-static char	*allocate_str(size_t len)
+static char	*allocate_str(size_t len, t_parsing_data *data)
 {
 	char	*str;
 
 	str = malloc((len + 1) * sizeof(char));
+	//(void)len;
+	//str = NULL;
 	if (str == NULL)
 	{
-		return (NULL); // implement error check: free all
+		clear_history();
+		free_t_env(data->env_list);
+		free_tree(data->tree);
+		free(data->input);
+		exit(EXIT_FAILURE);
 	}
 	return (str);
 }
 
-static char	*get_variable(char *lexeme)
+static char	*get_variable(char *lexeme, t_parsing_data *data)
 {
 	size_t	i;
 	size_t	j;
@@ -44,7 +50,7 @@ static char	*get_variable(char *lexeme)
 	{
 		i++;
 	}
-	var = allocate_str(i - 1);
+	var = allocate_str(i - 1, data);
 	i = 1;
 	j = 0;
 	while (is_valid_var_char(lexeme[i]))
@@ -60,7 +66,7 @@ static void	expand_variable(char **cpy, char **lexeme, t_parsing_data *data)
 	char	*var;
 	char	*var_val;
 
-	var = get_variable(*lexeme);
+	var = get_variable(*lexeme, data);
 	var_val = get_env_value(data->env_list, var);
 	while (var_val != NULL && *var_val != '\0')
 	{
@@ -80,9 +86,14 @@ static void	expand_exit_status(char **cpy, char **lexeme, t_parsing_data *data)
 	char	*cpy_exit_status_str;
 
 	exit_status_str = ft_itoa(data->exit_status);
+	//exit_status_str = NULL;
 	if (exit_status_str == NULL)
 	{
-		return ; // implement exit error
+		clear_history();
+		free_t_env(data->env_list);
+		free_tree(data->tree);
+		free(data->input);
+		exit(EXIT_FAILURE);
 	}
 	cpy_exit_status_str = exit_status_str;
 	while (*cpy_exit_status_str != '\0')
@@ -165,10 +176,15 @@ static void	populate_new(char *lexeme, t_parsing_data *data)
 
 char *parse_lexeme(char *lexeme, t_parsing_data *data)
 {
-	data->new = allocate_str(data->size);
+	data->new = allocate_str(data->size, data);
+	//data->new = NULL;
 	if (data->new == NULL)
 	{
-		return (NULL); // handle error
+		clear_history();
+		free_t_env(data->env_list);
+		free_tree(data->tree);
+		free(data->input);
+		exit(EXIT_FAILURE);
 	}
 	populate_new(lexeme, data);
 	return (data->new);

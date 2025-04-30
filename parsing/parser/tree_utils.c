@@ -1,13 +1,19 @@
+#include "../../includes/minishell.h"
 #include "../../includes/parsing.h"
 
-t_node	*nodenew(e_token token_type, t_node *parent)
+t_node	*nodenew(e_token token_type, t_node *parent, t_parsing_data *data)
 {
 	t_node	*new_node;
 
 	new_node = malloc(sizeof(t_node));
+	//new_node = NULL;
 	if (new_node == NULL)
 	{
-		return (NULL); // add error handling: free all
+		clear_history();
+		free_t_env(data->env_list);
+		free_tree(data->tree);
+		free(data->input);
+		exit(EXIT_FAILURE);
 	}
 	new_node->parent = parent;
 	new_node->token_type = token_type;
@@ -19,14 +25,19 @@ t_node	*nodenew(e_token token_type, t_node *parent)
 	return (new_node);
 }
 
-t_tree	*treenew(t_token *token_list)
+t_tree	*treenew(t_token *token_list, t_env_list *env_list, char *input)
 {
 	t_tree	*new_tree;
 
 	new_tree = malloc(sizeof(t_tree));
+	//new_tree = NULL;
 	if (new_tree == NULL)
 	{
-		return (NULL); // add error handling: free all
+		clear_history();
+		free_t_env(env_list);
+		free_list(&token_list);
+		free(input);
+		exit(EXIT_FAILURE);
 	}
 	new_tree->num_pipes = 0;
 	new_tree->token_list = token_list;
@@ -50,43 +61,43 @@ static int	countpipes(t_token *current)
 	return (num_pipes);
 }
 
-void	make_pipe_nodes(t_tree *tree)
+void	make_pipe_nodes(t_parsing_data *data)
 {
 	t_node	*current;
 	int		i;
 
-	tree->num_pipes = countpipes(tree->token_list);
+	data->tree->num_pipes = countpipes(data->tree->token_list);
 	i = 0;
-	while (i < tree->num_pipes)
+	while (i < data->tree->num_pipes)
 	{
 		if (i == 0)
 		{
-			tree->root = nodenew(TOKEN_PIPE, NULL);
-			current = tree->root;
+			data->tree->root = nodenew(TOKEN_PIPE, NULL, data);
+			current = data->tree->root;
 		}
 		else
 		{
-			current->producer = nodenew(TOKEN_PIPE, current);
+			current->producer = nodenew(TOKEN_PIPE, current, data);
 			current = current->producer;
 		}
 		i++;
 	}
 }
 
-void	make_cmd_nodes(t_tree *tree)
+void	make_cmd_nodes(t_parsing_data *data)
 {
 	t_node	*current;
 
-	current = go_first_pipe(tree);
+	current = go_first_pipe(data->tree);
 	if (current == NULL)
 	{
-		tree->root = nodenew(TOKEN_NULL, NULL);
+		data->tree->root = nodenew(TOKEN_NULL, NULL, data);
 		return ;
 	}
-	current->producer = nodenew(TOKEN_NULL, current);
+	current->producer = nodenew(TOKEN_NULL, current, data);
 	while (current != NULL)
 	{
-		current->consumer = nodenew(TOKEN_NULL, current);
+		current->consumer = nodenew(TOKEN_NULL, current, data);
 		current = go_next_pipe(current);
 	}
 }

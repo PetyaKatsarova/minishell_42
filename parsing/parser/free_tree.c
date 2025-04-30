@@ -48,7 +48,8 @@ static void	free_cmds(t_tree *tree)
 	node = go_first_cmd(tree);
 	while (node != NULL)
 	{
-		free_argv(node);
+		if (node->argv != NULL)
+			free_argv(node);
 		free_redirs(node->redirects);
 		next_cmd = go_next_cmd(node);
 		if (node->parent != NULL)

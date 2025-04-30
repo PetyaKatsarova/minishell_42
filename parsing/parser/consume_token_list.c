@@ -28,10 +28,18 @@ static char	**make_argv(t_token *token, t_parsing_data *data)
 
 	count = count_tokens(token);
 	argv = malloc((count + 1) * sizeof(char *));
+	//argv = NULL;
 	if (argv == NULL)
 	{
-		free(data); // call free_all instead
-		return (NULL); // add error handling: free all
+		clear_history();
+		free_t_env(data->env_list);
+		free_tree(data->tree);
+		free(data->input);
+		exit(EXIT_FAILURE);
+	}
+	while (count > 0)
+	{
+		argv[--count] = NULL;
 	}
 	return (argv);
 }
@@ -78,12 +86,12 @@ static void	parse_tokens(t_token **token, t_node **node, t_parsing_data *data)
 		{
 			if ((*node)->redirects == NULL)
 			{
-				(*node)->redirects = nodenew((*token)->token_type, NULL);
+				(*node)->redirects = nodenew((*token)->token_type, NULL, data);
 				tail_redir_node = (*node)->redirects;
 			}
 			else
 			{
-				tail_redir_node->redirects = nodenew((*token)->token_type, NULL);
+				tail_redir_node->redirects = nodenew((*token)->token_type, NULL, data);
 				tail_redir_node = tail_redir_node->redirects;
 			}
 			tail_redir_node->redir_path = parse_lexeme((*token)->next->lexeme, data);

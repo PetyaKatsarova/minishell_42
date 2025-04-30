@@ -45,8 +45,8 @@ static int handle_readline(t_env_list *env_struct_lst)
 			free(input);
 			continue;
 		}
-		tree = treenew(token_list);
-		parser(exit_status, tree, env_struct_lst);
+		tree = treenew(token_list, env_struct_lst, input);
+		parser(input, exit_status, tree, env_struct_lst);
 		// printlist(token_list);
 		//print_cmd_nodes(tree);
 		print_cmd_nodes_readable(tree);
