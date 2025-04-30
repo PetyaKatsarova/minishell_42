@@ -25,8 +25,9 @@ t_node	*go_first_cmd(t_tree *tree)
 	return (current);
 }
 
-/* go_next_cmd returns a pointer to the next command in the order of the input.
+/* go_next_cmd returns a t_node pointer to the next command in the order of the input.
 ** only call when current points to a command node!
+** do not call when current points to a pipe node, a redir node, or anywhere else.
 */
 
 t_node *go_next_cmd(t_node *current)
@@ -49,6 +50,10 @@ t_node *go_next_cmd(t_node *current)
 	}
 	return (current);
 }
+
+/* go_next_redir returns a t_node pointer to the next redir in the order of the input.
+** only call when current points to a command node or a redir node.
+*/
 
 t_node *go_next_redir(t_node *current)
 {

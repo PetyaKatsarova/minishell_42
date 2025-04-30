@@ -96,6 +96,12 @@ static void	expand(char **cpy, char **lexeme, t_env_list *env_list, int exit_sta
 	{
 		expand_exit_status(cpy, lexeme, exit_status);
 	}
+	else if (is_valid_var_char(*(*lexeme + 1)) == false)
+	{
+		**cpy = **lexeme;
+		(*cpy)++;
+		(*lexeme)++;
+	}
 	else
 	{
 		expand_variable(cpy, lexeme, env_list);
