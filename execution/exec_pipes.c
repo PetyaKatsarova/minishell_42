@@ -44,6 +44,9 @@ static void handle_child(int i, int pipe_count, int **pipes, pid_t *pids, t_node
 	close_all_pipes(pipes, pipe_count);
 	free(pids);
 
+	if (apply_redirections(cmd) != EXIT_SUCCESS)
+		exit(EXIT_FAILURE);
+
 	int status = execute_builtin(cmd, tree, env);
 	if (status != EXIT_CMD_NOT_FOUND)
 		exit(status);
