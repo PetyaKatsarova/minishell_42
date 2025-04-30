@@ -87,8 +87,8 @@ typedef struct	s_parsing_data {
 // lexer functions
 int			prelim_syn_check(char *input, int *exit_status);
 void		lexer(t_token **head, char *input);
-t_token		*consume_chars(t_token *tail, char **input);
-t_token 	*consume_special_delim(t_token *tail, char **input);
+t_token		*consume_chars(t_token *tail, char **cpy);
+t_token 	*consume_special_delim(t_token *tail, char **cpy);
 t_token		*tokennew(t_token *tail, char *lexeme, e_token token_type);
 bool		isendword(e_state state, char c);
 int			getwordlen(char *input);
