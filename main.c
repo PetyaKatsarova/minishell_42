@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/01 17:01:24 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/01 17:09:16 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int handle_readline(t_env_list *env_struct_lst)
 		tree = treenew(token_list, env_struct_lst, input);
 		parser(input, exit_status, tree, env_struct_lst);
 		cmd_node = go_first_cmd(tree);
-		handle_cmds();
+		handle_cmds(tree, env_struct_lst, cmd_node, exit_status);
 		free_tree(tree);
 		free(input);
 	}
