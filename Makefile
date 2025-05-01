@@ -56,6 +56,7 @@ SRCS	 := execution/built_ins/pwd.c \
 			parsing/parser/parser_main.c \
 			parsing/parser/parse_token_list.c \
 			parsing/test_lexer_parser/print_functions.c \
+			parsing/test_lexer_parser/print_functions_2.c \
 			parsing/parser/tree/tree_free.c \
 			parsing/parser/utils/allocate_str.c \
 			parsing/parser/utils/copy_char.c \

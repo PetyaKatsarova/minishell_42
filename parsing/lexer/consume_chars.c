@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   consume_chars.c                                     :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: jstuhrin <marvin@42.fr>                       +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/05/01 12:11:19 by jstuhrin       #+#    #+#                */
+/*   Updated: 2025/05/01 12:11:27 by jstuhrin       ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../includes/parsing.h"
 
 t_token	*consume_chars(t_token *tail, char **cpy)
-{	
-	t_token *new_token;
+{
+	t_token	*new_token;
 	char	*lexeme;
 	char	*cpy_lexeme;
 	e_state	state;
