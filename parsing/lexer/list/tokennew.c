@@ -1,4 +1,5 @@
-#include "../../includes/parsing.h"
+
+#include "../../../includes/parsing.h"
 
 t_token	*tokennew(t_token *tail, char *lexeme, e_token token_type)
 {
@@ -18,23 +19,4 @@ t_token	*tokennew(t_token *tail, char *lexeme, e_token token_type)
 		tail->next = new_token;
 	}
 	return (new_token);
-}
-
-void	free_list(t_token **head)
-{
-	t_token	*current;
-	t_token	*next;
-
-	current = *head;
-	while (current != NULL)
-	{
-		if (current->lexeme != NULL)
-		{
-			free(current->lexeme);
-		}
-		next = current->next;
-		free(current);
-		current = next;
-	}
-	*head = NULL;
 }
