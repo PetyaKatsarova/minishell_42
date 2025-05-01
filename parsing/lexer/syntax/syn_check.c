@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   syn_check.c                                         :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: jstuhrin <marvin@42.fr>                       +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/05/01 12:12:54 by jstuhrin       #+#    #+#                */
+/*   Updated: 2025/05/01 12:13:02 by jstuhrin       ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/parsing.h"
 
 int	syn_check(t_token *current)
@@ -11,7 +23,7 @@ int	syn_check(t_token *current)
 		{
 			if (is_redir(current->token_type))
 				return (write(1, "syntax error: unexpected redir\n", 32), 2);
-			else if (current->token_type == TOKEN_PIPE)
+			else if (current->token_type == PIPE)
 				return (write(1, "syntax error: unexpected '|'\n", 30), 2);
 			else
 				redir_flag = false;

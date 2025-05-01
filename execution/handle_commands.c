@@ -23,19 +23,19 @@ If run in a child, their effects are discarded once the child exits.
  */
 int execute_builtin(t_node *cmd_node, t_tree *tree, t_env_list *env_struct)
 {
-	if (cmd_node->token_type == TOKEN_EXIT)
+	if (cmd_node->token_type == EXIT)
 		return do_exit(env_struct, tree, cmd_node);
-	else if (cmd_node->token_type == TOKEN_PWD)
+	else if (cmd_node->token_type == PWD)
 		return get_pwd(cmd_node->argv);
-	else if (cmd_node->token_type == TOKEN_CD)
+	else if (cmd_node->token_type == CD)
 		return do_cd(cmd_node->argv, env_struct);
-	else if (cmd_node->token_type == TOKEN_ENV)
+	else if (cmd_node->token_type == ENV)
 		return get_env(cmd_node->argv, env_struct);
-	else if (cmd_node->token_type == TOKEN_ECHO)
+	else if (cmd_node->token_type == ECHO)
 		return do_echo(cmd_node->argv);
-	else if (cmd_node->token_type == TOKEN_EXPORT)
+	else if (cmd_node->token_type == EXPORT)
 		return do_export(cmd_node->argv, env_struct);
-	else if (cmd_node->token_type == TOKEN_UNSET)
+	else if (cmd_node->token_type == UNSET)
 		return do_unset(cmd_node->argv, env_struct);
 	return (EXIT_CMD_NOT_FOUND);
 }
@@ -45,8 +45,8 @@ int execute_builtin(t_node *cmd_node, t_tree *tree, t_env_list *env_struct)
  */
 static bool is_redir_builtin(t_node *cmd_node)
 {
-	return (cmd_node->token_type == TOKEN_ECHO || cmd_node->token_type == TOKEN_PWD ||
-		cmd_node->token_type == TOKEN_ENV);
+	return (cmd_node->token_type == ECHO || cmd_node->token_type == PWD ||
+		cmd_node->token_type == ENV);
 }
 
 int	handle_single_command(t_env_list *env_struct, t_tree *tree, t_node *cmd_node)
@@ -55,7 +55,7 @@ int	handle_single_command(t_env_list *env_struct, t_tree *tree, t_node *cmd_node
 	pid_t	pid;
 	t_node	*redir = go_next_redir(cmd_node);
 
-	if (cmd_node->token_type != TOKEN_WORD) // builtin
+	if (cmd_node->token_type != WORD) // builtin
 	{
 		if (redir && is_redir_builtin(cmd_node))
 		{

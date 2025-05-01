@@ -1,6 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   utils.c                                             :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: jstuhrin <marvin@42.fr>                       +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/05/01 12:13:34 by jstuhrin       #+#    #+#                */
+/*   Updated: 2025/05/01 12:13:36 by jstuhrin       ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../../includes/parsing.h"
-
 
 bool	is_whitespace(char c)
 {
@@ -56,7 +66,6 @@ int	getwordlen(char *input)
 	{
 		cpy++;
 		state = set_state(state, *cpy);
-		
 	}
 	return (cpy - input);
 }
@@ -66,27 +75,19 @@ int	set_state(e_state state, char c)
 	if (state == OUTSIDE)
 	{
 		if (c == '\'')
-		{
 			state = INSIDE_SINGLES;
-		}
 		else if (c == '\"')
-		{
 			state = INSIDE_DOUBLES;
-		}
 	}
 	else if (state == INSIDE_SINGLES)
 	{
 		if (c == '\'')
-		{
 			state = OUTSIDE;
-		}
 	}
 	else if (state == INSIDE_DOUBLES)
 	{
 		if (c == '\"')
-		{
 			state = OUTSIDE;
-		}
 	}
 	return (state);
 }

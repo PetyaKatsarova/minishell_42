@@ -6,7 +6,11 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2025/05/01 18:54:01 by pekatsar      ########   odam.nl         */
+=======
+/*   Updated: 2025/05/01 17:17:37 by pekatsar      ########   odam.nl         */
+>>>>>>> origin/main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +29,7 @@ static void handle_input(char *input, t_env_list *env_struct_lst)
 		write(STDERR_FILENO, "exit\n", 5);
 		clear_history();
 		free_t_env(env_struct_lst);
-		//return (EXIT_FAILURE); todo: 
+		exit(EXIT_FAILURE);
 	}
 	if (*input)
 		add_history(input);
@@ -66,6 +70,9 @@ static int handle_readline(t_env_list *env_struct_lst)
 		}
 		tree = treenew(token_list, env_struct_lst, input);
 		parser(input, exit_status, tree, env_struct_lst);
+		// printlist(token_list);
+		//print_cmd_nodes(tree);
+		//print_cmd_nodes_readable(tree);
 		cmd_node = go_first_cmd(tree);
 		handle_cmds(tree, env_struct_lst, cmd_node, exit_status);
 		free_tree(tree);

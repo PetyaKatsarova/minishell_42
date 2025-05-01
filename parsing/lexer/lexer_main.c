@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   lexer_main.c                                        :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: jstuhrin <marvin@42.fr>                       +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/05/01 12:11:54 by jstuhrin       #+#    #+#                */
+/*   Updated: 2025/05/01 12:11:55 by jstuhrin       ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/parsing.h"
 
 static void	exit_failure(t_token **head, char *input)
@@ -8,7 +20,10 @@ static void	exit_failure(t_token **head, char *input)
 	exit(EXIT_FAILURE);
 }
 
-static void	process_char(char **cpy, t_token **tail, t_token **head, char *input)
+static void	process_char(	char **cpy,
+							t_token **tail,
+							t_token **head,
+							char *input)
 {
 	while (is_whitespace(**cpy) == true)
 	{
@@ -34,7 +49,7 @@ static void	process_char(char **cpy, t_token **tail, t_token **head, char *input
 
 void	lexer(t_token **head, char *input)
 {
-	t_token *tail;
+	t_token	*tail;
 	bool	first;
 	char	*cpy;
 

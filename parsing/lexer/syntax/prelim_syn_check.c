@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   prelim_syn_check.c                                  :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: jstuhrin <marvin@42.fr>                       +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/05/01 12:12:42 by jstuhrin       #+#    #+#                */
+/*   Updated: 2025/05/01 12:12:44 by jstuhrin       ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../../includes/parsing.h"
 
@@ -23,7 +34,7 @@ static int	check_if_only_whitespace(char *input)
 	return (0);
 }
 
-static int check_pipes(e_state *state, bool *pipe_flag, char input)
+static int	check_pipes(e_state *state, bool *pipe_flag, char input)
 {
 	if (input == '|')
 	{
@@ -45,7 +56,7 @@ static int	check_quotes(char *input)
 {
 	e_state	state;
 	bool	pipe_flag;
-	
+
 	state = OUTSIDE;
 	pipe_flag = true;
 	while (*input)

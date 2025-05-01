@@ -35,19 +35,19 @@ int apply_redirections(t_node *cmd)
 	t_node *redir = go_next_redir(cmd);
 	while (redir)
 	{
-		if (redir->token_type == TOKEN_INPUT_REDIRECT)
+		if (redir->token_type == INPUT_REDIR)
 		{
 			is_valid_read_or_exec_file(redir->redir_path, 'r');
 			try_redirect(redir, STDIN_FILENO, O_RDONLY);
 		}
-		else if (redir->token_type == TOKEN_OUTPUT_REDIRECT)
+		else if (redir->token_type == OUTPUT_REDIR)
 		{
 			{
 				is_valid_read_or_exec_file(redir->redir_path, 'w');
 				try_redirect(redir, STDIN_FILENO, O_RDONLY);
 			}
 		}
-		else if (redir->token_type == TOKEN_APPEND_OUTPUT_REDIRECT)
+		else if (redir->token_type == APP_OUT_REDIR)
 		{
 			is_valid_read_or_exec_file(redir->redir_path, 'w');
 			try_redirect(redir, STDOUT_FILENO, O_WRONLY | O_CREAT | O_APPEND);

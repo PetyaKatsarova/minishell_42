@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   make_argv.c                                         :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: jstuhrin <marvin@42.fr>                       +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/05/01 12:18:42 by jstuhrin       #+#    #+#                */
+/*   Updated: 2025/05/01 12:18:43 by jstuhrin       ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 #include "../../../includes/parsing.h"
@@ -7,7 +18,7 @@ static int	count_tokens(t_token *token)
 	int	count;
 
 	count = 0;
-	while (token != NULL && token->token_type != TOKEN_PIPE)
+	while (token != NULL && token->token_type != PIPE)
 	{
 		if (is_redir(token->token_type))
 		{
