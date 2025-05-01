@@ -1,4 +1,4 @@
-#include "../../includes/parsing.h"
+#include "../../../includes/parsing.h"
 
 int	syn_check(t_token *current)
 {

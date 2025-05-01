@@ -95,6 +95,7 @@ bool		is_whitespace(char c);
 int			set_state(e_state state, char c);
 bool		is_special_delim(char c);
 int			syn_check(t_token *current);
+void		exit_failure_lexer(t_token **head, char *input);
 
 // parser functions
 t_node		*nodenew(e_token token_type, t_node *parent, t_parsing_data *data);
