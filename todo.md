@@ -49,3 +49,6 @@ signals: shell in shell ....
 
 systemd-run --user --collect --pty -p TaskMax=1 /bin/bash
 dprintf() with fd
+
+stuck:
+handle_cmds(tree, env_struct_lst, cmd_node, exit_status);
