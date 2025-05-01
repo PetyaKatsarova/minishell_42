@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/01 17:15:09 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/01 17:17:37 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void handle_input(char *input, t_env_list *env_struct_lst)
 		write(STDERR_FILENO, "exit\n", 5);
 		clear_history();
 		free_t_env(env_struct_lst);
-		//return (EXIT_FAILURE); todo: 
+		exit(EXIT_FAILURE);
 	}
 	if (*input)
 		add_history(input);
