@@ -14,7 +14,7 @@
  */
 void	perror_and_exit(const char *message, int exit_code)
 {
-	close_all_pipe_fds(); // check if not handles elsewhere todo...
+	close_all_pipe_fds();
 	if (message)
 		perror(message);
 	else
@@ -41,9 +41,17 @@ int apply_redirections(t_node *cmd)
 			try_redirect(redir, STDIN_FILENO, O_RDONLY);
 		}
 		else if (redir->token_type == TOKEN_OUTPUT_REDIRECT)
-			try_redirect(redir, STDOUT_FILENO, O_WRONLY | O_CREAT | O_TRUNC);
+		{
+			{
+				is_valid_read_or_exec_file(redir->redir_path, 'w');
+				try_redirect(redir, STDIN_FILENO, O_RDONLY);
+			}
+		}
 		else if (redir->token_type == TOKEN_APPEND_OUTPUT_REDIRECT)
+		{
+			is_valid_read_or_exec_file(redir->redir_path, 'w');
 			try_redirect(redir, STDOUT_FILENO, O_WRONLY | O_CREAT | O_APPEND);
+		}
 		redir = redir->redirects;
 	}
 	return (EXIT_SUCCESS);

@@ -35,7 +35,6 @@ static void handle_child(int i, int pipe_count, int **pipes, pid_t *pids, t_node
 {
 	if (!cmd)
 		exit(127);
-
 	if (i > 0 && pipes[i - 1])
 		dup2(pipes[i - 1][0], STDIN_FILENO);
 	if (i < pipe_count && pipes[i])
@@ -69,7 +68,6 @@ int exec_pipeline(t_env_list *env, t_tree *tree)
 
 	if (!pipes || !pids)
 		exit(EXIT_FAILURE);
-
 	while (cmd)
 	{
 		if (i < pipe_count)

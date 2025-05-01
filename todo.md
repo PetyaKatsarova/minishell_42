@@ -52,3 +52,6 @@ dprintf() with fd
 
 stuck:
 handle_cmds(tree, env_struct_lst, cmd_node, exit_status);
+
+f0r6s9% valgrind -q --track-fds=yes --trace-children=yes ./minishell
+minihell$ bla | echo yes | ls | grep main
