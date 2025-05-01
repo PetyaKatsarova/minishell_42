@@ -32,7 +32,7 @@ t_token	*consume_chars(t_token *tail, char **cpy)
 		state = set_state(state, **cpy);
 	}
 	*cpy_lexeme = '\0';
-	new_token = tokennew(tail, lexeme, TOKEN_WORD);
+	new_token = tokennew(tail, lexeme, WORD);
 	if (new_token == NULL)
 		return (free(lexeme), NULL);
 	return (new_token);

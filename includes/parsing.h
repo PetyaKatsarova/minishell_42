@@ -23,25 +23,25 @@ typedef enum	e_state {
 typedef enum	e_token {
 	TOKEN_NULL,
 
-	TOKEN_PIPE,
+	PIPE,
 
 	// redirects
-	TOKEN_INPUT_REDIRECT,
-	TOKEN_OUTPUT_REDIRECT,
-	TOKEN_HEREDOC,
-	TOKEN_APPEND_OUTPUT_REDIRECT,
+	INPUT_REDIR,
+	OUTPUT_REDIR,
+	HEREDOC,
+	APP_OUT_REDIR,
 
 	// inbuilts
-	TOKEN_ECHO,
-	TOKEN_CD,
-	TOKEN_PWD,
-	TOKEN_EXPORT,
-	TOKEN_UNSET,
-	TOKEN_ENV,
-	TOKEN_EXIT,
+	ECHO,
+	CD,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+	EXIT,
 
 	// words
-	TOKEN_WORD
+	WORD
 }	e_token;
 
 // nodes for token list

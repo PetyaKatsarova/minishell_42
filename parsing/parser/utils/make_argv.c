@@ -18,7 +18,7 @@ static int	count_tokens(t_token *token)
 	int	count;
 
 	count = 0;
-	while (token != NULL && token->token_type != TOKEN_PIPE)
+	while (token != NULL && token->token_type != PIPE)
 	{
 		if (is_redir(token->token_type))
 		{

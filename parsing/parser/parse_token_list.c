@@ -39,7 +39,7 @@ static void	parse_tokens(t_token **token, t_node **node, t_parsing_data *data)
 
 	i = 0;
 	(*node)->argv = make_argv(*token, data);
-	while (*token != NULL && (*token)->token_type != TOKEN_PIPE)
+	while (*token != NULL && (*token)->token_type != PIPE)
 	{
 		if (is_redir((*token)->token_type) == true)
 		{
@@ -65,7 +65,7 @@ void	consume_token_list(t_parsing_data *data)
 	node = go_first_cmd(data->tree);
 	while (token != NULL)
 	{
-		if (token->token_type == TOKEN_PIPE)
+		if (token->token_type == PIPE)
 		{
 			node = go_next_cmd(node);
 			token = token->next;
@@ -73,7 +73,7 @@ void	consume_token_list(t_parsing_data *data)
 		else
 		{
 			parse_tokens(&token, &node, data);
-			if (node->token_type == TOKEN_WORD)
+			if (node->token_type == WORD)
 			{
 				node->token_type = get_type(*(node->argv + 0));
 			}

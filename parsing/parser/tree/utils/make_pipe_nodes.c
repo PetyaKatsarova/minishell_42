@@ -20,7 +20,7 @@ static int	countpipes(t_token *current)
 	num_pipes = 0;
 	while (current != NULL)
 	{
-		if (current->token_type == TOKEN_PIPE)
+		if (current->token_type == PIPE)
 		{
 			num_pipes++;
 		}
@@ -40,12 +40,12 @@ void	make_pipe_nodes(t_parsing_data *data)
 	{
 		if (i == 0)
 		{
-			data->tree->root = nodenew(TOKEN_PIPE, NULL, data);
+			data->tree->root = nodenew(PIPE, NULL, data);
 			current = data->tree->root;
 		}
 		else
 		{
-			current->producer = nodenew(TOKEN_PIPE, current, data);
+			current->producer = nodenew(PIPE, current, data);
 			current = current->producer;
 		}
 		i++;

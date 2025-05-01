@@ -26,18 +26,18 @@ static int	my_strcmp(char *s1, char *s2)
 int	get_type(char *str)
 {
 	if (my_strcmp(str, "echo") == 0)
-		return (TOKEN_ECHO);
+		return (ECHO);
 	if (my_strcmp(str, "cd") == 0)
-		return (TOKEN_CD);
+		return (CD);
 	if (my_strcmp(str, "pwd") == 0)
-		return (TOKEN_PWD);
+		return (PWD);
 	if (my_strcmp(str, "export") == 0)
-		return (TOKEN_EXPORT);
+		return (EXPORT);
 	if (my_strcmp(str, "unset") == 0)
-		return (TOKEN_UNSET);
+		return (UNSET);
 	if (my_strcmp(str, "env") == 0)
-		return (TOKEN_ENV);
+		return (ENV);
 	if (my_strcmp(str, "exit") == 0)
-		return (TOKEN_EXIT);
-	return (TOKEN_WORD);
+		return (EXIT);
+	return (WORD);
 }

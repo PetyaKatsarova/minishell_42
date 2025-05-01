@@ -21,14 +21,14 @@ t_node	*go_first_pipe(t_tree *tree)
 {
 	t_node	*current;
 
-	if (tree->root == NULL || tree->root->token_type != TOKEN_PIPE)
+	if (tree->root == NULL || tree->root->token_type != PIPE)
 	{
 		return (NULL);
 	}
 	current = tree->root;
-	while (current->token_type == TOKEN_PIPE
+	while (current->token_type == PIPE
 		&& current->producer != NULL
-		&& current->producer->token_type == TOKEN_PIPE)
+		&& current->producer->token_type == PIPE)
 	{
 		current = current->producer;
 	}
@@ -37,7 +37,7 @@ t_node	*go_first_pipe(t_tree *tree)
 
 t_node	*go_next_pipe(t_node *current)
 {
-	while (current->token_type != TOKEN_PIPE)
+	while (current->token_type != PIPE)
 	{
 		current = current->parent;
 	}
