@@ -14,3 +14,38 @@
 5. update SHLVL accordingly on every run of shell in shell and exitting
 
 6. Running several commands with pipes leads to invalid attempts to close FDs that have already been closed. Other FDs are left open.
+
+
+https://github.com/froz42/funcheck : check all mallocs
+https://github.com/froz42/funcheck.git
+
+signals for heredoc: ctr+c, d , \ handles
+
+cat <<EOF >file
+heredoc> gsa
+heredoc> fsafsaf
+heredoc> EOF
+
+fd=3 
+unlink
+
+close
+cat <(heredoc-file) >file
+
+save_in = dup(stdin_fileno);
+
+dup2(oldfd, save_in);
+close(save_in);
+
+// TO CHECK how bash does ti
+
+strace -f bash -c $'cat << EOF
+ADSFDSAF
+ASDFDS
+EOF
+'
+
+signals: shell in shell ....
+
+systemd-run --user --collect --pty -p TaskMax=1 /bin/bash
+dprintf() with fd

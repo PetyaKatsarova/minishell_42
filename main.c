@@ -6,37 +6,56 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/30 21:32:27 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/05/01 17:01:24 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
+/**
+ * 		// printlist(token_list);
+		//print_cmd_nodes(tree);
+		//print_cmd_nodes_readable(tree);
+ */
+
+static void handle_input(char *input, t_env_list *env_struct_lst)
+{
+	if (!input)
+	{
+		write(STDERR_FILENO, "exit\n", 5);
+		clear_history();
+		free_t_env(env_struct_lst);
+		//return (EXIT_FAILURE); todo: 
+	}
+	if (*input)
+		add_history(input);
+}
+
+static void handle_cmds(t_tree *tree, t_env_list *env_struct_lst, t_node *cmd_node, int exit_status)
+{
+	int pipes;
+
+	pipes = get_num_pipes(tree);
+	if (pipes > 0) // todo apply redirections to all pipes
+			exit_status = exec_pipeline(env_struct_lst, tree);
+		else if (cmd_node) // handles single commands
+			exit_status = handle_single_command(env_struct_lst, tree, cmd_node);
+		env_struct_lst->last_exit_status = exit_status;
+}
+
 static int handle_readline(t_env_list *env_struct_lst)
 {
 	char 	*input;
-	t_token	*token_list = NULL;
+	t_token	*token_list;
 	t_tree	*tree;
 	t_node	*cmd_node;
 	int		exit_status = 0;
 	
+	token_list = NULL;
 	while (1)
 	{
 		input = readline("\033[1;34mminihell$\033[0m ");
-		if (!input)
-		{
-			write(STDERR_FILENO, "exit\n", 5);
-			clear_history();
-			free_t_env(env_struct_lst);
-			return (EXIT_FAILURE);
-		}
-		if (*input)
-			add_history(input);
-		if (prelim_syn_check(input, &exit_status) != 0)
-		{
-			free(input);
-			continue;
-		}
+		handle_input(input, env_struct_lst);
 		lexer(&token_list, input);
 		if (syn_check(token_list) != 0)
 		{
@@ -47,16 +66,8 @@ static int handle_readline(t_env_list *env_struct_lst)
 		}
 		tree = treenew(token_list, env_struct_lst, input);
 		parser(input, exit_status, tree, env_struct_lst);
-		// printlist(token_list);
-		//print_cmd_nodes(tree);
-		//print_cmd_nodes_readable(tree);
 		cmd_node = go_first_cmd(tree);
-		
-		if (get_num_pipes(tree) > 0) // todo apply redirections to all pipes
-			exit_status = exec_pipeline(env_struct_lst, tree);
-		else if (cmd_node) // handles single commands
-			exit_status = handle_single_command(env_struct_lst, tree, cmd_node);
-		env_struct_lst->last_exit_status = exit_status;
+		handle_cmds();
 		free_tree(tree);
 		free(input);
 	}
