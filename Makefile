@@ -39,14 +39,14 @@ SRCS	 := execution/built_ins/pwd.c \
 			execution/executables/manage_files.c \
 			main.c \
 			parsing/lexer/lexer_main.c \
-			parsing/lexer//syntax/prelim_syn_check.c \
+			parsing/lexer//syntax/pre_tokenization_syn_check.c \
 			parsing/lexer/consume_chars.c \
 			parsing/lexer/consume_special_delim.c \
 			parsing/lexer/utils/utils.c \
 			parsing/lexer/utils/exit_failure_lexer.c \
 			parsing/lexer/list/free_list.c \
 			parsing/lexer/list/tokennew.c \
-			parsing/lexer/syntax/syn_check.c \
+			parsing/lexer/syntax/post_tokenization_syn_check.c \
 			parsing/parser/tree/utils/make_cmd_nodes.c \
 			parsing/parser/tree/utils/make_pipe_nodes.c \
 			parsing/parser/tree/utils/nodenew.c \

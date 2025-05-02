@@ -80,7 +80,7 @@ static int	check_quotes(char *input)
 	return (0);
 }
 
-int	prelim_syn_check(char *input, t_env_list *env_list)
+int	pre_tokenization_syn_check(char *input, t_env_list *env_list)
 {
 	int	res;
 

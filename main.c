@@ -33,13 +33,13 @@ static int	handle_parsing(t_tree **tree, char *input, t_env_list *env_list)
 	t_token	*token_list;
 	
 	token_list = NULL;
-	if (prelim_syn_check(input, env_list) != 0)
+	if (pre_tokenization_syn_check(input, env_list) != 0)
 	{
 		free(input);
 		return (2);
 	}
 	lexer(&token_list, input);
-	if (syn_check(token_list, env_list) != 0)
+	if (post_tokenization_syn_check(token_list, env_list) != 0)
 	{
 		free_list(&token_list);
 		free(input);

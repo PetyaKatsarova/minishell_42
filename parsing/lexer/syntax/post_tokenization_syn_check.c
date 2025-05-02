@@ -13,7 +13,7 @@
 #include "../../../includes/parsing.h"
 #include "../../../includes/minishell.h"
 
-int	syn_check(t_token *current, t_env_list *env_list)
+int	post_tokenization_syn_check(t_token *current, t_env_list *env_list)
 {
 	bool	redir_flag;
 
