@@ -34,6 +34,7 @@ static void	free_redirs(t_node *node)
 	{
 		next = node->redirects;
 		free(node->redir_path);
+		free(node->heredoc_str);
 		free(node);
 		node = next;
 	}

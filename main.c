@@ -77,6 +77,7 @@ static void handle_readline(t_env_list *env_struct_lst)
 		{
 			continue;
 		}
+		print_cmd_nodes_readable(tree);
 		handle_cmds(tree, env_struct_lst);
 		free_tree(tree);
 		free(input);

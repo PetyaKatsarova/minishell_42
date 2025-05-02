@@ -28,7 +28,14 @@ static void	add_redir_node(t_token **token,
 		(*tail_redir)->redirects = nodenew((*token)->token_type, NULL, data);
 		*tail_redir = (*tail_redir)->redirects;
 	}
-	(*tail_redir)->redir_path = parse_lexeme((*token)->next->lexeme, data);
+	if ((*tail_redir)->token_type == HEREDOC)
+	{
+		(*tail_redir)->heredoc_str = parse_heredoc((*token)->next->lexeme, data);
+	}
+	else
+	{
+		(*tail_redir)->redir_path = parse_lexeme((*token)->next->lexeme, data);
+	}
 	*token = (*token)->next->next;
 }
 

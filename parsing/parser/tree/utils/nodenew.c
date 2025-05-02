@@ -29,5 +29,6 @@ t_node	*nodenew(e_token token_type, t_node *parent, t_parsing_data *data)
 	new_node->consumer = NULL;
 	new_node->redirects = NULL;
 	new_node->redir_path = NULL;
+	new_node->heredoc_str = NULL;
 	return (new_node);
 }

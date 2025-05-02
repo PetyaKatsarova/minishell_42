@@ -68,6 +68,7 @@ typedef struct	s_node {
 	struct s_node	*consumer;
 	struct s_node	*redirects;
 	char			*redir_path;
+	char			*heredoc_str;
 }	t_node;
 
 // data container for lexeme parsing
@@ -122,6 +123,7 @@ char	*allocate_str(t_parsing_data *data);
 char	*reallocate_str(char *str, t_parsing_data *data);
 void	expand_variable(char **cpy, char **lexeme, t_parsing_data *data);
 void	expand_exit_status(char **cpy, char **lexeme, t_parsing_data *data);
+char	*parse_heredoc(char *lexeme, t_parsing_data *data);
 
 // test functions
 void	printlist(t_token *token_list);

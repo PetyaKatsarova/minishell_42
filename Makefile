@@ -69,6 +69,7 @@ SRCS	 := execution/built_ins/pwd.c \
 			parsing/parser/utils/make_argv.c \
 			parsing/parser/utils/reallocate_str.c \
 			parsing/parser/parse_lexeme.c \
+			parsing/parser/parse_heredoc.c \
 
 OBJS	 := $(SRCS:.c=.o)
 

@@ -23,6 +23,7 @@ void	print_node(t_node *node)
 	printf("consumer: %p\n", node->consumer);
 	printf("redirects: %p\n", node->redirects);
 	printf("redir_path: %s\n", node->redir_path);
+	printf("heredoc_str: %s\n", node->heredoc_str);
 	printf("\n");
 }
 
@@ -64,9 +65,26 @@ void	print_cmd_node_readable(t_node *node)
 
 void	print_redir_node(t_node *node)
 {
+	char	*cpy;
+	
 	printf("     token_type: ");
 	print_token_type(node->token_type);
-	printf("     redir_path: %s\n", node->redir_path);
+	if (node->redir_path != NULL)
+		printf("     redir_path: %s\n", node->redir_path);
+	if (node->heredoc_str != NULL)
+	{
+		printf("     heredoc_str: ");
+		cpy = node->heredoc_str;
+		while (*cpy != '\0')
+		{
+			if (*cpy == '\n')
+				printf("\\n");
+			else
+				printf("%c", *cpy);
+			cpy++;
+		}
+		printf("\n");
+	}
 	printf("\n");
 }
 
