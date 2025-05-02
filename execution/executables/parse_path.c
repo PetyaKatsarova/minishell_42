@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   parse_path.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: marvin <marvin@student.42.fr>                +#+                     */
+/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2025/04/11 11:20:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/20 09:58:35 by anonymous     ########   odam.nl         */
+/*   Created: 2025/05/02 13:14:07 by pekatsar      #+#    #+#                 */
+/*   Updated: 2025/05/02 13:14:09 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,10 @@ static char	**split_path(t_env_list *env_list)
 	int		i;
 	char	**env;
 	char	**arr;
-	
+
 	env = converted_env(env_list);
 	if (!env)
-	{
-		perror("Error in converting env.");
-		return (NULL);
-	}
+		return (perror("Error in converting env."), NULL);
 	i = 0;
 	while (env[i])
 	{
@@ -35,18 +32,13 @@ static char	**split_path(t_env_list *env_list)
 			arr = ft_split(env[i] + 5, ':');
 			free_arr(env);
 			if (!arr)
-			{
-				perror("Error in splitting PATH.");
-				free_arr(env);
-				return (NULL);
-			}
+				return (perror("Error in splitting PATH."),
+					free_arr(env), NULL);
 			return (arr);
 		}
 		i++;
 	}
-	perror("PATH not found in env.");
-	free_arr(env);
-	return (NULL);
+	return (perror("PATH not found in env."), free_arr(env), NULL);
 }
 
 /**
@@ -93,6 +85,7 @@ static char	*get_full_path(char **paths, char *command_no_flag, int *found)
 	}
 	return (NULL);
 }
+
 /**
  * Returns full path of the command or NULL if not found.
  */
@@ -110,9 +103,7 @@ char	*get_command_path(t_env_list *env, char *cmd_no_flag)
 		if (is_valid_read_or_exec_file(cmd_no_flag, 'x'))
 			return (ft_strdup(cmd_no_flag));
 		else
-		{
 			return (NULL);
-		}
 	}
 	paths = split_path(env);
 	if (!paths)

@@ -1,106 +1,98 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   exec_pipes.c                                       :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/02 15:55:03 by pekatsar      #+#    #+#                 */
+/*   Updated: 2025/05/02 15:55:03 by pekatsar      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
-/**
- * Closes both ends of pipe[] and frees pipes[i] and pipes
- */
-static void close_all_pipes(int **pipes, int count)
+static void	setup_data_one(t_data *data, int i, int **pipes, t_tree *tree)
 {
-    if (!pipes)
-        return;
-    for (int i = 0; i < count; i++) {
-        if (pipes[i]) {
-            close(pipes[i][0]);
-            close(pipes[i][1]);
-            free(pipes[i]);
-        }
-    }
-    free(pipes);
+	data->i = i;
+	data->pipe_count = get_num_pipes(tree);
+	data->pipes = pipes;
+	data->tree = tree;
 }
 
-
-
-static int wait_all(pid_t *pids, int count)
+static void	setup_data_two(t_data *data, pid_t *pids,
+				t_node *cmd, t_env_list *env)
 {
-	int status = 0;
-	for (int i = 0; i < count; i++)
-		waitpid(pids[i], &status, 0);
-	return WEXITSTATUS(status);
+	data->pids = pids;
+	data->cmd = cmd;
+	data->env = env;
 }
 
-/**
- * Creates pipe() for child[i], redirects pipe[0] to stdin & closes, pipe[1] to write stdout, closes pipe[1], after that executes command(builtin || executable)
- * (aka: read from stdin, write to stdout and execute cmd which reads/writes to/in tty(stdin/stdiout))
- */
-static void handle_child(int i, int pipe_count, int **pipes, pid_t *pids, t_node *cmd, t_env_list *env, t_tree *tree)
+static void	exec_pipeline_fork(t_data *data, int i)
 {
-	if (!cmd)
-		exit(127);
-	if (i > 0 && pipes[i - 1])
-		dup2(pipes[i - 1][0], STDIN_FILENO);
-	if (i < pipe_count && pipes[i])
-		dup2(pipes[i][1], STDOUT_FILENO);
-
-	close_all_pipes(pipes, pipe_count);
-	free(pids);
-
-	if (apply_redirections(cmd) != EXIT_SUCCESS)
+	data->pids[i] = fork();
+	if (data->pids[i] == -1)
+	{
+		perror("fork");
 		exit(EXIT_FAILURE);
-
-	int status = execute_builtin(cmd, tree, env);
-	if (status != EXIT_CMD_NOT_FOUND)
-		exit(status);
-	exec_on_path(env, cmd, 1);
-	exit(EXIT_CMD_NOT_FOUND);
+	}
+	if (data->pids[i] == 0)
+		handle_child(data);
+	if (i > 0 && data->pipes[i - 1])
+	{
+		close(data->pipes[i - 1][0]);
+		close(data->pipes[i - 1][1]);
+	}
 }
 
-int exec_pipeline(t_env_list *env, t_tree *tree)
+static void	exec_pipeline_loop(t_data *data, t_node *cmd,
+				t_env_list *env, t_tree *tree)
 {
-	int pipe_count = get_num_pipes(tree);
-	int **pipes = malloc(sizeof(int *) * (pipe_count));
-    for (int i = 0; i < pipe_count; i++)
-    {
-        pipes[i] = NULL;
-    }
-       
-	pid_t *pids = malloc(sizeof(pid_t) * (pipe_count + 1));
-	t_node *cmd = go_first_cmd(tree);
-	int i = 0;
+	int	i;
 
-	if (!pipes || !pids)
-		exit(EXIT_FAILURE);
+	i = 0;
 	while (cmd)
 	{
-		if (i < pipe_count)
+		setup_data_one(data, i, data->pipes, tree);
+		setup_data_two(data, data->pids, cmd, env);
+		if (i < data->pipe_count)
 		{
-			pipes[i] = malloc(sizeof(int) * 2);
-			if (!pipes[i] || pipe(pipes[i]) < 0)
+			data->pipes[i] = malloc(sizeof(int) * 2);
+			if (!data->pipes[i] || pipe(data->pipes[i]) < 0)
 			{
 				perror("pipe");
 				exit(EXIT_FAILURE);
 			}
 		}
-		pids[i] = fork();
-		if (pids[i] == -1)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		if (pids[i] == 0)
-			handle_child(i, pipe_count, pipes, pids, cmd, env, tree);
-		if (i > 0 && pipes[i - 1])
-		{
-			close(pipes[i - 1][0]); // close both ends of prev pipe
-			close(pipes[i - 1][1]);
-		}
+		exec_pipeline_fork(data, i);
 		cmd = go_next_cmd(cmd);
 		i++;
 	}
-
-	int status = wait_all(pids, i);
-	env->last_exit_status = status;
-    close_all_pipes(pipes, pipe_count);
-	free(pids);
-	return status;
+	data->env->last_exit_status = wait_all(data->pids, i);
 }
 
+int	exec_pipeline(t_env_list *env, t_tree *tree)
+{
+	t_data	data;
+	t_node	*cmd;
+	int		i;
 
+	data.pipe_count = get_num_pipes(tree);
+	data.pipes = malloc(sizeof(int *) * data.pipe_count);
+	if (!data.pipes)
+		exit(EXIT_FAILURE);
+	i = 0;
+	while (i < data.pipe_count)
+	{
+		data.pipes[i] = NULL;
+		i++;
+	}
+	data.pids = malloc(sizeof(pid_t) * (data.pipe_count + 1));
+	if (!data.pids)
+		exit(EXIT_FAILURE);
+	cmd = go_first_cmd(tree);
+	exec_pipeline_loop(&data, cmd, env, tree);
+	close_all_pipes(data.pipes, data.pipe_count);
+	free(data.pids);
+	return (data.env->last_exit_status);
+}

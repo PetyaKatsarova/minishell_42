@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														::::::::			*/
-/*   exit.c											 :+:	:+:			*/
-/*													 +:+					*/
-/*   By: marvin <marvin@student.42.fr>				+#+					 */
-/*												   +#+					  */
-/*   Created: 2025/03/26 11:43:52 by pekatsar	  #+#	#+#				 */
-/*   Updated: 2025/04/09 11:03:28 by anonymous	 ########   odam.nl		 */
-/*																			*/
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   exit.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/02 11:34:01 by pekatsar      #+#    #+#                 */
+/*   Updated: 2025/05/02 11:34:10 by pekatsar      ########   odam.nl         */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
@@ -17,7 +17,6 @@
  */
 static void	free_exit_resources(t_env_list *env_struct, t_tree *tree)
 {
-
 	free_tree(tree);
 	free_t_env(env_struct);
 	clear_history();
@@ -56,7 +55,7 @@ static int	is_valid_exit_arg(char *arg)
 	return (1);
 }
 
-static	int write_invalid_args(t_node *cmd_node)
+static int	write_invalid_args(t_node *cmd_node)
 {
 	write(STDERR_FILENO, "minisell: exit: ", 16);
 	write(STDERR_FILENO, cmd_node->argv[1], ft_strlen(cmd_node->argv[1]));
@@ -75,7 +74,6 @@ int	do_exit(t_env_list *env_struct, t_tree *tree, t_node *cmd_node)
 		exit_status = env_struct->last_exit_status;
 	else
 		exit_status = 0;
-	// printf("exit\n");
 	write(STDERR_FILENO, "exit\n", 5);
 	if (!cmd_node->argv[1])
 	{
@@ -86,7 +84,7 @@ int	do_exit(t_env_list *env_struct, t_tree *tree, t_node *cmd_node)
 	{
 		if (cmd_node->argv[2])
 			handle_too_many_args(env_struct, tree);
-		exit_status = ft_atoi(cmd_node->argv[1]) % 256; // bash returns between 0-255
+		exit_status = ft_atoi(cmd_node->argv[1]) % 256;
 	}
 	else if (cmd_node->argv[1])
 		exit_status = write_invalid_args(cmd_node);

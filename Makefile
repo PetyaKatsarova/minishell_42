@@ -25,12 +25,14 @@ SRCS	 := execution/built_ins/pwd.c \
 			execution/built_ins/exit.c \
 			execution/built_ins/unset.c \
 			execution/built_ins/export_utils.c \
+			execution/built_ins/export_utils2.c \
 			execution/built_ins/export.c \
-			execution/freeing.c \
-			execution/init_env.c \
-			execution/init_env_helpers.c \
-			execution/utils.c \
+			execution/utils/freeing.c \
+			execution/utils/init_env.c \
+			execution/utils/init_env_helper.c \
+			execution/utils/utils.c \
 			execution/exec_pipes.c \
+			execution/exec_pipes_helper.c \
 			execution/handle_commands.c \
 			execution/redirects.c \
 			execution/executables/exec_on_path.c \

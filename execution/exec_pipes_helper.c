@@ -1,0 +1,69 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   exec_pipes_helper.c                                :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/02 18:52:59 by pekatsar      #+#    #+#                 */
+/*   Updated: 2025/05/02 18:53:07 by pekatsar      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/minishell.h"
+
+int	wait_all(pid_t *pids, int count)
+{
+	int	i;
+	int	status;
+
+	status = 0;
+	i = 0;
+	while (i < count)
+	{
+		waitpid(pids[i], &status, 0);
+		i++;
+	}
+	return (WEXITSTATUS(status));
+}
+
+void	close_all_pipes(int **pipes, int count)
+{
+	int	i;
+
+	if (!pipes)
+		return ;
+	i = 0;
+	while (i < count)
+	{
+		if (pipes[i])
+		{
+			close(pipes[i][0]);
+			close(pipes[i][1]);
+			free(pipes[i]);
+		}
+		i++;
+	}
+	free(pipes);
+}
+
+void	handle_child(t_data *data)
+{
+	int	status;
+
+	if (!data->cmd)
+		exit(127);
+	if (data->i > 0 && data->pipes[data->i - 1])
+		dup2(data->pipes[data->i - 1][0], STDIN_FILENO);
+	if (data->i < data->pipe_count && data->pipes[data->i])
+		dup2(data->pipes[data->i][1], STDOUT_FILENO);
+	close_all_pipes(data->pipes, data->pipe_count);
+	free(data->pids);
+	if (apply_redirections(data->cmd) != EXIT_SUCCESS)
+		exit(EXIT_FAILURE);
+	status = execute_builtin(data->cmd, data->tree, data->env);
+	if (status != EXIT_CMD_NOT_FOUND)
+		exit(status);
+	exec_on_path(data->env, data->cmd, 1);
+	exit(EXIT_CMD_NOT_FOUND);
+}

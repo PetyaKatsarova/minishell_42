@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   cd.c                                               :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: marvin <marvin@student.42.fr>                +#+                     */
+/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2025/04/18 15:12:55 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/26 08:26:39 by anonymous     ########   odam.nl         */
+/*   Created: 2025/05/02 11:04:12 by pekatsar      #+#    #+#                 */
+/*   Updated: 2025/05/02 11:26:28 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define CWD_MAX 1024
 
 /**
- * Parses full command path in the **result, returns exit_success/0  or failure/1
+ * Parses full command path in the **result, returns exit_success/0 or failure/1
  */
 static int	cd_to_home_or_join(char *rest, char *home, char **result)
 {
@@ -49,7 +49,7 @@ static int	handle_cd_home(char **input_args, t_env_list *env)
 	if (!input_args[1])
 	{
 		if (chdir(home) != 0)
-			return (print_builtin_error("cd", NULL, " Failed to change directory"));
+			return (print_builtin_error("cd", NULL, " Failed to change dir"));
 		update_pwd(env);
 		return (EXIT_SUCCESS);
 	}
@@ -59,40 +59,41 @@ static int	handle_cd_home(char **input_args, t_env_list *env)
 	if (cd_to_home_or_join(rest, home, &result) != 0)
 		return (EXIT_FAILURE);
 	if (chdir(result) != 0)
-		return (free(result), print_builtin_error("cd", result, " Failed to change directory"));
+		return (free(result),
+			print_builtin_error("cd", result, " Failed to change dir"));
 	update_pwd(env);
 	free(result);
 	return (EXIT_SUCCESS);
 }
 
 /**
- * @brief Handles cd, cd ~, cd ~/path, cd -, cd .., cd ./path
+ * Handles cd, cd ~, cd ~/path, cd .., cd ./path
  */
-int do_cd(char **input_args, t_env_list *env)
+int	do_cd(char **input_args, t_env_list *env)
 {
-	char cwd[CWD_MAX];
-	char *result;
+	char	cwd[CWD_MAX];
+	char	*result;
+	char	*oldpwd;
+	int		err;
 
 	if (too_many_args(input_args))
 		return (print_builtin_error("cd", NULL, " too many arguments"));
-	char *oldpwd = getcwd(NULL, 0);
+	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
-		return (print_builtin_error("cd", NULL, " Failed to get current directory"));
+		return (print_builtin_error("cd", NULL, " Failed to get current dir"));
 	set_env_value(env, "OLDPWD", oldpwd);
 	free(oldpwd);
-	if (!input_args[1] || (input_args[1] && input_args[1][0] == '~'))
+	if (!input_args[1] || (input_args[1][0] == '~'))
 		return (handle_cd_home(input_args, env));
-	else
-		result = ft_strdup(input_args[1]);
+	result = ft_strdup(input_args[1]);
 	if (!result)
 		return (print_builtin_error("strdup", NULL, " malloc failed"));
-	if  (chdir(result) != 0)
+	if (chdir(result) != 0)
 	{
-		int err = print_builtin_error("cd", result, " Failed to change directory");
-        return (free(result), err);
-    }
+		err = print_builtin_error("cd", result, " Failed to change directory");
+		return (free(result), err);
+	}
 	if (getcwd(cwd, CWD_MAX))
 		set_env_value(env, "PWD", cwd);
 	return (free(result), EXIT_SUCCESS);
 }
-

@@ -12,6 +12,9 @@
 
 #include "libft.h"
 
+/**
+ * Uses malloc
+ */
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	int		i;

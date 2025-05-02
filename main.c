@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/02 10:53:39 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/02 11:22:52 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,4 +100,3 @@ int main(int argc, char **argv, char **envp) {
 	clear_history();
 	return (0);
 }
-

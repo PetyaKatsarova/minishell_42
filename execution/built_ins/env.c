@@ -3,24 +3,24 @@
 /*                                                        ::::::::            */
 /*   env.c                                              :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: marvin <marvin@student.42.fr>                +#+                     */
+/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2025/04/17 11:56:26 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/04/30 16:03:22 by anonymous     ########   odam.nl         */
+/*   Created: 2025/05/02 11:31:23 by pekatsar      #+#    #+#                 */
+/*   Updated: 2025/05/02 11:32:56 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /*
-_=/usr/bin/env_lst
-the last command run was /usr/bin/env_lst, and _ was set to that.
+	_=/usr/bin/env_lst
+	The last command run was /usr/bin/env_lst, and _ was set to that.
 */
 
-static void write_key_vals(t_env_list *env_struct, int i)
+static void	write_key_vals(t_env_list *env_struct, int i)
 {
-	int slen_val;
-	int slen_key;
+	int	slen_val;
+	int	slen_key;
 
 	slen_val = ft_strlen(env_struct->vars[i].value);
 	slen_key = ft_strlen(env_struct->vars[i].key);
@@ -30,6 +30,11 @@ static void write_key_vals(t_env_list *env_struct, int i)
 	write(STDOUT_FILENO, "\n", 1);
 }
 
+static void	write_stderr(const char *s)
+{
+	write(STDERR_FILENO, s, ft_strlen(s));
+}
+
 int	get_env(char **argv, t_env_list *env_struct)
 {
 	size_t	i;
@@ -37,23 +42,22 @@ int	get_env(char **argv, t_env_list *env_struct)
 	i = 0;
 	if (!env_struct || !env_struct->vars)
 	{
-		write(STDERR_FILENO, "minihell: env: Environment not initialized\n", 44);
+		write_stderr("mshell: env: Environment not initialized\n");
 		return (EXIT_FAILURE);
 	}
-	while (i < env_struct->size && ft_strncmp(env_struct->vars[i].key, "PATH", 4))
+	while (i < env_struct->size
+		&& ft_strncmp(env_struct->vars[i].key, "PATH", 4))
 		i++;
-	if (i == env_struct->size || !env_struct->vars[i].value ||argv[1])
+	if (i == env_struct->size
+		|| !env_struct->vars[i].value || argv[1])
 	{
-		write(STDERR_FILENO, "minihell: env: No such file or directory\n", 41);
-		return (127);
+		return (write_stderr("mshell: env: No such file or directory\n"), 127);
 	}
-
 	i = 0;
 	while (i < env_struct->size)
 	{
 		if (env_struct->vars[i].key && env_struct->vars[i].value
 			&& env_struct->vars[i].exported)
-			// printf("%s=%s\n", env_struct->vars[i].key, env_struct->vars[i].value);
 			write_key_vals(env_struct, i);
 		i++;
 	}

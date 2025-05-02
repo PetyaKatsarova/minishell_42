@@ -55,3 +55,14 @@ handle_cmds(tree, env_struct_lst, cmd_node, exit_status);
 
 f0r6s9% valgrind -q --track-fds=yes --trace-children=yes ./minishell
 minihell$ bla | echo yes | ls | grep main
+
+✅
+terminal: when writing to the terminal the first line will be overwritten when input exceeds line length
+terminal: when using arrow keys to go up and down in the history several times, the printing of the history often gets corrupted (happens especially with long commands) --- TODO -----------------------------------------
+redirs: so far, input consisting only of redirs (no command) is not handled. bash creates all files in this case (Jan thinks this is defined behavior, we might want to check again)
+valgrind: starting at version 3.23 valgrind interprets double closes of file descriptors as errors. (codam does not have an up-to-date version of valgrind, so these errors are not found on school computers). currently, we have double closes of fds when using pipes (always), and with redirs when trying to write to a file without write permission
+
+
+< cat bla | pwd | grep m
+
+echo b | adf adf asdf | cat < bla | grep a

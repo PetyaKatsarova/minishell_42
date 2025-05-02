@@ -13,7 +13,7 @@
 #include "libft.h"
 
 /*
-Returns char *subst from char *s from start, len chars
+Returns char *subst from char *s from start, len chars, usses calloc
 */
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
