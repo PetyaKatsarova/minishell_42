@@ -1,2 +1,0 @@
-/mnt/c/Users/petya.katsarova/OneDrive - CGI/Desktop/minishell_fingers_crossed
-[?2004h[1;34mminihell$[0m ^C[?2004l
