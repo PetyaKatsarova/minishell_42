@@ -18,7 +18,7 @@ void	expand_exit_status(char **cpy, char **lexeme, t_parsing_data *data)
 	char	*exit_status_str;
 	char	*cpy_exit_status_str;
 
-	exit_status_str = ft_itoa(data->exit_status);
+	exit_status_str = ft_itoa(data->env_list->last_exit_status);
 	if (exit_status_str == NULL)
 	{
 		exit_failure_parser(data);

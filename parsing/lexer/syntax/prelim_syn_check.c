@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../../includes/parsing.h"
+#include "../../../includes/minishell.h"
 
 static int	check_if_empty(char *input)
 {
@@ -79,28 +80,28 @@ static int	check_quotes(char *input)
 	return (0);
 }
 
-int	prelim_syn_check(char *input, int *exit_status)
+int	prelim_syn_check(char *input, t_env_list *env_list)
 {
 	int	res;
 
 	if (check_if_empty(input) != 0)
 	{
-		return (*exit_status = 0, 1);
+		return (env_list->last_exit_status = 0, 1);
 	}
 	if (check_if_only_whitespace(input) != 0)
 	{
-		return (*exit_status = 0, 1);
+		return (env_list->last_exit_status = 0, 1);
 	}
 	res = check_quotes(input);
 	if (res == 3)
 	{
-		*exit_status = 2;
+		env_list->last_exit_status = 2;
 		write(1, "syntax error: misplaced '|'\n", 28);
 		return (2);
 	}
 	if (res == 4)
 	{
-		*exit_status = 2;
+		env_list->last_exit_status = 2;
 		write(1, "syntax error: open quotes\n", 26);
 		return (2);
 	}

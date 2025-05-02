@@ -12,15 +12,6 @@
 
 #include "includes/minishell.h"
 
-/**
- * 		// printlist(token_list);
-		//print_cmd_nodes(tree);
-		//print_cmd_nodes_readable(tree);
-				// printlist(token_list);
-		//print_cmd_nodes(tree);
-		//print_cmd_nodes_readable(tree);
- */
-
  /**
   * user pressed ctr+d: no input
   */
@@ -37,63 +28,57 @@ static void handle_input(char *input, t_env_list *env_struct_lst)
 		add_history(input);
 }
 
-static int	handle_parsing(t_tree **tree, char *input, int *exit_status, t_env_list *env_list)
+static int	handle_parsing(t_tree **tree, char *input, t_env_list *env_list)
 {
 	t_token	*token_list;
 	
 	token_list = NULL;
-	if (prelim_syn_check(input, exit_status) != 0)
+	if (prelim_syn_check(input, env_list) != 0)
 	{
 		free(input);
 		return (2);
 	}
 	lexer(&token_list, input);
-	if (syn_check(token_list) != 0)
+	if (syn_check(token_list, env_list) != 0)
 	{
-		*exit_status = 2;
 		free_list(&token_list);
 		free(input);
 		return (2);
 	}
 	*tree = treenew(token_list, env_list, input);
-	parser(input, *exit_status, *tree, env_list);
+	parser(input, *tree, env_list);
 	return (0);
 }
 
-static void handle_cmds(t_tree *tree, t_env_list *env_struct_lst, t_node *cmd_node, int exit_status)
+static void handle_cmds(t_tree *tree, t_env_list *env_struct_lst)
 {
-	//int pipes;
+	t_node	*cmd_node;
 
-	//pipes = get_num_pipes(tree);
+	cmd_node = go_first_cmd(tree);
 	if (tree->num_pipes > 0)
-			exit_status = exec_pipeline(env_struct_lst, tree);
+	env_struct_lst->last_exit_status = exec_pipeline(env_struct_lst, tree);
 	else if (cmd_node)
-		exit_status = handle_single_command(env_struct_lst, tree, cmd_node);
-	env_struct_lst->last_exit_status = exit_status;
+		env_struct_lst->last_exit_status = handle_single_command(env_struct_lst, tree, cmd_node);
 }
 
-static int handle_readline(t_env_list *env_struct_lst)
+static void handle_readline(t_env_list *env_struct_lst)
 {
 	char 	*input;
 	t_tree	*tree;
-	t_node	*cmd_node;
-	int		exit_status = 0;
 	
 	tree = NULL;
 	while (1)
 	{
 		input = readline("\033[1;34mminihell$\033[0m ");
 		handle_input(input, env_struct_lst);
-		if (handle_parsing(&tree, input, &exit_status, env_struct_lst) != 0)
+		if (handle_parsing(&tree, input, env_struct_lst) != 0)
 			continue;
-		cmd_node = go_first_cmd(tree);
-		handle_cmds(tree, env_struct_lst, cmd_node, &exit_status);
+		handle_cmds(tree, env_struct_lst);
 		free_tree(tree);
 		free(input);
 		tree = NULL;
 		input = NULL;
 	}
-	return (exit_status);
 }
 
 // cc -Wall -Wextra -Werror main.c -lreadline && ./a.out
