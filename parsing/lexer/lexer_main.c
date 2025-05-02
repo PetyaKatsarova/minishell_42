@@ -12,14 +12,6 @@
 
 #include "../../includes/parsing.h"
 
-static void	exit_failure(t_token **head, char *input)
-{
-	free_list(head);
-	free(input);
-	clear_history();
-	exit(EXIT_FAILURE);
-}
-
 static void	process_char(	char **cpy,
 							t_token **tail,
 							t_token **head,
@@ -34,7 +26,7 @@ static void	process_char(	char **cpy,
 		*tail = consume_special_delim(*tail, cpy);
 		if (*tail == NULL)
 		{
-			exit_failure(head, input);
+			exit_failure_lexer(head, input);
 		}
 	}
 	else if (**cpy != '\0')
@@ -42,7 +34,7 @@ static void	process_char(	char **cpy,
 		*tail = consume_chars(*tail, cpy);
 		if (*tail == NULL)
 		{
-			exit_failure(head, input);
+			exit_failure_lexer(head, input);
 		}
 	}
 }
