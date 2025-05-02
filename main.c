@@ -28,25 +28,27 @@ static void handle_input(char *input, t_env_list *env_struct_lst)
 		add_history(input);
 }
 
-static int	handle_parsing(t_tree **tree, char *input, t_env_list *env_list)
+static int	handle_parsing(t_tree **tree, char **input, t_env_list *env_list)
 {
 	t_token	*token_list;
 	
 	token_list = NULL;
-	if (pre_tokenization_syn_check(input, env_list) != 0)
+	if (pre_tokenization_syn_check(*input, env_list) != 0)
 	{
-		free(input);
+		free(*input);
+		*input = NULL;
 		return (2);
 	}
-	lexer(&token_list, input);
+	lexer(&token_list, *input);
 	if (post_tokenization_syn_check(token_list, env_list) != 0)
 	{
 		free_list(&token_list);
-		free(input);
+		free(*input);
+		*input = NULL;
 		return (2);
 	}
-	*tree = treenew(token_list, env_list, input);
-	parser(input, *tree, env_list);
+	*tree = treenew(token_list, env_list, *input);
+	parser(*input, *tree, env_list);
 	return (0);
 }
 
@@ -71,8 +73,10 @@ static void handle_readline(t_env_list *env_struct_lst)
 	{
 		input = readline("\033[1;34mminihell$\033[0m ");
 		handle_input(input, env_struct_lst);
-		if (handle_parsing(&tree, input, env_struct_lst) != 0)
+		if (handle_parsing(&tree, &input, env_struct_lst) != 0)
+		{
 			continue;
+		}
 		handle_cmds(tree, env_struct_lst);
 		free_tree(tree);
 		free(input);
