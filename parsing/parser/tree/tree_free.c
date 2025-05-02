@@ -42,15 +42,15 @@ static void	free_redirs(t_node *node)
 
 static void	free_argv(t_node *node)
 {
-	int	i;
+	char	**cpy;
 
-	i = 0;
-	while (node->argv[i] != NULL)
+	cpy = node->argv;
+	while (*node->argv != NULL)
 	{
-		free(node->argv[i]);
-		i++;
+		free(*node->argv);
+		node->argv++;
 	}
-	free(node->argv);
+	free(cpy);
 }
 
 static void	free_cmds(t_tree *tree)
