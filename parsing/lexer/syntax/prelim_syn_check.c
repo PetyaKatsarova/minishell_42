@@ -96,13 +96,13 @@ int	prelim_syn_check(char *input, t_env_list *env_list)
 	if (res == 3)
 	{
 		env_list->last_exit_status = 2;
-		write(1, "syntax error: misplaced '|'\n", 28);
+		write(2, "syntax error: misplaced '|'\n", 28);
 		return (2);
 	}
 	if (res == 4)
 	{
 		env_list->last_exit_status = 2;
-		write(1, "syntax error: open quotes\n", 26);
+		write(2, "syntax error: open quotes\n", 26);
 		return (2);
 	}
 	return (0);
