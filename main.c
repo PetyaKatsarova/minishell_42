@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/01 18:54:01 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/02 10:53:39 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,14 @@
  * 		// printlist(token_list);
 		//print_cmd_nodes(tree);
 		//print_cmd_nodes_readable(tree);
+				// printlist(token_list);
+		//print_cmd_nodes(tree);
+		//print_cmd_nodes_readable(tree);
  */
 
+ /**
+  * user pressed ctr+d: no input
+  */
 static void handle_input(char *input, t_env_list *env_struct_lst)
 {
 	if (!input)
@@ -36,11 +42,11 @@ static void handle_cmds(t_tree *tree, t_env_list *env_struct_lst, t_node *cmd_no
 	int pipes;
 
 	pipes = get_num_pipes(tree);
-	if (pipes > 0) // todo apply redirections to all pipes
+	if (pipes > 0)
 			exit_status = exec_pipeline(env_struct_lst, tree);
-		else if (cmd_node) // handles single commands
-			exit_status = handle_single_command(env_struct_lst, tree, cmd_node);
-		env_struct_lst->last_exit_status = exit_status;
+	else if (cmd_node)
+		exit_status = handle_single_command(env_struct_lst, tree, cmd_node);
+	env_struct_lst->last_exit_status = exit_status;
 }
 
 static int handle_readline(t_env_list *env_struct_lst)
@@ -66,9 +72,6 @@ static int handle_readline(t_env_list *env_struct_lst)
 		}
 		tree = treenew(token_list, env_struct_lst, input);
 		parser(input, exit_status, tree, env_struct_lst);
-		// printlist(token_list);
-		//print_cmd_nodes(tree);
-		//print_cmd_nodes_readable(tree);
 		cmd_node = go_first_cmd(tree);
 		handle_cmds(tree, env_struct_lst, cmd_node, exit_status);
 		free_tree(tree);
@@ -78,23 +81,10 @@ static int handle_readline(t_env_list *env_struct_lst)
 }
 
 // cc -Wall -Wextra -Werror main.c -lreadline && ./a.out
-/** valgrind --tool=memcheck --track-fds=yes --trace-children=yes ./minishell
- * 
+/**
  * valgrind -q --track-fds=yes --trace-children=yes --log-fd=9 9>&2 2>/dev/null ./minishell
-
-
- valgrind --leak-check=full --show-leak-kinds=all ./minishell
-
  valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./minishell
  */
-
- /**
-  * !!NB!!
-  * Ensure your user has this line in their ~/.inputrc:
-set enable-bracketed-paste on
-Or programmatically set it up in C:
-rl_variable_bind("enable-bracketed-paste", "on");
-  */
 
 int main(int argc, char **argv, char **envp) {
 	(void) argc;
@@ -106,8 +96,8 @@ int main(int argc, char **argv, char **envp) {
         return (EXIT_FAILURE);
     }
 	handle_readline(env_struct_lst);
-	// free_t_env(env_struct_lst);
 	env_struct_lst = NULL;
 	clear_history();
 	return (0);
 }
+
