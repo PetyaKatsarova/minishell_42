@@ -9,9 +9,6 @@ static int	my_strcmp(char *s1, char *s2)
 		s1++;
 		s2++;
 	}
-	//printf("input: %s\n", s1);
-	//printf("delim: %s\n", s2);
-	//printf("%d\n", *s1 - *s2);
 	return (*s1 - *s2);
 }
 
@@ -32,9 +29,7 @@ static void	heredoc_loop(char *delim, t_parsing_data *data)
 		cpy_input = input;
 		while (*cpy_input != '\0')
 		{
-			*cpy_new = *cpy_input;
-			cpy_new++;
-			cpy_input++;
+			copy_char(&cpy_new, &cpy_input, data);
 		}
 		*cpy_new = '\n';
 		free(input);
