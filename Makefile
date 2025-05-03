@@ -61,6 +61,7 @@ SRCS	 := execution/built_ins/pwd.c \
 			parsing/parser/utils/allocate_str.c \
 			parsing/parser/utils/copy_char.c \
 			parsing/parser/utils/exit_failure_parser.c \
+			parsing/parser/utils/expand.c \
 			parsing/parser/utils/expand_exit_status.c \
 			parsing/parser/utils/expand_variable.c \
 			parsing/parser/utils/get_type.c \
@@ -68,6 +69,7 @@ SRCS	 := execution/built_ins/pwd.c \
 			parsing/parser/utils/is_valid_var_char.c \
 			parsing/parser/utils/make_argv.c \
 			parsing/parser/utils/reallocate_str.c \
+			parsing/parser/utils/my_strcmp.c \
 			parsing/parser/parse_lexeme.c \
 			parsing/parser/parse_heredoc.c \
 

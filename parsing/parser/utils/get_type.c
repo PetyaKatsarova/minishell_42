@@ -13,16 +13,6 @@
 #include "../../../includes/minishell.h"
 #include "../../../includes/parsing.h"
 
-static int	my_strcmp(char *s1, char *s2)
-{
-	while (*s1 && *s1 == *s2)
-	{
-		s1++;
-		s2++;
-	}
-	return (*s1 - *s2);
-}
-
 int	get_type(char *str)
 {
 	if (my_strcmp(str, "echo") == 0)

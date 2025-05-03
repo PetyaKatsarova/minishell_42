@@ -121,6 +121,8 @@ bool	is_valid_var_char(char c);
 void	copy_char(char **target, char **source, t_parsing_data *data);
 char	*allocate_str(t_parsing_data *data);
 char	*reallocate_str(char *str, t_parsing_data *data);
+int		my_strcmp(char *s1, char *s2);
+void	expand(char **cpy, char **lexeme, t_parsing_data *data);
 void	expand_variable(char **cpy, char **lexeme, t_parsing_data *data);
 void	expand_exit_status(char **cpy, char **lexeme, t_parsing_data *data);
 char	*parse_heredoc(char *lexeme, t_parsing_data *data);

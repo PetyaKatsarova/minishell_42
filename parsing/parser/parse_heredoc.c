@@ -2,17 +2,23 @@
 #include "../../includes/parsing.h"
 #include "../../includes/minishell.h"
 
-static int	my_strcmp(char *s1, char *s2)
+static void	parse_line(char **cpy_new, char **cpy_input, t_parsing_data *data, bool exp)
 {
-	while (*s1 != '\0' && *s1 == *s2)
+	while (**cpy_input != '\0')
 	{
-		s1++;
-		s2++;
+		if (exp == true && **cpy_input == '$')
+		{
+			expand(cpy_new, cpy_input, data);
+		}
+		else
+		{
+			copy_char(cpy_new, cpy_input, data);
+		}
 	}
-	return (*s1 - *s2);
+	**cpy_new = '\n';
 }
 
-static void	heredoc_loop(char *delim, t_parsing_data *data)
+static void	heredoc_loop(char *delim, t_parsing_data *data, bool exp)
 {
 	char	*input;
 	char	*cpy_new;
@@ -27,11 +33,7 @@ static void	heredoc_loop(char *delim, t_parsing_data *data)
 			cpy_new++;
 		}
 		cpy_input = input;
-		while (*cpy_input != '\0')
-		{
-			copy_char(&cpy_new, &cpy_input, data);
-		}
-		*cpy_new = '\n';
+		parse_line(&cpy_new, &cpy_input, data, exp);
 		free(input);
 		input = NULL;
 		input = readline("> ");
@@ -39,16 +41,38 @@ static void	heredoc_loop(char *delim, t_parsing_data *data)
 	free(input);
 }
 
-char	*parse_heredoc(char *lexeme, t_parsing_data *data)
+static void	extract_delim(char *delim, bool *exp)
 {
-	char	*delim;
+	if (*delim == '\'' || *delim == '\"')
+	{
+		*exp = false;
+		delim++;
+		while (*delim != '\0')
+		{
+			*(delim - 1) = *delim;
+			delim++;
+		}
+		delim--;
+		*delim = '\0';
+		delim--;
+		*delim = '\0';
+	}
+	else
+	{
+		*exp = true;
+	}
+}
+
+char	*parse_heredoc(char *delim, t_parsing_data *data)
+{
+	bool	exp;
 	
 	data->new = allocate_str(data);
 	if (data->new == NULL)
 	{
 		exit_failure_parser(data);
 	}
-	delim = lexeme;
-	heredoc_loop(delim, data);
+	extract_delim(delim, &exp);
+	heredoc_loop(delim, data, exp);
 	return (data->new);
 }
