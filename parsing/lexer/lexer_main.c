@@ -26,6 +26,7 @@ static void	process_char(	char **cpy,
 		*tail = consume_special_delim(*tail, cpy);
 		if (*tail == NULL)
 		{
+			perror("lexer_main.c: malloc failed");
 			exit_failure_lexer(head, input);
 		}
 	}
@@ -34,6 +35,7 @@ static void	process_char(	char **cpy,
 		*tail = consume_chars(*tail, cpy);
 		if (*tail == NULL)
 		{
+			perror("lexer_main.c: malloc failed");
 			exit_failure_lexer(head, input);
 		}
 	}

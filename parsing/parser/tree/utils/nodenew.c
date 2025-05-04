@@ -20,6 +20,7 @@ t_node	*nodenew(e_token token_type, t_node *parent, t_parsing_data *data)
 	new_node = malloc(sizeof(t_node));
 	if (new_node == NULL)
 	{
+		perror("nodenew(): malloc failed");
 		exit_failure_parser(data);
 	}
 	new_node->parent = parent;

@@ -27,6 +27,7 @@ static char	*get_variable(char *lexeme, t_parsing_data *data)
 	var = malloc((i + 1) * sizeof(char));
 	if (var == NULL)
 	{
+		perror("get_variable(): malloc failed");
 		exit_failure_parser(data);
 	}
 	i = 1;

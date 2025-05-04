@@ -70,10 +70,6 @@ static void	populate_new(char *lexeme, t_parsing_data *data)
 char	*parse_lexeme(char *lexeme, t_parsing_data *data)
 {
 	data->new = allocate_str(data);
-	if (data->new == NULL)
-	{
-		exit_failure_parser(data);
-	}
 	populate_new(lexeme, data);
 	return (data->new);
 }

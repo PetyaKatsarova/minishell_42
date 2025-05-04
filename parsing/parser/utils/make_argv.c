@@ -42,11 +42,13 @@ char	**make_argv(t_token *token, t_parsing_data *data)
 	argv = malloc((count + 1) * sizeof(char *));
 	if (argv == NULL)
 	{
+		perror("make_argv(): malloc failed");
 		exit_failure_parser(data);
 	}
-	while (count > 0)
+	while (count >= 0)
 	{
-		argv[--count] = NULL;
+		argv[count] = NULL;
+		count--;
 	}
 	return (argv);
 }
