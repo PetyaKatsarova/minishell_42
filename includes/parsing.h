@@ -85,7 +85,7 @@ typedef struct	s_parsing_data {
 
 // lexer functions
 int		pre_tokenization_syn_check(char *input, t_env_list *env_list);
-void	lexer(t_token **head, char *input);
+void	lexer(t_token **head, char *input, t_env_list *env_list);
 t_token	*consume_chars(t_token *tail, char **cpy);
 t_token	*consume_special_delim(t_token *tail, char **cpy);
 t_token	*tokennew(t_token *tail, char *lexeme, e_token token_type);
@@ -96,7 +96,7 @@ bool	is_whitespace(char c);
 int		set_state(e_state state, char c);
 bool	is_special_delim(char c);
 int		post_tokenization_syn_check(t_token *current, t_env_list *env_list);
-void	exit_failure_lexer(t_token **head, char *input);
+void	exit_failure_lexer(t_token **head, char *input, t_env_list *env_list);
 
 // parser functions
 t_node	*nodenew(e_token token_type, t_node *parent, t_parsing_data *data);

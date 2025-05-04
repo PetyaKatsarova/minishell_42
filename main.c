@@ -39,7 +39,7 @@ static int	handle_parsing(t_tree **tree, char **input, t_env_list *env_list)
 		*input = NULL;
 		return (2);
 	}
-	lexer(&token_list, *input);
+	lexer(&token_list, *input, env_list);
 	if (post_tokenization_syn_check(token_list, env_list) != 0)
 	{
 		free_list(&token_list);

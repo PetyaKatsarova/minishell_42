@@ -11,11 +11,9 @@
 /* ************************************************************************** */
 
 #include "../../includes/parsing.h"
+#include "../../includes/minishell.h"
 
-static void	process_char(	char **cpy,
-							t_token **tail,
-							t_token **head,
-							char *input)
+static void	process_char(char **cpy, t_token **tail)
 {
 	while (is_whitespace(**cpy) == true)
 	{
@@ -24,24 +22,14 @@ static void	process_char(	char **cpy,
 	if (is_special_delim(**cpy) == true)
 	{
 		*tail = consume_special_delim(*tail, cpy);
-		if (*tail == NULL)
-		{
-			perror("lexer_main.c: malloc failed");
-			exit_failure_lexer(head, input);
-		}
 	}
 	else if (**cpy != '\0')
 	{
 		*tail = consume_chars(*tail, cpy);
-		if (*tail == NULL)
-		{
-			perror("lexer_main.c: malloc failed");
-			exit_failure_lexer(head, input);
-		}
 	}
 }
 
-void	lexer(t_token **head, char *input)
+void	lexer(t_token **head, char *input, t_env_list *env_list)
 {
 	t_token	*tail;
 	bool	first;
@@ -52,7 +40,12 @@ void	lexer(t_token **head, char *input)
 	cpy = input;
 	while (*cpy != '\0')
 	{
-		process_char(&cpy, &tail, head, input);
+		process_char(&cpy, &tail);
+		if (tail == NULL)
+		{
+			perror("lexer");
+			exit_failure_lexer(head, input, env_list);
+		}
 		if (first == true)
 		{
 			*head = tail;
