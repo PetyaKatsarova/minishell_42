@@ -21,6 +21,7 @@ char	*allocate_str(t_parsing_data *data)
 	str = malloc((data->size) * sizeof(char));
 	if (str == NULL)
 	{
+		perror("allocate_str(): malloc failed");
 		exit_failure_parser(data);
 	}
 	cpy = str;

@@ -21,6 +21,7 @@ void	expand_exit_status(char **cpy, char **lexeme, t_parsing_data *data)
 	exit_status_str = ft_itoa(data->env_list->last_exit_status);
 	if (exit_status_str == NULL)
 	{
+		perror("expand_exit_status(): malloc failed");
 		exit_failure_parser(data);
 	}
 	cpy_exit_status_str = exit_status_str;

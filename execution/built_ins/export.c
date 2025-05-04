@@ -14,11 +14,11 @@
 
 int	do_export(char **input_args, t_env_list *env_struct)
 {
-	int			i;
+	//int			i;
 	t_env_list	*sorted_env;
 	int			has_error;
 
-	i = 1;
+	//i = 1;
 	has_error = 0;
 	sorted_env = NULL;
 	if (input_args[1])

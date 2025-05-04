@@ -11,11 +11,13 @@
 /* ************************************************************************** */
 
 #include "../../../includes/parsing.h"
+#include "../../../includes/minishell.h"
 
-void	exit_failure_lexer(t_token **head, char *input)
+void	exit_failure_lexer(t_token **head, char *input, t_env_list *env_list)
 {
 	free_list(head);
 	free(input);
+	free_t_env(env_list);
 	clear_history();
 	exit(EXIT_FAILURE);
 }

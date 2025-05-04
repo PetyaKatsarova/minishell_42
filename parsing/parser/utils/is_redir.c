@@ -15,8 +15,7 @@
 
 bool	is_redir(e_token token_type)
 {
-	if (token_type >= INPUT_REDIR
-		&& token_type <= APP_OUT_REDIR)
+	if (token_type >= INPUT_REDIR && token_type <= APP_OUT_REDIR)
 	{
 		return (true);
 	}
