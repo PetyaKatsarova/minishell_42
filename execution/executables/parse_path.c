@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   parse_path.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:14:07 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/02 13:14:09 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/05 18:31:23 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,23 +95,24 @@ char	*get_command_path(t_env_list *env, char *cmd_no_flag)
 	char	*full_path;
 	int		found;
 
-	if (ft_strlen(cmd_no_flag) == 0)
+	if (!cmd_no_flag || *cmd_no_flag == '\0')
 		return (NULL);
 	if ((cmd_no_flag[0] == '.' && cmd_no_flag[1] == '/')
 		|| cmd_no_flag[0] == '/')
 	{
-		if (is_valid_read_or_exec_file(cmd_no_flag, 'x'))
-			return (ft_strdup(cmd_no_flag));
-		else
-			return (NULL);
+		if (access(cmd_no_flag, F_OK) != 0 || access(cmd_no_flag, X_OK) != 0)
+			return (perror(cmd_no_flag), env->last_exit_status = 126, NULL);
+		return (ft_strdup(cmd_no_flag));
 	}
 	paths = split_path(env);
 	if (!paths)
 		return (NULL);
-	found = 0;
 	full_path = get_full_path(paths, cmd_no_flag, &found);
 	free_dbl_ptr(paths);
-	if (found)
-		return (full_path);
-	return (NULL);
+	if (!found && full_path == NULL)
+	{
+		perror(cmd_no_flag);
+		env->last_exit_status = 127;
+	}
+	return (full_path);
 }

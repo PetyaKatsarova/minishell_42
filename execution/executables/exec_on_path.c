@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   exec_on_path.c                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:00:37 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/02 13:03:57 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/05 18:37:40 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

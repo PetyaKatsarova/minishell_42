@@ -66,3 +66,20 @@ valgrind: starting at version 3.23 valgrind interprets double closes of file des
 < cat bla | pwd | grep m
 
 echo b | adf adf asdf | cat < bla | grep a
+
+////////// redirects errs \\\\\\\\\\\\\
+
+1. echo hi > noneixsanetf
+get permision denied
+shell: no result
+
+2. 
+
+
+
+
+// correct: 
+1. basic safe, redirect, append
+2. ECH PWD > bla
+
+
