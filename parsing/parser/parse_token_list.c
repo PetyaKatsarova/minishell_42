@@ -16,32 +16,32 @@
 static void	add_redir_node(t_token **token,
 	t_node **node,
 	t_parsing_data *data,
-	t_node **tail_redir)
+	t_node **tail)
 {
 	if ((*node)->redirects == NULL)
 	{
 		(*node)->redirects = nodenew((*token)->token_type, NULL, data);
-		*tail_redir = (*node)->redirects;
+		*tail = (*node)->redirects;
 	}
 	else
 	{
-		(*tail_redir)->redirects = nodenew((*token)->token_type, NULL, data);
-		*tail_redir = (*tail_redir)->redirects;
+		(*tail)->redirects = nodenew((*token)->token_type, NULL, data);
+		*tail = (*tail)->redirects;
 	}
-	if ((*tail_redir)->token_type == HEREDOC)
+	if ((*tail)->token_type == HEREDOC)
 	{
-		(*tail_redir)->heredoc_str = parse_heredoc((*token)->next->lexeme, data);
+		(*tail)->heredoc_str = parse_heredoc((*token)->next->lexeme, data);
 	}
 	else
 	{
-		(*tail_redir)->redir_path = parse_lexeme((*token)->next->lexeme, data);
+		(*tail)->redir_path = parse_lexeme((*token)->next->lexeme, data);
 	}
 	*token = (*token)->next->next;
 }
 
 static void	parse_tokens(t_token **token, t_node **node, t_parsing_data *data)
 {
-	t_node	*tail_redir;
+	t_node	*tail;
 	int		i;
 
 	i = 0;
@@ -50,7 +50,7 @@ static void	parse_tokens(t_token **token, t_node **node, t_parsing_data *data)
 	{
 		if (is_redir((*token)->token_type) == true)
 		{
-			add_redir_node(token, node, data, &tail_redir);
+			add_redir_node(token, node, data, &tail);
 		}
 		else
 		{

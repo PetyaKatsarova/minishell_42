@@ -1,8 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   parse_heredoc.c                                     :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: jstuhrin <marvin@42.fr>                       +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/05/06 13:56:14 by jstuhrin       #+#    #+#                */
+/*   Updated: 2025/05/06 13:56:16 by jstuhrin       ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../includes/parsing.h"
 #include "../../includes/minishell.h"
 
-static void	parse_line(char **cpy_new, char **cpy_input, t_parsing_data *data, bool exp)
+static void	parse_line(	char **cpy_new,
+						char **cpy_input,
+						t_parsing_data *data,
+						bool exp)
 {
 	while (**cpy_input != '\0')
 	{
@@ -69,7 +83,7 @@ static void	extract_delim(char *delim, bool *exp)
 char	*parse_heredoc(char *delim, t_parsing_data *data)
 {
 	bool	exp;
-	
+
 	data->new = allocate_str(data);
 	extract_delim(delim, &exp);
 	heredoc_loop(delim, data, exp);
