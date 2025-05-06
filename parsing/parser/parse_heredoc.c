@@ -18,28 +18,15 @@ static void	parse_line(char **cpy_new, char **cpy_input, t_parsing_data *data, b
 	**cpy_new = '\n';
 }
 
-static char	*get_input(t_parsing_data *data)
-{
-	char	*input;
-	
-	input = readline("> ");
-	if (input == NULL)
-	{
-		write(2, "HEREDOC: input is NULL\n", 23);
-		exit_failure_parser(data);
-	}
-	return (input);
-}
-
 static void	heredoc_loop(char *delim, t_parsing_data *data, bool exp)
 {
 	char	*input;
 	char	*cpy_new;
 	char	*cpy_input;
 
-	input = get_input(data);
+	input = readline("> ");
 	cpy_new = data->new;
-	while (my_strcmp(input, delim) != 0)
+	while (input != NULL && my_strcmp(input, delim) != 0)
 	{
 		while (*cpy_new != '\0')
 		{
@@ -48,7 +35,11 @@ static void	heredoc_loop(char *delim, t_parsing_data *data, bool exp)
 		cpy_input = input;
 		parse_line(&cpy_new, &cpy_input, data, exp);
 		free(input);
-		input = get_input(data);
+		input = readline("> ");
+	}
+	if (input == NULL)
+	{
+		write(1, "warning: heredoc delimited by EOF\n", 34);
 	}
 	free(input);
 }
