@@ -33,7 +33,7 @@ static void	try_redirect(t_node *redir, int fd_target, int flags)
 }
 
 /**
- * Checks if input file is not correct or no access, return exitfailure
+ * Checks if input file exists and has r permissions, return exitfailure
  * else exitsuccess
  */
 static int	check_input_redirs(t_node *cmd)
@@ -84,6 +84,12 @@ create else print msg and exit If all well: start from left to
 right exec cmds Bash first checks that input files exist and are readable.
 If any input file is invalid, it aborts immediately — and does not
 create or truncate output files.
+
+----------------- todo ----------------------------------
+handle < file, > fiule etc
+if cmd_node = TOKEN_NULL: no cmd but <>>><< redir
+<flie > cad, echo hi > nef >
+> bla <b2 > b3
 */
 int	apply_redirections(t_node *cmd)
 {

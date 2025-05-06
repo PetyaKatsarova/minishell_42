@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 16:01:12 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/02 18:40:31 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/06 18:19:59 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,21 @@ static bool	is_redir_builtin(t_node *cmd_node)
 		|| cmd_node->token_type == ENV);
 }
 
+static int handle_no_cmd_redir(t_node *redir, t_node *cmd_node, int status)
+{
+	if (redir && cmd_node->token_type == TOKEN_NULL)
+	{
+		pid_t	pid;
+		
+		pid = fork();
+		if (pid == 0)
+			exit(apply_redirections(cmd_node));
+		waitpid(pid, &status, 0);
+		return WEXITSTATUS(status);
+	}
+	return (status);
+}
+
 /**
  * cmd_node->token_type != WORD : is not command?
  */
@@ -52,7 +67,9 @@ int	handle_single_command(t_env_list *env_struct,
 	status = 0;
 	redir = go_next_redir(cmd_node);
 	if (cmd_node->token_type != WORD)
-	{
+	{	
+
+		handle_no_cmd_redir(redir, cmd_node, status);
 		if (redir && is_redir_builtin(cmd_node))
 		{
 			pid = fork();

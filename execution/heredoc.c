@@ -1,25 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   close_fds.c                                        :+:    :+:            */
+/*   heredoc.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2025/05/06 16:24:03 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/06 17:18:45 by pekatsar      ########   odam.nl         */
+/*   Created: 2025/05/06 17:20:14 by pekatsar      #+#    #+#                 */
+/*   Updated: 2025/05/06 17:30:04 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
-void	close_all_pipe_fds(void)
-{
-	int	fd;
+// if cmd_node = TOKEN_NULL: no cmd but <>>><< redir
+// <flie > cad, echo hi > nef >
 
-	fd = 3;
-	while (fd < 1024)
-	{
-		close(fd);
-		fd++;
-	}
-}

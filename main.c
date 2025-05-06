@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/05 17:37:11 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/05/06 18:04:32 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,13 @@ static void handle_readline(t_env_list *env_struct_lst)
 	tree = NULL;
 	while (1)
 	{
-		// input = readline("\033[1;34mminihell$\033[0m ");
 		input = readline("\001\033[1;34m\002minihell$\001\033[0m\002 ");
-
 		handle_input(input, env_struct_lst);
 		if (handle_parsing(&tree, &input, env_struct_lst) != 0)
 		{
 			continue;
 		}
-		// print_cmd_nodes_readable(tree);
+		//print_cmd_nodes_readable(tree);
 		handle_cmds(tree, env_struct_lst);
 		free_tree(tree);
 		free(input);
