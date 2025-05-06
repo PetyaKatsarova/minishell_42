@@ -31,6 +31,7 @@ SRCS	 := execution/built_ins/pwd.c \
 			execution/utils/init_env.c \
 			execution/utils/init_env_helper.c \
 			execution/utils/utils.c \
+			execution/utils/manage_files.c \
 			execution/exec_pipes.c \
 			execution/exec_pipes_helper.c \
 			execution/handle_commands.c \
@@ -38,7 +39,6 @@ SRCS	 := execution/built_ins/pwd.c \
 			execution/executables/exec_on_path.c \
 			execution/executables/parse_path.c \
 			execution/executables/helpers.c \
-			execution/executables/manage_files.c \
 			main.c \
 			parsing/lexer/lexer_main.c \
 			parsing/lexer//syntax/pre_tokenization_syn_check.c \

@@ -3,7 +3,70 @@
 
 ls -l >> newf ✅
 ls > newfile ✅
-ls >> bla <ls >> bla < bla ✘
+
+
+ls >> bla <ls >> bla < bla ✅
+echo bla tra la la > b2 < b3 ✅ ✘ deletes b2 content, get msg: no b3 file 
+echo hello > file1 > file2 ✅
+ls >> bla < bla2 ✅
+
+==========================
+1. ✅
+echo hi > output.txt < missing.txt
+Expected (Bash):
+output.txt is created and empty.
+Error: missing.txt: No such file or directory
+===============================
+2. ✅
+echo hi > output.txt < input.txt
+Expected:
+output.txt created/truncated
+Contents of input.txt can be read (if your shell reads it)
+=========================================
+3. ✅
+echo hi > out1.txt < in1.txt < in2.txt
+if in1.txt exists but in2.txt does not:
+Expected:
+out1.txt is created
+Error: in2.txt: No such file or directory
+No output from echo
+====================================
+4. ✅
+cat < bla | grep la | wc -w > bla2 x
+if bla doesnt exits: get msg: no such file or dir bla, bla2 is created if not exists and has 0
+========================================
+
+
+
+ ✘
+
+< bla2:
+
+Bash tries to open bla2 for reading (stdin redirection).
+
+!!NB!!
+Bash runs cmds from left to right, however:
+Bash opens all redirection files before executing the command.
+If input.txt doesn't exist → error, command not run.
+If output.txt doesn't exist → it is created immediately (even if command later fails).
+
+If bla2 does not exist, bash prints:
+
+yaml
+Copy
+Edit
+bash: bla2: No such file or directory
+Command is not executed.
+
+>> bla:
+
+This would append stdout to bla, but it never happens if bla2 is missing.
+
+✅ Expected behavior in bash:
+If bla2 does not exist, you'll see:
+bash: bla2: No such file or directory
+
+✘
 
 ls >> bla <ls >> bla < bla
 bash: ls: No such file or directory

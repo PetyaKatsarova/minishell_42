@@ -32,31 +32,77 @@ static void	try_redirect(t_node *redir, int fd_target, int flags)
 	close(fd);
 }
 
-int	apply_redirections(t_node *cmd)
+/**
+ * Checks if input file is not correct or no access, return exitfailure
+ * else exitsuccess
+ */
+static int	check_input_redirs(t_node *cmd)
+{
+	t_node	*tmp;
+
+	tmp = go_next_redir(cmd);
+	while (tmp)
+	{
+		if (tmp->token_type == INPUT_REDIR)
+		{
+			if (!is_valid_read_or_exec_file(tmp->redir_path, 'r'))
+				return (EXIT_FAILURE);
+		}
+		tmp = tmp->redirects;
+	}
+	return (EXIT_SUCCESS);
+}
+
+static int	precreate_output_files(t_node *cmd)
 {
 	t_node	*redir;
+	int		fd;
 
 	redir = go_next_redir(cmd);
 	while (redir)
 	{
-		if (redir->token_type == INPUT_REDIR)
-		{
-			is_valid_read_or_exec_file(redir->redir_path, 'r');
-			try_redirect(redir, STDIN_FILENO, O_RDONLY);
-		}
-		else if (redir->token_type == OUTPUT_REDIR)
-		{
-			is_valid_read_or_exec_file(redir->redir_path, 'w');
-			try_redirect(redir, STDOUT_FILENO,
-				O_WRONLY | O_CREAT | O_TRUNC);
-		}
+		if (redir->token_type == OUTPUT_REDIR)
+			fd = open(redir->redir_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		else if (redir->token_type == APP_OUT_REDIR)
+			fd = open(redir->redir_path, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		else
 		{
-			is_valid_read_or_exec_file(redir->redir_path, 'w');
-			try_redirect(redir, STDOUT_FILENO,
-				O_WRONLY | O_CREAT | O_APPEND);
+			redir = redir->redirects;
+			continue;
 		}
+		if (fd < 0)
+			return (perror(redir->redir_path), EXIT_FAILURE);
+		close(fd);
 		redir = redir->redirects;
 	}
 	return (EXIT_SUCCESS);
 }
+
+/**
+First loop through full cmd till/if pipe, check file access, if needed create else print msg and exit
+If all well: start from left to right exec cmds
+Bash first checks that input files exist and are readable.
+If any input file is invalid, it aborts immediately — and does not create or truncate output files.
+*/
+int	apply_redirections(t_node *cmd)
+{
+	t_node	*redir;
+
+	if (precreate_output_files(cmd) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (check_input_redirs(cmd) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	redir = go_next_redir(cmd);
+	while (redir)
+	{
+		if (redir->token_type == INPUT_REDIR)
+			try_redirect(redir, STDIN_FILENO, O_RDONLY);
+		else if (redir->token_type == OUTPUT_REDIR)
+			try_redirect(redir, STDOUT_FILENO, O_WRONLY | O_CREAT | O_TRUNC);
+		else if (redir->token_type == APP_OUT_REDIR)
+			try_redirect(redir, STDOUT_FILENO, O_WRONLY | O_CREAT | O_APPEND);
+		redir = redir->redirects;
+	}
+	return (EXIT_SUCCESS);
+}
+
