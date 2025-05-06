@@ -66,7 +66,7 @@ void	print_cmd_node_readable(t_node *node)
 void	print_redir_node(t_node *node)
 {
 	char	*cpy;
-	
+
 	printf("     token_type: ");
 	print_token_type(node->token_type);
 	if (node->redir_path != NULL)
