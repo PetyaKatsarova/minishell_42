@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 18:36:40 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/02 18:41:16 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/06 10:16:40 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,11 @@ void	malloc_protect(void *ptr)
 	}
 }
 
+/**
+ * Exit-on-failure allocator
+ * Safely allocate memory (malloc, strdup, strjoin, substr).
+	If allocation fails → prints perror("minishell") and exits
+ */
 void	*xalloc(t_alloc_type type, void *a, void *b, size_t size)
 {
 	void	*result;

@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   exec_on_path.c                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:00:37 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/02 13:03:57 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/06 14:21:28 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 				env_list->last_exit_status = EXIT_FAILURE, EXIT_FAILURE);
 		if (pid == 0)
 		{
-			apply_redirections(curr_cmd);
+			if (apply_redirections(curr_cmd) != EXIT_SUCCESS)
+				exit(EXIT_FAILURE);
 			exec_command(env_list, curr_cmd);
 		}
 		waitpid(pid, &status, 0);

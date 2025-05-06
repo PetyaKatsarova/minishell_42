@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 18:28:15 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/02 18:46:49 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/06 10:17:09 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,6 @@ static void	set_new_env(t_env_list *env, const char *key, const char *val)
 	env->size++;
 	env->vars[env->size].key = NULL;
 }
-
-//static void another_helper()
-//{
-
-//}
 
 void	set_env_value(t_env_list *env, const char *key, const char *val)
 {
