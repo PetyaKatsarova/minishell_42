@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:14:07 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/05 18:31:23 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/05/06 16:44:13 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,13 @@ static char	*get_full_path(char **paths, char *command_no_flag, int *found)
 	return (NULL);
 }
 
+static char	*check_direct_path(t_env_list *env, char *cmd)
+{
+	if (access(cmd, F_OK) != 0 || access(cmd, X_OK) != 0)
+		return (perror(cmd), env->last_exit_status = 126, NULL);
+	return (xalloc(ALLOC_STRDUP, cmd, NULL, 0));
+}
+
 /**
  * Returns full path of the command or NULL if not found.
  */
@@ -99,14 +106,11 @@ char	*get_command_path(t_env_list *env, char *cmd_no_flag)
 		return (NULL);
 	if ((cmd_no_flag[0] == '.' && cmd_no_flag[1] == '/')
 		|| cmd_no_flag[0] == '/')
-	{
-		if (access(cmd_no_flag, F_OK) != 0 || access(cmd_no_flag, X_OK) != 0)
-			return (perror(cmd_no_flag), env->last_exit_status = 126, NULL);
-		return (ft_strdup(cmd_no_flag));
-	}
+		return (check_direct_path(env, cmd_no_flag));
 	paths = split_path(env);
 	if (!paths)
 		return (NULL);
+	found = 0;
 	full_path = get_full_path(paths, cmd_no_flag, &found);
 	free_dbl_ptr(paths);
 	if (!found && full_path == NULL)

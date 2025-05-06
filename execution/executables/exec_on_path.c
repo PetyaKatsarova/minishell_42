@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:00:37 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/06 14:21:28 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/06 16:34:42 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,18 @@ static int	msg(char *name)
 	return (EXIT_CMD_NOT_FOUND);
 }
 
-void	close_all_pipe_fds(void)
+static char	**get_env_or_exit(t_env_list *env_list, char *cmd_path)
 {
-	int	fd;
+	char	**env;
 
-	fd = 3;
-	while (fd < 1024)
+	env = converted_env(env_list);
+	if (!env)
 	{
-		close(fd);
-		fd++;
+		perror("Failed to convert environment variables.");
+		free(cmd_path);
+		exit(EXIT_FAILURE);
 	}
+	return (env);
 }
 
 /**
@@ -57,6 +59,9 @@ static int	exec_command(t_env_list *env_list, t_node *curr_cmd)
 	char	**args;
 	char	**env;
 
+	cmd_path = NULL;
+	args = NULL;
+	env = NULL;
 	if (!curr_cmd->argv[0] || curr_cmd->argv[0][0] == '\0')
 		return (0);
 	cmd_path = get_command_path(env_list, curr_cmd->argv[0]);
@@ -67,15 +72,20 @@ static int	exec_command(t_env_list *env_list, t_node *curr_cmd)
 		exit(EXIT_CMD_NOT_FOUND);
 	}
 	args = curr_cmd->argv;
-	env = converted_env(env_list);
-	if (!env)
-		return (perror("Failed to convert environment variables."),
-			free(cmd_path), EXIT_FAILURE);
+	env = get_env_or_exit(env_list, cmd_path);
 	execve(cmd_path, args, env);
 	perror("execve failed");
 	free(cmd_path);
 	free_t_env(env_list);
 	exit(EXIT_FAILURE);
+}
+
+static void	update_exit_status(t_env_list *env_list, int status)
+{
+	if (WIFEXITED(status))
+		env_list->last_exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		env_list->last_exit_status = 128 + WTERMSIG(status);
 }
 
 /**
@@ -102,10 +112,7 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 			exec_command(env_list, curr_cmd);
 		}
 		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			env_list->last_exit_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			env_list->last_exit_status = 128 + WTERMSIG(status);
+		update_exit_status(env_list, status);
 		return (env_list->last_exit_status);
 	}
 	exec_command(env_list, curr_cmd);

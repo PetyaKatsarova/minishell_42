@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 18:42:50 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/02 18:43:11 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/06 16:26:03 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int			too_many_args(char **args);
 int			print_builtin_error(const char *cmd, const char *arg,
 				const char *msg);
 void		*xalloc(t_alloc_type type, void *a, void *b, size_t size);
+void		close_all_pipe_fds(void);
 
 /* handle_commands */
 int			execute_builtin(t_node *cmd, t_tree *tree, t_env_list *env);
@@ -113,7 +114,6 @@ int			handle_single_command(t_env_list *env, t_tree *tree,
 				t_node *cmd);
 
 /* executables */
-void		close_all_pipe_fds(void);
 int			exec_on_path(t_env_list *env, t_node *cmd, int is_pipe);
 char		*get_command_path(t_env_list *env, char *cmd_no_flag);
 void		free_dbl_ptr(char **ptr);

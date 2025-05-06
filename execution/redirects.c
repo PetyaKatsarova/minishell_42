@@ -68,7 +68,7 @@ static int	precreate_output_files(t_node *cmd)
 		else
 		{
 			redir = redir->redirects;
-			continue;
+			continue ;
 		}
 		if (fd < 0)
 			return (perror(redir->redir_path), EXIT_FAILURE);
@@ -79,10 +79,11 @@ static int	precreate_output_files(t_node *cmd)
 }
 
 /**
-First loop through full cmd till/if pipe, check file access, if needed create else print msg and exit
-If all well: start from left to right exec cmds
-Bash first checks that input files exist and are readable.
-If any input file is invalid, it aborts immediately — and does not create or truncate output files.
+First loop through full cmd till/if pipe, check file access, if needed
+create else print msg and exit If all well: start from left to
+right exec cmds Bash first checks that input files exist and are readable.
+If any input file is invalid, it aborts immediately — and does not
+create or truncate output files.
 */
 int	apply_redirections(t_node *cmd)
 {
@@ -105,4 +106,3 @@ int	apply_redirections(t_node *cmd)
 	}
 	return (EXIT_SUCCESS);
 }
-
