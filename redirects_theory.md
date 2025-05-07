@@ -127,6 +127,12 @@ After any failed open(), do not call dup2() or execve()
 Skip execution if redirection setup failed
 
 
+===================================
+ Bash Handles Redirection in This Order:
+Lexical parsing: Bash reads the command and splits it into tokens.
 
+Redirection parsing: Redirections like <, >, >>, 2>, etc., are processed before the command runs.
+
+File descriptor manipulation: File descriptors are opened or redirected based on parsed instructions.
 
 
