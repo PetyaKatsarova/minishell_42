@@ -17,12 +17,15 @@
   */
 static void handle_input(char *input, t_env_list *env_struct_lst)
 {
+	int	last_exit_status;
+	
+	last_exit_status = env_struct_lst->last_exit_status;
 	if (!input)
 	{
-		write(STDERR_FILENO, "exit\n", 5);
+		write(1, "exit\n", 5);
 		clear_history();
 		free_t_env(env_struct_lst);
-		exit(EXIT_FAILURE);
+		exit(last_exit_status);
 	}
 	if (*input)
 		add_history(input);
