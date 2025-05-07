@@ -20,7 +20,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-// forward declarations of structs from minishell.h
+/* forward declarations of structs from minishell.h */
 typedef struct s_env		t_env;
 typedef struct s_env_list	t_env_list;
 
@@ -35,12 +35,10 @@ typedef enum e_type
 {
 	TOKEN_NULL,
 	PIPE,
-	// redirects
 	INPUT_REDIR,
 	OUTPUT_REDIR,
 	HEREDOC,
 	APP_OUT_REDIR,
-	// inbuilts
 	ECHO,
 	CD,
 	PWD,
@@ -48,12 +46,10 @@ typedef enum e_type
 	UNSET,
 	ENV,
 	EXIT,
-	// words
 	WORD
 }	t_type;
 
-// nodes for token list
-
+/* nodes for token list */
 typedef struct s_token
 {
 	char			*lexeme;
@@ -61,8 +57,7 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-// nodes for syntax tree:
-
+/* nodes for syntax tree */
 typedef struct s_tree
 {
 	int				num_pipes;
@@ -82,8 +77,7 @@ typedef struct s_node
 	char			*heredoc_str;
 }	t_node;
 
-// data container for lexeme parsing
-
+/* data container for lexeme parsing */
 typedef struct s_parsing_data
 {
 	char		*new;
@@ -94,7 +88,7 @@ typedef struct s_parsing_data
 	t_tree		*tree;
 }	t_parsing_data;
 
-// lexer functions
+/* lexer functions */
 int		pre_tokenization_syn_check(char *input, t_env_list *env_list);
 void	lexer(t_token **head, char *input, t_env_list *env_list);
 t_token	*consume_chars(t_token *tail, char **cpy);
@@ -109,7 +103,7 @@ bool	is_special_delim(char c);
 int		post_tokenization_syn_check(t_token *current, t_env_list *env_list);
 void	exit_failure_lexer(t_token **head, char *input, t_env_list *env_list);
 
-// parser functions
+/* parser functions */
 t_node	*nodenew(t_type token_type, t_node *parent, t_parsing_data *data);
 t_tree	*treenew(t_token *token_list, t_env_list *env_list, char *input);
 void	parser(char *input, t_tree *tree, t_env_list *env_list);
@@ -138,7 +132,7 @@ void	expand_variable(char **cpy, char **lexeme, t_parsing_data *data);
 void	expand_exit_status(char **cpy, char **lexeme, t_parsing_data *data);
 char	*parse_heredoc(char *lexeme, t_parsing_data *data);
 
-// test functions
+/* test functions */
 void	printlist(t_token *token_list);
 void	print_token_type(t_type token_type);
 void	print_state(t_state state);
