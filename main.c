@@ -77,6 +77,7 @@ static void handle_readline(t_env_list *env_struct_lst)
 		{
 			continue;
 		}
+		print_cmd_nodes_readable(tree);
 		handle_cmds(tree, env_struct_lst);
 		free_tree(tree);
 		free(input);
@@ -100,6 +101,7 @@ int main(int argc, char **argv, char **envp) {
         perror("Failed to initialize environment");
         return (EXIT_FAILURE);
     }
+	setup_signals();
 	handle_readline(env_struct_lst);
 	clear_history();
 	return (0);
