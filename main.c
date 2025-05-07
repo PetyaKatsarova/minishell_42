@@ -12,9 +12,6 @@
 
 #include "includes/minishell.h"
 
- /**
-  * user pressed ctr+d: no input
-  */
 static void handle_input(char *input, t_env_list *env_struct_lst)
 {
 	int	last_exit_status;
@@ -74,15 +71,12 @@ static void handle_readline(t_env_list *env_struct_lst)
 	tree = NULL;
 	while (1)
 	{
-		// input = readline("\033[1;34mminihell$\033[0m ");
 		input = readline("\001\033[1;34m\002minihell$\001\033[0m\002 ");
-
 		handle_input(input, env_struct_lst);
 		if (handle_parsing(&tree, &input, env_struct_lst) != 0)
 		{
 			continue;
 		}
-		// print_cmd_nodes_readable(tree);
 		handle_cmds(tree, env_struct_lst);
 		free_tree(tree);
 		free(input);
