@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 18:52:59 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/02 18:53:07 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/07 17:53:34 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	handle_child(t_data *data)
 {
 	int	status;
 
+	status = 0;
 	if (!data->cmd)
 		exit(127);
 	if (data->i > 0 && data->pipes[data->i - 1])

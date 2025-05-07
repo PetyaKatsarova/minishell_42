@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/06 18:04:32 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/07 13:30:52 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,9 @@ static void handle_readline(t_env_list *env_struct_lst)
 /**
  * valgrind -q --track-fds=yes --trace-children=yes --log-fd=9 9>&2 2>/dev/null ./minishell
  valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./minishell
+
+ valgrind -q --track-fds=yes --leak-check=full ./minishell
+
  */
 
 int main(int argc, char **argv, char **envp) {
