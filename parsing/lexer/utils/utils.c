@@ -34,7 +34,7 @@ bool	is_special_delim(char c)
 	return (false);
 }
 
-bool	isendword(e_state state, char c)
+bool	isendword(t_state state, char c)
 {
 	if (state == OUTSIDE)
 	{
@@ -57,7 +57,7 @@ bool	isendword(e_state state, char c)
 int	getwordlen(char *input)
 {
 	char	*cpy;
-	e_state	state;
+	t_state	state;
 
 	cpy = input;
 	state = OUTSIDE;
@@ -70,7 +70,7 @@ int	getwordlen(char *input)
 	return (cpy - input);
 }
 
-int	set_state(e_state state, char c)
+int	set_state(t_state state, char c)
 {
 	if (state == OUTSIDE)
 	{

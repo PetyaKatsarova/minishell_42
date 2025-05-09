@@ -45,12 +45,12 @@ void	printlist(t_token *token_list)
 	printf("\n");
 }
 
-void	print_token_type(e_token token_type)
+void	print_token_type(t_type token_type)
 {
 	printf("%s\n", g_token_strings[token_type]);
 }
 
-void	print_state(e_state state)
+void	print_state(t_state state)
 {
 	printf("state: %s\n", g_state_strings[state]);
 }

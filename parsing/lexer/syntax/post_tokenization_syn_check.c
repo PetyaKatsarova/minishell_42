@@ -13,7 +13,7 @@
 #include "../../../includes/parsing.h"
 #include "../../../includes/minishell.h"
 
-static int	error_check(t_token *current, t_env_list *env_list, bool *redir_flag)
+static int	error_check(t_token *current, t_env_list *env_list, bool *redir)
 {
 	if (is_redir(current->token_type))
 	{
@@ -29,32 +29,32 @@ static int	error_check(t_token *current, t_env_list *env_list, bool *redir_flag)
 	}
 	else
 	{
-		*redir_flag = false;
+		*redir = false;
 	}
 	return (0);
 }
 
 int	post_tokenization_syn_check(t_token *current, t_env_list *env_list)
 {
-	bool	redir_flag;
+	bool	redir;
 
-	redir_flag = false;
+	redir = false;
 	while (current != NULL)
 	{
-		if (redir_flag == true)
+		if (redir == true)
 		{
-			if (error_check(current, env_list, &redir_flag) == 2)
+			if (error_check(current, env_list, &redir) == 2)
 			{
 				return (2);
 			}
 		}
 		if (is_redir(current->token_type) == true)
 		{
-			redir_flag = true;
+			redir = true;
 		}
 		current = current->next;
 	}
-	if (redir_flag == true)
+	if (redir == true)
 	{
 		env_list->last_exit_status = 2;
 		write(2, "syntax error: unexpected end of line\n", 37);

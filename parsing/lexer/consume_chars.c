@@ -17,7 +17,7 @@ t_token	*consume_chars(t_token *tail, char **cpy)
 	t_token	*new_token;
 	char	*lexeme;
 	char	*cpy_lexeme;
-	e_state	state;
+	t_state	state;
 
 	lexeme = malloc((getwordlen(*cpy) + 1) * sizeof(char));
 	if (lexeme == NULL)

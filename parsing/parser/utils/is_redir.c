@@ -13,7 +13,7 @@
 #include "../../../includes/minishell.h"
 #include "../../../includes/parsing.h"
 
-bool	is_redir(e_token token_type)
+bool	is_redir(t_type token_type)
 {
 	if (token_type >= INPUT_REDIR && token_type <= APP_OUT_REDIR)
 	{

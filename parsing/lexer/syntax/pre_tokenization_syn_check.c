@@ -35,7 +35,7 @@ static int	check_if_only_whitespace(char *input)
 	return (0);
 }
 
-static int	check_pipes(e_state *state, bool *pipe_flag, char input)
+static int	check_pipes(t_state *state, bool *pipe_flag, char input)
 {
 	if (input == '|')
 	{
@@ -55,7 +55,7 @@ static int	check_pipes(e_state *state, bool *pipe_flag, char input)
 
 static int	check_quotes(char *input)
 {
-	e_state	state;
+	t_state	state;
 	bool	pipe_flag;
 
 	state = OUTSIDE;

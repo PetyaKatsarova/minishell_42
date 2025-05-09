@@ -6,23 +6,23 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/07 13:30:52 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/09 10:58:38 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
- /**
-  * user pressed ctr+d: no input
-  */
 static void handle_input(char *input, t_env_list *env_struct_lst)
 {
+	int	last_exit_status;
+	
+	last_exit_status = env_struct_lst->last_exit_status;
 	if (!input)
 	{
-		write(STDERR_FILENO, "exit\n", 5);
+		write(1, "exit\n", 5);
 		clear_history();
 		free_t_env(env_struct_lst);
-		exit(EXIT_FAILURE);
+		exit(last_exit_status);
 	}
 	if (*input)
 		add_history(input);

@@ -13,7 +13,7 @@
 #include "../../../../includes/minishell.h"
 #include "../../../../includes/parsing.h"
 
-t_node	*nodenew(e_token token_type, t_node *parent, t_parsing_data *data)
+t_node	*nodenew(t_type token_type, t_node *parent, t_parsing_data *data)
 {
 	t_node	*new_node;
 
