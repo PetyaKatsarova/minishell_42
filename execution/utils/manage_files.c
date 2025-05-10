@@ -6,27 +6,27 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:06:57 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/06 11:02:59 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/10 13:37:14 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void print_file_error(char *file_name)
+static void	print_file_error(char *file_name)
 {
 	ft_putstr_fd("minihell: ", 2);
 	ft_putstr_fd(file_name, 2);
 	ft_putstr_fd(": ", 2);
-	perror(NULL); // prints ": <error>\n" using errno
+	perror(NULL);
 }
 
 /*
- * Validates file access by mode:
- * - 'r': must exist + readable
- * - 'w': if exists, must be writable
- * - 'x': must exist + executable
- * Returns 1 on success, 0 on failure
- */
+** Validates file access by mode:
+** - 'r': must exist + readable
+** - 'w': if exists, must be writable
+** - 'x': must exist + executable
+** Returns 1 on success, 0 on failure
+*/
 int	is_valid_read_or_exec_file(char *file_name, char mode)
 {
 	if (mode == 'r')
@@ -55,4 +55,3 @@ int	is_valid_read_or_exec_file(char *file_name, char mode)
 	}
 	return (1);
 }
-

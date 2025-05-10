@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   handle_commands.c                                  :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 16:01:12 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/07 17:56:44 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/10 13:40:46 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,53 +38,49 @@ static bool	is_redir_builtin(t_node *cmd_node)
 		|| cmd_node->token_type == ENV);
 }
 
-static int handle_no_cmd_redir(t_node *redir, t_node *cmd_node, int status)
+static int	handle_no_cmd_redir(t_node *redir, t_node *cmd_node, int status)
 {
+	pid_t	pid;
+
 	if (redir && cmd_node->token_type == TOKEN_NULL)
 	{
-		pid_t	pid;
-		
 		pid = fork();
 		if (pid == 0)
 			exit(apply_redirections(cmd_node));
 		waitpid(pid, &status, 0);
-		return WEXITSTATUS(status);
+		return (WEXITSTATUS(status));
 	}
 	return (status);
 }
 
-/**
- * cmd_node->token_type != WORD : is not command?
- */
-int	handle_single_command(t_env_list *env_struct,
-							t_tree *tree,
-							t_node *cmd_node)
+static int	execute_non_word(t_env_list *env, t_tree *tree,
+	t_node *cmd_node, t_node *redir)
 {
-	int		status;
 	pid_t	pid;
+	int		status;
+
+	status = handle_no_cmd_redir(redir, cmd_node, 0);
+	if (redir && is_redir_builtin(cmd_node))
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			if (apply_redirections(cmd_node) != EXIT_SUCCESS)
+				exit(EXIT_FAILURE);
+			exit(execute_builtin(cmd_node, tree, env));
+		}
+		waitpid(pid, &status, 0);
+		return (WEXITSTATUS(status));
+	}
+	return (execute_builtin(cmd_node, tree, env));
+}
+
+int	handle_single_command(t_env_list *env, t_tree *tree, t_node *cmd_node)
+{
 	t_node	*redir;
 
-	status = 0;
 	redir = go_next_redir(cmd_node);
 	if (cmd_node->token_type != WORD)
-	{	
-
-		status = handle_no_cmd_redir(redir, cmd_node, status);
-		if (redir && is_redir_builtin(cmd_node))
-		{
-			pid = fork();
-			if (pid == 0)
-			{
-				if (apply_redirections(cmd_node) != EXIT_SUCCESS)
-					exit(EXIT_FAILURE);
-				exit(execute_builtin(cmd_node, tree, env_struct)); // check for the bug here! todo..
-			}
-			waitpid(pid, &status, 0);
-			return (WEXITSTATUS(status));
-		}
-		else
-			return (execute_builtin(cmd_node, tree, env_struct));
-	}
-	else
-		return (exec_on_path(env_struct, cmd_node, 0));
+		return (execute_non_word(env, tree, cmd_node, redir));
+	return (exec_on_path(env, cmd_node, 0));
 }

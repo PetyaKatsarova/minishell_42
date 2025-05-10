@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 11:34:01 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/02 11:34:10 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/10 12:33:41 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ int	do_exit(t_env_list *env_struct, t_tree *tree, t_node *cmd_node)
 		exit_status = env_struct->last_exit_status;
 	else
 		exit_status = 0;
-	write(STDERR_FILENO, "exit\n", 5);
+	if (get_num_pipes(tree) == 0)
+		write(STDERR_FILENO, "exit\n", 5);
 	if (!cmd_node->argv[1])
 	{
 		free_exit_resources(env_struct, tree);
