@@ -39,7 +39,7 @@ typedef enum e_type
 	OUTPUT_REDIR,
 	HEREDOC,
 	APP_OUT_REDIR,
-	ECHO,
+	CMD_ECHO,
 	CD,
 	PWD,
 	EXPORT,

@@ -49,6 +49,15 @@ static int	handle_parsing(t_tree **tree, char **input, t_env_list *env_list)
 	}
 	*tree = treenew(token_list, env_list, *input);
 	parser(*input, *tree, env_list);
+	if (g_signum != 0)
+	{
+		free_tree(*tree);
+		free(*input);
+		*tree = NULL;
+		*input = NULL;
+		g_signum = 0;
+		return (1);
+	}
 	return (0);
 }
 
@@ -72,12 +81,17 @@ static void handle_readline(t_env_list *env_struct_lst)
 	while (1)
 	{
 		input = readline("\001\033[1;34m\002minihell$\001\033[0m\002 ");
+		if (setup_sigint_interactive() == -1)
+		{
+			free(input);
+			exit(EXIT_FAILURE);
+		}
 		handle_input(input, env_struct_lst);
 		if (handle_parsing(&tree, &input, env_struct_lst) != 0)
 		{
 			continue;
 		}
-		print_cmd_nodes_readable(tree);
+		//print_cmd_nodes_readable(tree);
 		handle_cmds(tree, env_struct_lst);
 		free_tree(tree);
 		free(input);
@@ -96,12 +110,19 @@ int main(int argc, char **argv, char **envp) {
 	(void) argc;
 	(void) argv;
 
+	if (setup_sigint_interactive() == -1)
+	{
+		return (EXIT_FAILURE);
+	}
+	if (setup_sigquit() == -1)
+	{
+		return (EXIT_FAILURE);
+	}
 	t_env_list *env_struct_lst = copy_env(envp); 
 	if (!env_struct_lst) {
         perror("Failed to initialize environment");
         return (EXIT_FAILURE);
     }
-	setup_signals();
 	handle_readline(env_struct_lst);
 	clear_history();
 	return (0);

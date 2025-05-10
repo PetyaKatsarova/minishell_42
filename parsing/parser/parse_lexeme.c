@@ -45,7 +45,7 @@ static void	populate_new(char *lexeme, t_parsing_data *data)
 	char	*cpy;
 
 	cpy = data->new;
-	while (*lexeme)
+	while (g_signum == 0 && *lexeme)
 	{
 		if (*lexeme == '\'')
 		{

@@ -22,7 +22,7 @@ int	execute_builtin(t_node *cmd_node, t_tree *tree, t_env_list *env_struct)
 		return (do_cd(cmd_node->argv, env_struct));
 	else if (cmd_node->token_type == ENV)
 		return (get_env(cmd_node->argv, env_struct));
-	else if (cmd_node->token_type == ECHO)
+	else if (cmd_node->token_type == CMD_ECHO)
 		return (do_echo(cmd_node->argv));
 	else if (cmd_node->token_type == EXPORT)
 		return (do_export(cmd_node->argv, env_struct));
@@ -33,7 +33,7 @@ int	execute_builtin(t_node *cmd_node, t_tree *tree, t_env_list *env_struct)
 
 static bool	is_redir_builtin(t_node *cmd_node)
 {
-	return (cmd_node->token_type == ECHO
+	return (cmd_node->token_type == CMD_ECHO
 		|| cmd_node->token_type == PWD
 		|| cmd_node->token_type == ENV);
 }

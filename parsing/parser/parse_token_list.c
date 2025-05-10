@@ -46,7 +46,7 @@ static void	parse_tokens(t_token **token, t_node **node, t_parsing_data *data)
 
 	i = 0;
 	(*node)->argv = make_argv(*token, data);
-	while (*token != NULL && (*token)->token_type != PIPE)
+	while (g_signum == 0 && *token != NULL && (*token)->token_type != PIPE)
 	{
 		if (is_redir((*token)->token_type) == true)
 		{
@@ -70,7 +70,7 @@ void	consume_token_list(t_parsing_data *data)
 
 	token = data->tree->token_list;
 	node = go_first_cmd(data->tree);
-	while (token != NULL)
+	while (g_signum == 0 && token != NULL)
 	{
 		if (token->token_type == PIPE)
 		{

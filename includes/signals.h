@@ -9,14 +9,11 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-extern volatile int	g_state;
+extern volatile int	g_signum;
 
-typedef enum	s_global_state
-{
-	STATE_NORMAL,
-	STATE_HEREDOC
-}	t_global_state;
-
-void	setup_signals(void);
+int	setup_sigint_heredoc(void);
+int	setup_sigint_interactive(void);
+int	setup_sigint_interactive_eof(void);
+int	setup_sigquit(void);
 
 #endif
