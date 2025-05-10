@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/09 21:04:11 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/05/10 12:52:16 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void handle_cmds(t_tree *tree, t_env_list *env_struct_lst)
 
 	cmd_node = go_first_cmd(tree);
 	if (tree->num_pipes > 0)
-	env_struct_lst->last_exit_status = exec_pipeline(env_struct_lst, tree);
+		env_struct_lst->last_exit_status = exec_pipeline(env_struct_lst, tree);
 	else if (cmd_node)
 		env_struct_lst->last_exit_status = handle_single_command(env_struct_lst, tree, cmd_node);
 }

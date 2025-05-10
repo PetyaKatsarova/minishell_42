@@ -52,9 +52,6 @@ If output.txt doesn't exist → it is created immediately (even if command later
 
 If bla2 does not exist, bash prints:
 
-yaml
-Copy
-Edit
 bash: bla2: No such file or directory
 Command is not executed.
 

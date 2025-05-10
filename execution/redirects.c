@@ -5,14 +5,14 @@
 /*                                                     +:+                    */
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2025/05/07 18:07:26 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/07 18:07:26 by pekatsar      ########   odam.nl         */
+/*   Created: 2025/05/07 18:07:26 by pekatsar          #+#    #+#             */
+/*   Updated: 2025/05/07 18:07:26 by pekatsar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	perror_and_return(const char *message)
+int	perror_and_return(const char *message)
 {
 	close_all_pipe_fds();
 	if (message)
@@ -42,25 +42,21 @@ int	apply_redirections(t_node *cmd)
 	redir = go_next_redir(cmd);
 	while (redir)
 	{
-		if (redir->token_type == INPUT_REDIR)
-		{
-			if (!is_valid_read_or_exec_file(redir->redir_path, 'r'))
-				return perror_and_return(redir->redir_path);
-			if (try_redirect(redir, STDIN_FILENO, O_RDONLY) == EXIT_FAILURE)
-				return (EXIT_FAILURE);
-		}
-		else if (redir->token_type == OUTPUT_REDIR)
-		{
-			if (try_redirect(redir, STDOUT_FILENO, O_WRONLY | O_CREAT | O_TRUNC) == EXIT_FAILURE)
-				return (EXIT_FAILURE);
-		}
-		else if (redir->token_type == APP_OUT_REDIR)
-		{
-			if (try_redirect(redir, STDOUT_FILENO, O_WRONLY | O_CREAT | O_APPEND) == EXIT_FAILURE)
-				return (EXIT_FAILURE);
-		}
-		else if (redir->token_type == HEREDOC)
-			return (apply_heredoc(redir));
+		if (redir->token_type == INPUT_REDIR
+			&& (!is_valid_read_or_exec_file(redir->redir_path, 'r')
+				|| try_redirect(redir, STDIN_FILENO, O_RDONLY) == EXIT_FAILURE))
+			return (perror_and_return(redir->redir_path));
+		if (redir->token_type == OUTPUT_REDIR
+			&& try_redirect(redir, STDOUT_FILENO, O_WRONLY
+				| O_CREAT | O_TRUNC) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+		if (redir->token_type == APP_OUT_REDIR
+			&& try_redirect(redir, STDOUT_FILENO, O_WRONLY
+				| O_CREAT | O_APPEND) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+		if (redir->token_type == HEREDOC
+			&& apply_heredoc(redir) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
 		redir = redir->redirects;
 	}
 	return (EXIT_SUCCESS);
