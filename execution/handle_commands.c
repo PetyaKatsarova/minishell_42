@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   handle_commands.c                                  :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 16:01:12 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/07 17:56:44 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/10 09:37:16 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,9 @@ int	handle_single_command(t_env_list *env_struct,
 	pid_t	pid;
 	t_node	*redir;
 
-	status = 0;
 	redir = go_next_redir(cmd_node);
 	if (cmd_node->token_type != WORD)
 	{	
-
 		status = handle_no_cmd_redir(redir, cmd_node, status);
 		if (redir && is_redir_builtin(cmd_node))
 		{

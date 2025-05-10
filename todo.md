@@ -1,4 +1,8 @@
-1. ./minishel in ./minishel when ctr+c: exit only the current one
+print_cmd_nodes_readable(tree);
+
+
+
+./minishel in ./minishel when ctr+c: exit only the current one
 : make sure have func in minishel: if child proces in minishell ignore all signals!
 
 2. undefined behavior in:
@@ -81,5 +85,18 @@ shell: no result
 // correct: 
 1. basic safe, redirect, append
 2. ECH PWD > bla
+============================================================
 
+TESTING:
+1. echo <<a <<b yes: like bash  // same with cat
+
+echo <<a <<b
+> bla
+> insdie b
+> still in b
+> b
+> inside a
+> a
+> end
+=======================
 

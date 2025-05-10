@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/09 10:58:38 by anonymous     ########   odam.nl         */
+/*   Updated: 2025/05/09 21:04:11 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void handle_readline(t_env_list *env_struct_lst)
 		{
 			continue;
 		}
-		//print_cmd_nodes_readable(tree);
+		// print_cmd_nodes_readable(tree);
 		handle_cmds(tree, env_struct_lst);
 		free_tree(tree);
 		free(input);

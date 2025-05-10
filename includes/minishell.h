@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   minishell.h                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
+/*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 18:42:50 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/06 16:26:03 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/09 21:32:10 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ int			is_valid_read_or_exec_file(char *file, char mode);
 /* exec_pipes and redirects */
 int			exec_pipeline(t_env_list *env, t_tree *tree);
 int			apply_redirections(t_node *cmd);
+int			apply_heredoc(t_node *redir);
 void		handle_child(t_data *data);
 void		close_all_pipes(int **pipes, int count);
 int			wait_all(pid_t *pids, int count);

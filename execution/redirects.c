@@ -59,6 +59,8 @@ int	apply_redirections(t_node *cmd)
 			if (try_redirect(redir, STDOUT_FILENO, O_WRONLY | O_CREAT | O_APPEND) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
 		}
+		else if (redir->token_type == HEREDOC)
+			return (apply_heredoc(redir));
 		redir = redir->redirects;
 	}
 	return (EXIT_SUCCESS);
