@@ -25,6 +25,7 @@
 # include <sys/wait.h>
 # include <fcntl.h>
 # include "parsing.h"
+# include "signals.h"
 
 # ifndef PATH_MAX
 #  define PATH_MAX 4096

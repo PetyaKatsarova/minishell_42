@@ -16,7 +16,7 @@
 int	get_type(char *str)
 {
 	if (my_strcmp(str, "echo") == 0)
-		return (ECHO);
+		return (CMD_ECHO);
 	if (my_strcmp(str, "cd") == 0)
 		return (CD);
 	if (my_strcmp(str, "pwd") == 0)

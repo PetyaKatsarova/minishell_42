@@ -266,7 +266,7 @@ Non-Canonical Mode
 
 Input is character-buffered (processed immediately, without Enter).
 No built-in line editing.
-Used for interactive programs like games or keypress detection (e.g., getch() behavior).
+Used for INTERACTIVE_MODE programs like games or keypress detection (e.g., getch() behavior).
 ----------------------------------------------------------------------------
 
 Execution means running the parsed command. This includes:

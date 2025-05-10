@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/parsing.h"
+#include "../../includes/signals.h"
 
 t_token	*consume_chars(t_token *tail, char **cpy)
 {
@@ -24,7 +25,7 @@ t_token	*consume_chars(t_token *tail, char **cpy)
 		return (NULL);
 	cpy_lexeme = lexeme;
 	state = set_state(OUTSIDE, **cpy);
-	while (isendword(state, **cpy) == false)
+	while (g_signum != SIGINT && isendword(state, **cpy) == false)
 	{
 		*cpy_lexeme = **cpy;
 		(*cpy)++;

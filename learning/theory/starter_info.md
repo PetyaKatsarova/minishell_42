@@ -4,7 +4,7 @@
 
 ### `readline`
 
-The `readline` function reads a line from standard input with editing capabilities, allowing users to navigate and modify the input before submitting it. This function is useful for interactive applications like command-line shells, as it provides built-in line editing, history management, and command completion.
+The `readline` function reads a line from standard input with editing capabilities, allowing users to navigate and modify the input before submitting it. This function is useful for INTERACTIVE_MODE applications like command-line shells, as it provides built-in line editing, history management, and command completion.
 
 ```c
 #include <stdio.h>
@@ -40,7 +40,7 @@ int main() {
 
 ### `rl_replace_line`
 
-Replaces the current input line with a specified string. This is useful for dynamically modifying user input before execution, such as in interactive debugging or command-line editing.
+Replaces the current input line with a specified string. This is useful for dynamically modifying user input before execution, such as in INTERACTIVE_MODE debugging or command-line editing.
 
 ```c
 #include <readline/readline.h>

@@ -37,9 +37,20 @@ static void	heredoc_loop(char *delim, t_parsing_data *data, bool exp)
 	char	*input;
 	char	*cpy_new;
 	char	*cpy_input;
+	int		cpy_stdin;
 
-	input = readline("> ");
+	cpy_stdin = dup(STDIN_FILENO);
+	if (cpy_stdin == -1)
+	{
+		perror("dup");
+		exit_failure_parser(data);
+	}
 	cpy_new = data->new;
+	if (setup_sigint_heredoc() == -1)
+	{
+		exit_failure_parser(data);
+	}
+	input = readline("> ");
 	while (input != NULL && my_strcmp(input, delim) != 0)
 	{
 		while (*cpy_new != '\0')
@@ -51,10 +62,25 @@ static void	heredoc_loop(char *delim, t_parsing_data *data, bool exp)
 		free(input);
 		input = readline("> ");
 	}
-	if (input == NULL)
+	if (g_signum == SIGINT)
+	{
+		errno = 0;
+		if (dup2(cpy_stdin, STDIN_FILENO) == -1)
+		{
+			perror("dup2");
+			close(cpy_stdin);
+			exit_failure_parser(data);
+		}
+	}
+	if (g_signum != SIGINT && input == NULL)
 	{
 		write(1, "warning: heredoc delimited by EOF\n", 34);
 	}
+	if (setup_sigint_interactive_eof() == -1)
+	{
+		exit_failure_parser(data);
+	}
+	close(cpy_stdin);
 	free(input);
 }
 
