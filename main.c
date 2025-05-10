@@ -34,27 +34,16 @@ static int	handle_parsing(t_tree **tree, char **input, t_env_list *env_list)
 	
 	token_list = NULL;
 	if (pre_tokenization_syn_check(*input, env_list) != 0)
-	{
-		free(*input);
-		*input = NULL;
 		return (2);
-	}
 	lexer(&token_list, *input, env_list);
 	if (post_tokenization_syn_check(token_list, env_list) != 0)
-	{
-		free_list(&token_list);
-		free(*input);
-		*input = NULL;
-		return (2);
-	}
+		return (free_list(&token_list), 2);
 	*tree = treenew(token_list, env_list, *input);
 	parser(*input, *tree, env_list);
-	if (g_signum != 0)
+	if (g_signum == SIGINT)
 	{
 		free_tree(*tree);
-		free(*input);
 		*tree = NULL;
-		*input = NULL;
 		g_signum = 0;
 		return (1);
 	}
@@ -81,7 +70,8 @@ static void handle_readline(t_env_list *env_struct_lst)
 	while (1)
 	{
 		input = readline("\001\033[1;34m\002minihell$\001\033[0m\002 ");
-		if (setup_sigint_interactive() == -1)
+		g_signum = 0;
+		if (setup_sigint_prompt() == -1)
 		{
 			free(input);
 			exit(EXIT_FAILURE);
@@ -89,6 +79,8 @@ static void handle_readline(t_env_list *env_struct_lst)
 		handle_input(input, env_struct_lst);
 		if (handle_parsing(&tree, &input, env_struct_lst) != 0)
 		{
+			free(input);
+			input = NULL;
 			continue;
 		}
 		// print_cmd_nodes_readable(tree);
@@ -113,7 +105,7 @@ int main(int argc, char **argv, char **envp) {
 	(void) argc;
 	(void) argv;
 
-	if (setup_sigint_interactive() == -1)
+	if (setup_sigint_prompt() == -1)
 	{
 		return (EXIT_FAILURE);
 	}
