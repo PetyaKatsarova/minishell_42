@@ -17,7 +17,7 @@ void	parser(char *input, t_tree *tree, t_env_list *env_list)
 {
 	t_parsing_data	data;
 
-	if (g_signum == 0)
+	if (g_signum != SIGINT)
 	{
 		data.input = input;
 		data.size = 1024;

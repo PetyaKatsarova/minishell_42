@@ -38,7 +38,7 @@ void	lexer(t_token **head, char *input, t_env_list *env_list)
 	tail = NULL;
 	first = true;
 	cpy = input;
-	while (g_signum == 0 && *cpy != '\0')
+	while (g_signum != SIGINT && *cpy != '\0')
 	{
 		process_char(&cpy, &tail);
 		if (tail == NULL)
