@@ -115,7 +115,7 @@ char	*get_command_path(t_env_list *env, char *cmd_no_flag)
 	free_dbl_ptr(paths);
 	if (!found && full_path == NULL)
 	{
-		perror(cmd_no_flag);
+		//perror(cmd_no_flag);
 		env->last_exit_status = 127;
 	}
 	return (full_path);
