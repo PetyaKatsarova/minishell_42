@@ -1,34 +1,34 @@
 
 #include "../includes/signals.h"
 
-void	set_terminal(void)
+void	termios_sigquit_off(void)
 {
-	struct termios	termios;
+	struct termios	termios_struct;
 
-	if (tcgetattr(0, &termios) != 0)
+	if (tcgetattr(0, &termios_struct) != 0)
 	{
 		perror("tcgetattr");
 		exit (EXIT_FAILURE);
 	}
-	termios.c_cc[VQUIT] = _POSIX_VDISABLE;
-	if (tcsetattr(0, 0, &termios) != 0)
+	termios_struct.c_cc[VQUIT] = _POSIX_VDISABLE;
+	if (tcsetattr(0, 0, &termios_struct) != 0)
 	{
 		perror("tcsetattr");
 		exit (EXIT_FAILURE);
 	}
 }
 
-void	reset_terminal(void)
+void	termios_sigquit_on(void)
 {
-	struct termios	termios;
+	struct termios	termios_struct;
 
-	if (tcgetattr(0, &termios) != 0)
+	if (tcgetattr(0, &termios_struct) != 0)
 	{
 		perror("tcgetattr");
 		exit (EXIT_FAILURE);
 	}
-	termios.c_cc[VQUIT] = '\x1C';
-	if (tcsetattr(0, 0, &termios) != 0)
+	termios_struct.c_cc[VQUIT] = '\x1C';
+	if (tcsetattr(0, 0, &termios_struct) != 0)
 	{
 		perror("tcsetattr");
 		exit (EXIT_FAILURE);

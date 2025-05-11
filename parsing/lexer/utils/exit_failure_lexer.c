@@ -19,6 +19,6 @@ void	exit_failure_lexer(t_token **head, char *input, t_env_list *env_list)
 	free(input);
 	free_t_env(env_list);
 	clear_history();
-	reset_terminal();
+	termios_sigquit_on();
 	exit(EXIT_FAILURE);
 }
