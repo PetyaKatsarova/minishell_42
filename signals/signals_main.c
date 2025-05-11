@@ -6,7 +6,11 @@ volatile int	g_signum = 0;
 
 static void	sigquit(int signum)
 {
-
+	if (signum == SIGQUIT)
+	{
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
 int	setup_sigquit(void)
@@ -21,16 +25,26 @@ int	setup_sigquit(void)
 	{
 		perror("sigaction for SIGQUIT");
 		return (-1);
-	}	
+	}
+	return (0);
 }
 
 static void	sigint_prompt(int signum)
 {
-	g_signum = SIGINT;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	if (signum == SIGINT)
+	{
+		g_signum = SIGINT;
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+	if (signum == SIGQUIT)
+	{
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+	
 }
 
 int	setup_sigint_prompt(void)
@@ -41,9 +55,15 @@ int	setup_sigint_prompt(void)
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
 	sigaddset(&sa.sa_mask, SIGINT);
+	sigaddset(&sa.sa_mask, SIGQUIT);
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 	{
 		perror("sigaction for SIGINT");
+		return (-1);
+	}
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+	{
+		perror("sigaction for SIGQUIT");
 		return (-1);
 	}
 	return (0);
@@ -51,10 +71,19 @@ int	setup_sigint_prompt(void)
 
 static void	sigint_prompt_eof(int signum)
 {
-	g_signum = SIGINT;
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	if (signum == SIGINT)
+	{
+		g_signum = SIGINT;
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+	if (signum == SIGQUIT)
+	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
 int	setup_sigint_prompt_eof(void)
@@ -65,9 +94,15 @@ int	setup_sigint_prompt_eof(void)
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
 	sigaddset(&sa.sa_mask, SIGINT);
+	sigaddset(&sa.sa_mask, SIGQUIT);
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 	{
 		perror("sigaction for SIGINT");
+		return (-1);
+	}
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+	{
+		perror("sigaction for SIGQUIT");
 		return (-1);
 	}
 	return (0);
@@ -75,9 +110,19 @@ int	setup_sigint_prompt_eof(void)
 
 static void	sigint_heredoc(int signum)
 {
-	g_signum = SIGINT;
-	write(1, "\n", 1);
-	close(STDIN_FILENO);
+	if (signum == SIGINT)
+	{
+		g_signum = SIGINT;
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		close(STDIN_FILENO);
+	}
+	if (signum == SIGQUIT)
+	{
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
 int	setup_sigint_heredoc(void)
@@ -88,35 +133,16 @@ int	setup_sigint_heredoc(void)
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
 	sigaddset(&sa.sa_mask, SIGINT);
+	sigaddset(&sa.sa_mask, SIGQUIT);
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 	{
 		perror("sigaction for SIGINT");
 		return(-1);
 	}
-	return (0);
-}
-
-static void	sigint_parsing(int signum)
-{
-	g_signum = SIGINT;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
-int	setup_sigint_parsing(void)
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = sigint_parsing;
-	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask);
-	sigaddset(&sa.sa_mask, SIGINT);
-	if (sigaction(SIGINT, &sa, NULL) == -1)
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
 	{
-		perror("sigaction for SIGINT");
-		return(-1);
+		perror("sigaction for SIGQUIT");
+		return (-1);
 	}
 	return (0);
 }

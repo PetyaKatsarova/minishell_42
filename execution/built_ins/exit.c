@@ -19,6 +19,7 @@ static void	free_exit_resources(t_env_list *env_struct, t_tree *tree)
 {
 	free_tree(tree);
 	free_t_env(env_struct);
+	reset_terminal();
 	clear_history();
 }
 

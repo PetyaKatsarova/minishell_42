@@ -19,5 +19,6 @@ void	exit_failure_parser(t_parsing_data *data)
 	free_t_env(data->env_list);
 	free_tree(data->tree);
 	free(data->input);
+	reset_terminal();
 	exit(EXIT_FAILURE);
 }

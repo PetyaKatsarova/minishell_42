@@ -12,7 +12,7 @@
 
 NAME	 := minishell
 CC	   := cc
-CFLAGS   := -g #-Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS   := -g -Wall -Wextra -Werror -g #-fsanitize=address
 LIBFT	:= libs/libft
 
 HEADERS  := -I ./include -I $(LIBFT)/include
@@ -77,6 +77,7 @@ SRCS	 := execution/built_ins/pwd.c \
 			parsing/parser/parse_lexeme.c \
 			parsing/parser/parse_heredoc.c \
 			signals/signals_main.c \
+			signals/termios.c \
 
 OBJS	 := $(SRCS:.c=.o)
 

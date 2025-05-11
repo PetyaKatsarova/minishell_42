@@ -22,6 +22,7 @@ static void handle_input(char *input, t_env_list *env_struct_lst)
 		write(1, "exit\n", 5);
 		clear_history();
 		free_t_env(env_struct_lst);
+		reset_terminal();
 		exit(last_exit_status);
 	}
 	if (*input)
@@ -74,6 +75,7 @@ static void handle_readline(t_env_list *env_struct_lst)
 		if (setup_sigint_prompt() == -1)
 		{
 			free(input);
+			reset_terminal();
 			exit(EXIT_FAILURE);
 		}
 		handle_input(input, env_struct_lst);
@@ -109,13 +111,11 @@ int main(int argc, char **argv, char **envp) {
 	{
 		return (EXIT_FAILURE);
 	}
-	if (setup_sigquit() == -1)
-	{
-		return (EXIT_FAILURE);
-	}
+	set_terminal();
 	t_env_list *env_struct_lst = copy_env(envp); 
 	if (!env_struct_lst) {
         perror("Failed to initialize environment");
+		reset_terminal();
         return (EXIT_FAILURE);
     }
 	handle_readline(env_struct_lst);
