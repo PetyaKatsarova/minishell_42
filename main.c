@@ -12,6 +12,8 @@
 
 #include "includes/minishell.h"
 
+volatile int	g_signum = 0;
+
 static void handle_input(char *input, t_env_list *env_struct_lst)
 {
 	int	last_exit_status;

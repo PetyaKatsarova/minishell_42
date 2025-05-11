@@ -76,7 +76,9 @@ SRCS	 := execution/built_ins/pwd.c \
 			parsing/parser/utils/my_strcmp.c \
 			parsing/parser/parse_lexeme.c \
 			parsing/parser/parse_heredoc.c \
-			signals/signals_main.c \
+			signals/signals_heredoc.c \
+			signals/signals_prompt_eof.c \
+			signals/signals_prompt.c \
 			signals/termios.c \
 
 OBJS	 := $(SRCS:.c=.o)
