@@ -12,12 +12,6 @@ static void	sigint_prompt(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	if (signum == SIGQUIT)
-	{
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	
 }
 
 int	setup_sigint_prompt(void)

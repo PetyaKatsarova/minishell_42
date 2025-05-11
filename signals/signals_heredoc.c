@@ -11,11 +11,6 @@ static void	sigint_heredoc(int signum)
 		rl_replace_line("", 0);
 		close(STDIN_FILENO);
 	}
-	if (signum == SIGQUIT)
-	{
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
 }
 
 int	setup_sigint_heredoc(void)

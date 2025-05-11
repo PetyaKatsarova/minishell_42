@@ -10,12 +10,6 @@ static void	sigint_prompt_eof(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	if (signum == SIGQUIT)
-	{
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
 }
 
 int	setup_sigint_prompt_eof(void)
