@@ -76,9 +76,19 @@ static void	heredoc_loop(char *delim, t_parsing_data *data, bool exp)
 	{
 		write(1, "warning: heredoc delimited by EOF\n", 34);
 	}
-	if (setup_sigint_prompt_eof() == -1)
+	if (input == NULL)
 	{
-		exit_failure_parser(data);
+		if (setup_sigint_prompt_eof() == -1)
+		{
+			exit_failure_parser(data);
+		}
+	}
+	else
+	{
+		if (setup_sigint_prompt() == -1)
+		{
+			exit_failure_parser(data);
+		}
 	}
 	close(cpy_stdin);
 	free(input);
