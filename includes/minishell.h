@@ -116,6 +116,7 @@ int			handle_single_command(t_env_list *env, t_tree *tree,
 
 /* executables */
 int			exec_on_path(t_env_list *env, t_node *cmd, int is_pipe);
+void		update_exit_status(t_env_list *env_list, int status);
 char		*get_command_path(t_env_list *env, char *cmd_no_flag);
 void		free_dbl_ptr(char **ptr);
 void		free_args(char **argv, int count);

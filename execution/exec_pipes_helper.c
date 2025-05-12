@@ -12,19 +12,41 @@
 
 #include "../includes/minishell.h"
 
+static void	check_sig(int *status, bool *sig_received)
+{
+	if (*sig_received == false)
+	{
+		if (128 + WTERMSIG(*status) == 130)
+		{
+			*sig_received = true;
+			write(1, "\n", 1);
+		}
+		if (128 + WTERMSIG(*status) == 131)
+		{
+			*sig_received = true;
+			write(1, "Quit (core dumped)\n", 19);
+		}
+	}
+}
+
 int	wait_all(pid_t *pids, int count)
 {
-	int	i;
-	int	status;
+	int		i;
+	int		status;
+	bool	sig_received;
 
 	status = 0;
 	i = 0;
+	sig_received = false;
 	while (i < count)
 	{
 		waitpid(pids[i], &status, 0);
+		check_sig(&status, &sig_received);
 		i++;
 	}
-	return (WEXITSTATUS(status));
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	return (128 + WTERMSIG(status));
 }
 
 void	close_all_pipes(int **pipes, int count)

@@ -36,12 +36,28 @@ static void	exec_pipeline_fork(t_data *data, int i)
 		perror("fork");
 		exit(EXIT_FAILURE);
 	}
-	if (data->pids[i] == 0)
-		handle_child(data);
-	if (i > 0 && data->pipes[i - 1])
+	else if (data->pids[i] == 0)
 	{
-		close(data->pipes[i - 1][0]);
-		close(data->pipes[i - 1][1]);
+		if (setup_signals_default() == -1)
+		{
+			// cleanup?
+			exit(EXIT_FAILURE);
+		}
+		termios_sigquit_on();
+		handle_child(data);
+	}
+	else if (data->pids[i] > 0)
+	{
+		if (setup_sigint_ignore() == -1)
+		{
+			// cleanup?
+			exit(EXIT_FAILURE);
+		}
+		if (i > 0 && data->pipes[i - 1])
+		{
+			close(data->pipes[i - 1][0]);
+			close(data->pipes[i - 1][1]);
+		}
 	}
 }
 
@@ -69,6 +85,12 @@ static void	exec_pipeline_loop(t_data *data, t_node *cmd,
 		i++;
 	}
 	data->env->last_exit_status = wait_all(data->pids, i);
+	if (setup_sigint_prompt() == -1)
+	{
+		// cleanup ?
+		exit(EXIT_FAILURE);
+	}
+	termios_sigquit_off();
 }
 
 int	exec_pipeline(t_env_list *env, t_tree *tree)

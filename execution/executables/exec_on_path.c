@@ -80,7 +80,7 @@ static int	exec_command(t_env_list *env_list, t_node *curr_cmd)
 	exit(EXIT_FAILURE);
 }
 
-static void	update_exit_status(t_env_list *env_list, int status)
+void	update_exit_status(t_env_list *env_list, int status)
 {
 	if (WIFEXITED(status))
 		env_list->last_exit_status = WEXITSTATUS(status);
@@ -109,12 +109,7 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 		if (pid == -1)
 			return (perror("minishell: fork failed"),
 				env_list->last_exit_status = EXIT_FAILURE, EXIT_FAILURE);
-		if (setup_sigint_ignore() == -1)
-		{
-			// cleanup
-			exit(EXIT_FAILURE);
-		}
-		if (pid == 0)
+		else if (pid == 0)
 		{
 			if (setup_signals_default() == -1)
 			{
@@ -126,15 +121,23 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 				exit(EXIT_FAILURE);
 			exec_command(env_list, curr_cmd);
 		}
-		waitpid(pid, &status, 0);
-		if (setup_sigint_prompt() == -1)
+		else if (pid > 0)
 		{
-			// cleanup
-			exit(EXIT_FAILURE);
+			if (setup_sigint_ignore() == -1)
+			{
+				// cleanup
+				exit(EXIT_FAILURE);
+			}
+			waitpid(pid, &status, 0);
+			if (setup_sigint_prompt() == -1)
+			{
+				// cleanup
+				exit(EXIT_FAILURE);
+			}
+			termios_sigquit_off();
+			update_exit_status(env_list, status);
+			return (env_list->last_exit_status);
 		}
-		termios_sigquit_off();
-		update_exit_status(env_list, status);
-		return (env_list->last_exit_status);
 	}
 	exec_command(env_list, curr_cmd);
 	exit(EXIT_CMD_NOT_FOUND);

@@ -74,12 +74,6 @@ static void handle_readline(t_env_list *env_struct_lst)
 	{
 		input = readline("\001\033[1;34m\002minihell$\001\033[0m\002 ");
 		g_signum = 0;
-		if (setup_sigint_prompt() == -1)
-		{
-			free(input);
-			termios_sigquit_on();
-			exit(EXIT_FAILURE);
-		}
 		handle_input(input, env_struct_lst);
 		if (handle_parsing(&tree, &input, env_struct_lst) != 0)
 		{
