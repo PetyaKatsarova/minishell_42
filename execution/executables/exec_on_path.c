@@ -89,7 +89,7 @@ static void	update_exit_status(t_env_list *env_list, int status)
 	if (128 + WTERMSIG(status) == 130)
 		write(1, "\n", 1);
 	if (128 + WTERMSIG(status) == 131)
-		write(1, " (core dumped)\n", 15);
+		write(1, "Quit (core dumped)\n", 19);
 }
 
 /**
