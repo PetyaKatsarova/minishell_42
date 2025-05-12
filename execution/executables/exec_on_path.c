@@ -112,10 +112,7 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 		else if (pid == 0)
 		{
 			if (setup_signals_default() == -1)
-			{
-				// cleanup
-				exit(EXIT_FAILURE);
-			}
+				exit(EXIT_FAILURE); //cleanup ?
 			termios_sigquit_on();
 			if (apply_redirections(curr_cmd) != EXIT_SUCCESS)
 				exit(EXIT_FAILURE);
@@ -124,16 +121,10 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 		else if (pid > 0)
 		{
 			if (setup_sigint_ignore() == -1)
-			{
-				// cleanup
-				exit(EXIT_FAILURE);
-			}
+				exit(EXIT_FAILURE); // cleanup ?
 			waitpid(pid, &status, 0);
 			if (setup_sigint_prompt() == -1)
-			{
-				// cleanup
-				exit(EXIT_FAILURE);
-			}
+				exit(EXIT_FAILURE); // cleanup ? 
 			termios_sigquit_off();
 			update_exit_status(env_list, status);
 			return (env_list->last_exit_status);
