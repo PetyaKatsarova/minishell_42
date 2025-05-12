@@ -13,7 +13,7 @@
 # include <stdbool.h>
 # include <unistd.h>
 
-extern volatile int	g_signum;
+extern volatile sig_atomic_t	g_signum;
 
 int		setup_sigint_heredoc(void);
 int		setup_sigint_prompt(void);
