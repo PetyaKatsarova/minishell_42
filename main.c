@@ -48,6 +48,7 @@ static int	handle_parsing(t_tree **tree, char **input, t_env_list *env_list)
 		free_tree(*tree);
 		*tree = NULL;
 		g_signum = 0;
+		env_list->last_exit_status = 130;
 		return (1);
 	}
 	return (0);
