@@ -40,7 +40,6 @@ static void	exec_pipeline_fork(t_data *data, int i)
 	{
 		if (setup_signals_default() == -1)
 			exit(EXIT_FAILURE); // cleanup ?
-		//termios_sigquit_on();
 		handle_child(data);
 	}
 	else if (data->pids[i] > 0)
@@ -81,7 +80,6 @@ static void	exec_pipeline_loop(t_data *data, t_node *cmd,
 	data->env->last_exit_status = wait_all(data->pids, i);
 	if (setup_sigint_prompt() == -1)
 		exit(EXIT_FAILURE); // cleanup?
-	//termios_sigquit_off();
 }
 
 int	exec_pipeline(t_env_list *env, t_tree *tree)

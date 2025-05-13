@@ -17,7 +17,6 @@
 
 # include <signal.h>
 # include <sys/ioctl.h>
-# include <termios.h>
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -32,7 +31,5 @@ int		setup_sigint_prompt_eof(void);
 int		setup_sigint_ignore(void);
 int		setup_signals_default(void);
 int		setup_sigquit_prompt(void);
-void	termios_sigquit_off(void);
-void	termios_sigquit_on(void);
 
 #endif
