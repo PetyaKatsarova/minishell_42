@@ -57,7 +57,8 @@ static void	parse_tokens(t_token **token, t_node **node, t_parsing_data *data)
 			*((*node)->argv + i) = parse_lexeme((*token)->lexeme, data);
 			(*node)->token_type = (*token)->token_type;
 			*token = (*token)->next;
-			i++;
+			if (**((*node)->argv + i) != '\0')
+				i++;
 		}
 	}
 	*((*node)->argv + i) = NULL;
