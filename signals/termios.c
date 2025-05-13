@@ -5,6 +5,7 @@ void	termios_sigquit_off(void)
 {
 	struct termios	termios_struct;
 
+	write(1, "turned SIGQUIT off\n", 19);
 	if (tcgetattr(0, &termios_struct) != 0)
 	{
 		perror("tcgetattr");

@@ -24,7 +24,7 @@ static void handle_input(char *input, t_env_list *env_struct_lst)
 		write(1, "exit\n", 5);
 		clear_history();
 		free_t_env(env_struct_lst);
-		termios_sigquit_on();
+		//termios_sigquit_on();
 		exit(last_exit_status);
 	}
 	if (*input)
