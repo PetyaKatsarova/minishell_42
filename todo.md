@@ -99,4 +99,5 @@ echo <<a <<b
 > a
 > end
 =======================
+test from ~/minishell_42 in linux
 

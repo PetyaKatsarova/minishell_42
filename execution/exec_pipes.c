@@ -12,11 +12,11 @@
 
 #include "../includes/minishell.h"
 
-static void	exit_with_cleanup(t_data *data, int exit_code)
-{
-	free_data(data);
-	exit(exit_code);
-}
+// static void	exit_with_cleanup(t_data *data, int exit_code)
+// {
+// 	free_data(data);
+// 	exit(exit_code);
+// }
 
 static void	exec_pipeline_fork(t_data *data, int i)
 {
@@ -93,7 +93,7 @@ int	exec_pipeline(t_env_list *env, t_tree *tree)
 		exit(EXIT_FAILURE);
 	cmd = go_first_cmd(tree);
 	exec_pipeline_loop(&data, cmd, env, tree);
-	close_all_pipes(data.pipes, data.pipe_count);
+	close_all_pipes(data.pipes);
 	free(data.pids);
 	return (data.env->last_exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 18:42:50 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/13 17:42:31 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/13 23:13:40 by anonymous     ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void		setup_data_two(t_data *data, pid_t *pids,
 int			execute_builtin(t_node *cmd, t_tree *tree, t_env_list *env);
 int			handle_single_command(t_env_list *env, t_tree *tree,
 				t_node *cmd);
+void		free_data(t_data *data);
 
 /* executables */
 int			exec_on_path(t_env_list *env, t_node *cmd, int is_pipe);
