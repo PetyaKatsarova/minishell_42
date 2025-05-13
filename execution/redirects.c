@@ -45,7 +45,6 @@ int	apply_redirections(t_node *cmd)
 		if (redir->token_type == INPUT_REDIR
 			&& (!is_valid_read_or_exec_file(redir->redir_path, 'r')
 				|| try_redirect(redir, STDIN_FILENO, O_RDONLY) == EXIT_FAILURE))
-			//return (perror_and_return(redir->redir_path));
 			return (close_all_pipe_fds(), EXIT_FAILURE);
 		if (redir->token_type == OUTPUT_REDIR
 			&& try_redirect(redir, STDOUT_FILENO, O_WRONLY

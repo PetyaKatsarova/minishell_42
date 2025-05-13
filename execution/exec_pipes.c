@@ -12,20 +12,10 @@
 
 #include "../includes/minishell.h"
 
-static void	setup_data_one(t_data *data, int i, int **pipes, t_tree *tree)
+static void	exit_with_cleanup(t_data *data, int exit_code)
 {
-	data->i = i;
-	data->pipe_count = get_num_pipes(tree);
-	data->pipes = pipes;
-	data->tree = tree;
-}
-
-static void	setup_data_two(t_data *data, pid_t *pids,
-				t_node *cmd, t_env_list *env)
-{
-	data->pids = pids;
-	data->cmd = cmd;
-	data->env = env;
+	free_data(data);
+	exit(exit_code);
 }
 
 static void	exec_pipeline_fork(t_data *data, int i)
@@ -69,7 +59,7 @@ static void	exec_pipeline_loop(t_data *data, t_node *cmd,
 			data->pipes[i] = malloc(sizeof(int) * 2);
 			if (!data->pipes[i] || pipe(data->pipes[i]) < 0)
 			{
-				perror("pipe");
+				write(2, "pipe: error\n", 12);
 				exit(EXIT_FAILURE); // cleanup ?
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 18:36:40 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/06 10:16:40 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/13 15:43:01 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	*xalloc(t_alloc_type type, void *a, void *b, size_t size)
 		result = NULL;
 	if (!result)
 	{
-		perror("minishell");
+		write(2, "minihell: failed to allocate memory for libft funcs\n", 53);
 		exit(EXIT_FAILURE);
 	}
 	return (result);

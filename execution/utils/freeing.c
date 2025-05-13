@@ -6,7 +6,7 @@
 /*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 16:00:28 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/02 18:41:02 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/13 17:44:15 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,50 @@ void	free_t_env(t_env_list *env_struct)
 	free(env_struct->vars);
 	env_struct->vars = NULL;
 	free(env_struct);
+}
+
+/**
+ * doesnt free data->cmd: it's shallow copy from tree
+ */
+void	free_data(t_data *data)
+{
+	if (!data)
+		return;
+
+	if (data->pipes)
+	{
+		close_all_pipes(data->pipes);
+		data->pipes = NULL;
+	}
+	if (data->pids)
+	{
+		free(data->pids);
+		data->pids = NULL;
+	}
+	if (data->env)
+	{
+		free_t_env(data->env);
+		data->env = NULL;
+	}
+	if (data->tree)
+	{
+		free_tree(data->tree);
+		data->tree = NULL;
+	}
+	data->cmd = NULL;
+}
+
+/**
+ * Frees all if available: t_tree, t_env_list, t_data, int **pipes
+ */
+void	total_liberation(t_tree *tree, t_env_list *env_list_struct, t_data *data, int **pipes)
+{
+	if (pipes)
+		close_all_pipes(pipes);
+	if (tree)
+		free_tree(tree);
+	if (env_list_struct)
+		free_t_env(env_list_struct);
+	if (data)
+		free_data(data);
 }

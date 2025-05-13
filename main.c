@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/10 12:52:16 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/13 15:12:43 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,12 @@ int main(int argc, char **argv, char **envp) {
 	}
 	t_env_list *env_struct_lst = copy_env(envp); 
 	if (!env_struct_lst) {
+<<<<<<< HEAD
         perror("Failed to initialize environment");
+=======
+        write(2, "Failed to initialize environment\n", 33);
+		//termios_sigquit_on();
+>>>>>>> 00b09cb (work in progress with refacotre and total_liberation)
         return (EXIT_FAILURE);
     }
 	handle_readline(env_struct_lst);

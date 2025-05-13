@@ -12,7 +12,7 @@
 
 #include "libft.h"
 /*
-n includes the \0, so +1 actual strlen
+n includes the \0, so + 1 actual strlen
 */
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {

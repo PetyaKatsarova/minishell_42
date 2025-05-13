@@ -27,7 +27,7 @@ void create_and_write_file(const char *filename) {
 		"Сквозь туман кремнистый путь блестит;\n"
 		"Ночь тиха. Пустыня внемлет богу,\n"
 		"И звезда с звездою говорит.\n";
-	write(fd, text, strlen(text));
+	write(fd, text, ft_strlen(text));
 	close(fd);
 }
 

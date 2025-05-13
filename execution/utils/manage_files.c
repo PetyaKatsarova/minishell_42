@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:06:57 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/10 13:37:14 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/13 16:05:03 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static void	print_file_error(char *file_name)
 {
-	ft_putstr_fd("minihell: ", 2);
-	ft_putstr_fd(file_name, 2);
-	ft_putstr_fd(": ", 2);
+	write(2, "minihell: ", 10);
+	write(2, file_name, ft_strlen(file_name));
+	write(2, ": ", 2);
 	perror(NULL);
 }
 
