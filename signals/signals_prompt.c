@@ -29,3 +29,19 @@ int	setup_sigint_prompt(void)
 	}
 	return (0);
 }
+
+int	setup_sigquit_prompt(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = SIG_IGN;
+	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGQUIT);
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+	{
+		perror("sigaction for SIGINT");
+		return (-1);
+	}
+	return (0);
+}

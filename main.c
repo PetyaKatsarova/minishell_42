@@ -108,11 +108,15 @@ int main(int argc, char **argv, char **envp) {
 	{
 		return (EXIT_FAILURE);
 	}
-	termios_sigquit_off();
+	if (setup_sigquit_prompt() == -1)
+	{
+		return (EXIT_FAILURE);
+	}
+	//termios_sigquit_off();
 	t_env_list *env_struct_lst = copy_env(envp); 
 	if (!env_struct_lst) {
         perror("Failed to initialize environment");
-		termios_sigquit_on();
+		//termios_sigquit_on();
         return (EXIT_FAILURE);
     }
 	handle_readline(env_struct_lst);
