@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   signals_heredoc.c                                   :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: jstuhrin <marvin@42.fr>                       +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/05/13 16:29:11 by jstuhrin       #+#    #+#                */
+/*   Updated: 2025/05/13 16:29:12 by jstuhrin       ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/signals.h"
 #include "../includes/minishell.h"
 
@@ -24,7 +36,7 @@ int	setup_sigint_heredoc(void)
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 	{
 		perror("sigaction for SIGINT");
-		return(-1);
+		return (-1);
 	}
 	return (0);
 }

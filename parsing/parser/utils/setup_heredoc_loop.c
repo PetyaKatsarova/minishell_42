@@ -1,23 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                         ::::::::           */
-/*   exit_failure_parser.c                               :+:    :+:           */
+/*   setup_heredoc_loop.c                                :+:    :+:           */
 /*                                                      +:+                   */
 /*   By: jstuhrin <marvin@42.fr>                       +#+                    */
 /*                                                    +#+                     */
-/*   Created: 2025/05/01 12:17:21 by jstuhrin       #+#    #+#                */
-/*   Updated: 2025/05/01 12:17:24 by jstuhrin       ########   odam.nl        */
+/*   Created: 2025/05/13 17:35:24 by jstuhrin       #+#    #+#                */
+/*   Updated: 2025/05/13 17:35:26 by jstuhrin       ########   odam.nl        */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minishell.h"
 #include "../../../includes/parsing.h"
+#include "../../../includes/signals.h"
 
-void	exit_failure_parser(t_parsing_data *data)
+void	setup_heredoc_loop(int *cpy_stdin, t_parsing_data *data, char **cpy_new)
 {
-	clear_history();
-	free_t_env(data->env_list);
-	free_tree(data->tree);
-	free(data->input);
-	exit(EXIT_FAILURE);
+	*cpy_stdin = dup(STDIN_FILENO);
+	if (*cpy_stdin == -1)
+	{
+		perror("dup");
+		exit_failure_parser(data);
+	}
+	*cpy_new = data->new;
+	if (setup_sigint_heredoc() == -1)
+	{
+		exit_failure_parser(data);
+	}
 }
