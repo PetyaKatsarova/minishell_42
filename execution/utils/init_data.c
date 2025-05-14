@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   init_data.c                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/13 17:38:18 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/13 17:40:58 by pekatsar      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   init_data.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/13 17:38:18 by pekatsar          #+#    #+#             */
+/*   Updated: 2025/05/14 17:27:08 by petya            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,8 @@ void	setup_data_two(t_data *data, pid_t *pids,
 {
 	data->pids = pids;
 	data->cmd = cmd;
-	data->env = env;
+	if (data)
+		data->env = env;
+	else
+		data->env = NULL;
 }

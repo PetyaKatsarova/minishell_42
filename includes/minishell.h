@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: marvin <marvin@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/02 18:42:50 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/13 23:13:40 by anonymous     ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 18:42:50 by pekatsar          #+#    #+#             */
+/*   Updated: 2025/05/14 17:38:31 by petya            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ int			perror_and_return(const char *message);
 int			apply_redirections(t_node *cmd);
 int			apply_heredoc(t_node *redir);
 void		handle_child(t_data *data);
-void		close_all_pipes(int **pipes);
+void		close_all_pipes(int **pipes, int count);
 int			wait_all(pid_t *pids, int count);
 
 #endif

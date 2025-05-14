@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   exec_pipes_helper.c                                :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/02 18:52:59 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/13 17:32:24 by pekatsar      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   exec_pipes_helper.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 18:52:59 by pekatsar          #+#    #+#             */
+/*   Updated: 2025/05/14 17:31:48 by petya            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,6 @@ int	wait_all(pid_t *pids, int count)
 	return (128 + WTERMSIG(status));
 }
 
-void	close_all_pipes(int **pipes)
-{
-	int	i;
-
-	if (!pipes)
-		return ;
-	i = 0;
-	while (pipes[i])
-	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-		free(pipes[i]);
-		i++;
-	}
-	free(pipes);
-	pipes = NULL;
-}
 /**
  * in child process no need to free/close resources: the OS claims all after child exits
  */
@@ -80,7 +63,7 @@ void	handle_child(t_data *data)
 		dup2(data->pipes[data->i - 1][0], STDIN_FILENO);
 	if (data->i < data->pipe_count && data->pipes[data->i])
 		dup2(data->pipes[data->i][1], STDOUT_FILENO);
-	close_all_pipes(data->pipes);
+	close_all_pipes(data->pipes, data->pipe_count);
 	free(data->pids);
 	if (apply_redirections(data->cmd) != EXIT_SUCCESS)
 		exit(EXIT_FAILURE);

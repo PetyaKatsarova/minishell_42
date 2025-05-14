@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: marvin <marvin@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/13 15:12:43 by pekatsar      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/21 15:23:34 by pekatsar          #+#    #+#             */
+/*   Updated: 2025/05/14 17:43:13 by petya            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,22 @@ static int	handle_parsing(t_tree **tree, char **input, t_env_list *env_list)
 	}
 	return (0);
 }
+
+// void	setup_data_one(t_data *data, int i, int **pipes, t_tree *tree)
+// {
+// 	data->i = i; // what i stands for?
+// 	data->pipe_count = get_num_pipes(tree);
+// 	data->pipes = pipes;
+// 	data->tree = tree;
+// }
+
+// void	setup_data_two(t_data *data, pid_t *pids,
+// 				t_node *cmd, t_env_list *env)
+// {
+// 	data->pids = pids;
+// 	data->cmd = cmd;
+// 	data->env = env;
+// }
 
 static void handle_cmds(t_tree *tree, t_env_list *env_struct_lst)
 {
@@ -113,12 +129,8 @@ int main(int argc, char **argv, char **envp) {
 	}
 	t_env_list *env_struct_lst = copy_env(envp); 
 	if (!env_struct_lst) {
-<<<<<<< HEAD
-        perror("Failed to initialize environment");
-=======
         write(2, "Failed to initialize environment\n", 33);
 		//termios_sigquit_on();
->>>>>>> 00b09cb (work in progress with refacotre and total_liberation)
         return (EXIT_FAILURE);
     }
 	handle_readline(env_struct_lst);
