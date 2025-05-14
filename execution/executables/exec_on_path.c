@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   exec_on_path.c                                     :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: marvin <marvin@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/02 13:00:37 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/13 16:25:27 by pekatsar      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   exec_on_path.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 13:00:37 by pekatsar          #+#    #+#             */
+/*   Updated: 2025/05/14 20:07:09 by petya            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ static int	exec_command(t_env_list *env_list, t_node *curr_cmd)
 	cmd_path = get_command_path(env_list, curr_cmd->argv[0]);
 	if (!cmd_path)
 	{
+		write(2, "minihell: ", 10);
+		write(2, curr_cmd->argv[0], ft_strlen(curr_cmd->argv[0]));
+		write(2, ": command not found\n", 21);
 		env_list->last_exit_status = EXIT_CMD_NOT_FOUND;
 		exit(EXIT_CMD_NOT_FOUND);
 	}
