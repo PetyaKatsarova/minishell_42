@@ -103,3 +103,6 @@ test from ~/minishell_42 in linux
 
 cat <<a >b | cat <<b >>b | cat b
 
+Your current apply_heredoc() runs during redirection (apply_redirections()), which happens after fork.
+But Bash parses and collects all heredocs before forking — this is key.
+
