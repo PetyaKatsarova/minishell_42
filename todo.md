@@ -100,3 +100,6 @@ echo <<a <<b
 > end
 =======================
 
+cat <<a > a | <<b | pwd  : wrong
+
+<<a | grep bla | >> a same s bash: created empty a
