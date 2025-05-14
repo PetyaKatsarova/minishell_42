@@ -12,19 +12,20 @@
 
 #include "../includes/minishell.h"
 
-int	apply_heredoc(t_node *redir)
+int	apply_heredoc(t_node *redir, int i)
 {
 	int	fd;
+	char *name = ft_itoa(i);
 
-	fd = open("heredoc_tmp.md", O_CREAT | O_WRONLY | O_TRUNC, 0600);
+	fd = open(name, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	if (fd < 0)
-		return (perror_and_return("heredoc_tmp.md"));
+		return (perror_and_return(name));
 	write(fd, redir->heredoc_str, ft_strlen(redir->heredoc_str));
 	close(fd);
-	fd = open("heredoc_tmp.md", O_RDONLY);
+	fd = open(name, O_RDONLY);
 	if (fd < 0)
-		return (perror_and_return("heredoc_tmp.md"));
-	unlink("heredoc_tmp.md");
+		return (perror_and_return(name));
+	unlink(name);
 	if (dup2(fd, STDIN_FILENO) == -1)
 		return (close(fd), perror_and_return("heredoc dup2"));
 	close(fd);

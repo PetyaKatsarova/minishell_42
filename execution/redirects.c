@@ -35,7 +35,7 @@ static int	try_redirect(t_node *redir, int fd_target, int flags)
 	return (EXIT_SUCCESS);
 }
 
-int	apply_redirections(t_node *cmd)
+int	apply_redirections(t_node *cmd, int i)
 {
 	t_node	*redir;
 
@@ -56,7 +56,7 @@ int	apply_redirections(t_node *cmd)
 				| O_CREAT | O_APPEND) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		if (redir->token_type == HEREDOC
-			&& apply_heredoc(redir) == EXIT_FAILURE)
+			&& apply_heredoc(redir, i) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		redir = redir->redirects;
 	}

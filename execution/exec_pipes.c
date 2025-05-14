@@ -40,7 +40,7 @@ static void	exec_pipeline_fork(t_data *data, int i)
 	{
 		if (setup_signals_default() == -1)
 			exit(EXIT_FAILURE); // cleanup ?
-		handle_child(data);
+		handle_child(data, i);
 	}
 	else if (data->pids[i] > 0)
 	{

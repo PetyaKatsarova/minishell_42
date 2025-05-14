@@ -113,7 +113,7 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 		{
 			if (setup_signals_default() == -1)
 				exit(EXIT_FAILURE); //cleanup ?
-			if (apply_redirections(curr_cmd) != EXIT_SUCCESS)
+			if (apply_redirections(curr_cmd, -1) != EXIT_SUCCESS)
 				exit(EXIT_FAILURE);
 			exec_command(env_list, curr_cmd);
 		}

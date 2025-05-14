@@ -69,7 +69,7 @@ void	close_all_pipes(int **pipes, int count)
 	free(pipes);
 }
 
-void	handle_child(t_data *data)
+void	handle_child(t_data *data, int i)
 {
 	int	status;
 
@@ -82,7 +82,7 @@ void	handle_child(t_data *data)
 		dup2(data->pipes[data->i][1], STDOUT_FILENO);
 	close_all_pipes(data->pipes, data->pipe_count);
 	free(data->pids);
-	if (apply_redirections(data->cmd) != EXIT_SUCCESS)
+	if (apply_redirections(data->cmd, i) != EXIT_SUCCESS)
 		exit(EXIT_FAILURE);
 	status = execute_builtin(data->cmd, data->tree, data->env);
 	if (status != EXIT_CMD_NOT_FOUND)

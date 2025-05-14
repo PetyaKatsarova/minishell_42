@@ -46,7 +46,7 @@ static int	handle_no_cmd_redir(t_node *redir, t_node *cmd_node, int status)
 	{
 		pid = fork();
 		if (pid == 0)
-			exit(apply_redirections(cmd_node));
+			exit(apply_redirections(cmd_node, -1));
 		waitpid(pid, &status, 0);
 		return (WEXITSTATUS(status));
 	}
@@ -65,7 +65,7 @@ static int	execute_non_word(t_env_list *env, t_tree *tree,
 		pid = fork();
 		if (pid == 0)
 		{
-			if (apply_redirections(cmd_node) != EXIT_SUCCESS)
+			if (apply_redirections(cmd_node, -1) != EXIT_SUCCESS)
 				exit(EXIT_FAILURE);
 			exit(execute_builtin(cmd_node, tree, env));
 		}
