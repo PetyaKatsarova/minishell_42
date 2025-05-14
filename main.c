@@ -6,7 +6,7 @@
 /*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 15:23:34 by pekatsar          #+#    #+#             */
-/*   Updated: 2025/05/14 17:43:13 by petya            ###   ########.fr       */
+/*   Updated: 2025/05/14 20:39:23 by petya            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,22 +52,6 @@ static int	handle_parsing(t_tree **tree, char **input, t_env_list *env_list)
 	}
 	return (0);
 }
-
-// void	setup_data_one(t_data *data, int i, int **pipes, t_tree *tree)
-// {
-// 	data->i = i; // what i stands for?
-// 	data->pipe_count = get_num_pipes(tree);
-// 	data->pipes = pipes;
-// 	data->tree = tree;
-// }
-
-// void	setup_data_two(t_data *data, pid_t *pids,
-// 				t_node *cmd, t_env_list *env)
-// {
-// 	data->pids = pids;
-// 	data->cmd = cmd;
-// 	data->env = env;
-// }
 
 static void handle_cmds(t_tree *tree, t_env_list *env_struct_lst)
 {
@@ -115,25 +99,51 @@ static void handle_readline(t_env_list *env_struct_lst)
 
  */
 
-int main(int argc, char **argv, char **envp) {
-	(void) argc;
-	(void) argv;
+// int main(int argc, char **argv, char **envp) {
+// 	(void) argc;
+// 	(void) argv;
 
-	if (setup_sigint_prompt() == -1)
-	{
-		return (EXIT_FAILURE);
-	}
-	if (setup_sigquit_prompt() == -1)
-	{
-		return (EXIT_FAILURE);
-	}
-	t_env_list *env_struct_lst = copy_env(envp); 
-	if (!env_struct_lst) {
-        write(2, "Failed to initialize environment\n", 33);
-		//termios_sigquit_on();
-        return (EXIT_FAILURE);
-    }
+// 	if (setup_sigint_prompt() == -1)
+// 	{
+// 		return (EXIT_FAILURE);
+// 	}
+// 	if (setup_sigquit_prompt() == -1)
+// 	{
+// 		return (EXIT_FAILURE);
+// 	}
+// 	t_env_list *env_struct_lst = copy_env(envp); 
+// 	if (!env_struct_lst) {
+//         write(2, "Failed to initialize environment\n", 33);
+// 		//termios_sigquit_on();
+//         return (EXIT_FAILURE);
+//     }
+// 	handle_readline(env_struct_lst);
+// 	clear_history();
+// 	return (0);
+// }
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_env_list	*env_struct_lst;
+	t_tree		*tree;
+	t_data		data;
+
+	(void)argc;
+	(void)argv;
+	tree = NULL;
+	if (setup_sigint_prompt() == -1 || setup_sigquit_prompt() == -1)
+	return (EXIT_FAILURE);
+	env_struct_lst = copy_env(envp);
+	if (!env_struct_lst)
+		return (write(2, "Failed to initialize environment\n", 33),
+		EXIT_FAILURE);
 	handle_readline(env_struct_lst);
-	clear_history();
-	return (0);
+	if (g_signum == SIGINT)
+	{
+		total_liberation(tree, env_struct_lst, &data, data.pipes);
+		write(1, "\n", 1);
+		clear_history();
+		exit(130);
+	}
+	return (clear_history(), 0);
 }

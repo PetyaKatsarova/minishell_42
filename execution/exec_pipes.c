@@ -18,23 +18,37 @@ static void	exec_pipeline_fork(t_data *data, int i)
 	if (data->pids[i] == -1)
 	{
 		perror("fork");
-		exit(EXIT_FAILURE); // cleanup ? 
+		exit(EXIT_FAILURE);
 	}
-	else if (data->pids[i] == 0)
+	if (data->pids[i] == 0)
 	{
 		if (setup_signals_default() == -1)
-			exit(EXIT_FAILURE); // cleanup ?
-		//termios_sigquit_on();
+			exit(EXIT_FAILURE);
 		handle_child(data);
 	}
-	else if (data->pids[i] > 0)
+	if (setup_sigint_ignore() == -1)
 	{
-		if (setup_sigint_ignore() == -1)
-			exit(EXIT_FAILURE); // cleanup ?
-		if (i > 0 && data->pipes[i - 1])
+		close_all_pipes(data->pipes, data->pipe_count);
+		free(data->pids);
+		exit(EXIT_FAILURE);
+	}
+	if (i > 0 && data->pipes[i - 1])
+	{
+		close(data->pipes[i - 1][0]);
+		close(data->pipes[i - 1][1]);
+	}
+}
+
+static void	safe_pipe_alloc(int **pipes, int i, int pipe_count)
+{
+	if (i < pipe_count)
+	{
+		pipes[i] = malloc(sizeof(int) * 2);
+		if (!pipes[i] || pipe(pipes[i]) < 0)
 		{
-			close(data->pipes[i - 1][0]);
-			close(data->pipes[i - 1][1]);
+			close_all_pipes(pipes, i);
+			write(2, "pipe: error\n", 12);
+			exit(EXIT_FAILURE);
 		}
 	}
 }
@@ -49,23 +63,19 @@ static void	exec_pipeline_loop(t_data *data, t_node *cmd,
 	{
 		setup_data_one(data, i, data->pipes, tree);
 		setup_data_two(data, data->pids, cmd, env);
-		if (i < data->pipe_count)
-		{
-			data->pipes[i] = malloc(sizeof(int) * 2);
-			if (!data->pipes[i] || pipe(data->pipes[i]) < 0)
-			{
-				write(2, "pipe: error\n", 12);
-				exit(EXIT_FAILURE); // cleanup ?
-			}
-		}
+		data->i = i;
+		safe_pipe_alloc(data->pipes, i, data->pipe_count);
 		exec_pipeline_fork(data, i);
 		cmd = go_next_cmd(cmd);
 		i++;
 	}
 	data->env->last_exit_status = wait_all(data->pids, i);
 	if (setup_sigint_prompt() == -1)
-		exit(EXIT_FAILURE); // cleanup?
-	//termios_sigquit_off();
+	{
+		close_all_pipes(data->pipes, data->pipe_count);
+		free(data->pids);
+		exit(EXIT_FAILURE);
+	}
 }
 
 int	exec_pipeline(t_env_list *env, t_tree *tree)
