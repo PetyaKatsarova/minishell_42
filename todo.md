@@ -101,3 +101,5 @@ echo <<a <<b
 =======================
 test from ~/minishell_42 in linux
 
+cat <<a >b | cat <<b >>b | cat b
+
