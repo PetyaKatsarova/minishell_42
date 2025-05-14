@@ -13,6 +13,18 @@
 #include "../../includes/parsing.h"
 #include "../../includes/minishell.h"
 
+static bool	is_empty_var(t_node **node, char *lexeme, int i)
+{
+	if (**((*node)->argv + i) == '\0')
+	{
+		if (*lexeme == '$' && is_valid_var_char(*(lexeme + 1)))
+		{
+			return (true);
+		}
+	}
+	return (false);
+}
+
 static void	add_redir_node(t_token **token,
 	t_node **node,
 	t_parsing_data *data,
@@ -55,10 +67,15 @@ static void	parse_tokens(t_token **token, t_node **node, t_parsing_data *data)
 		else
 		{
 			*((*node)->argv + i) = parse_lexeme((*token)->lexeme, data);
+			if (is_empty_var(node, (*token)->lexeme, i) == true)
+			{
+				free(*((*node)->argv + i));
+				*((*node)->argv + i) = NULL;
+			}
+			else
+				i++;
 			(*node)->token_type = (*token)->token_type;
 			*token = (*token)->next;
-			if (**((*node)->argv + i) != '\0')
-				i++;
 		}
 	}
 	*((*node)->argv + i) = NULL;
@@ -81,9 +98,12 @@ void	consume_token_list(t_parsing_data *data)
 		else
 		{
 			parse_tokens(&token, &node, data);
-			if (node->token_type == WORD)
+			if (*(node->argv) != NULL)
 			{
-				node->token_type = get_type(*(node->argv + 0));
+				if (node->token_type == WORD)
+				{
+					node->token_type = get_type(*(node->argv + 0));
+				}
 			}
 		}
 	}
