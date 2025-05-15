@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec_on_path.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 13:00:37 by pekatsar          #+#    #+#             */
-/*   Updated: 2025/05/14 20:07:09 by petya            ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   exec_on_path.c                                     :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: petya <petya@student.42.fr>                  +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/02 13:00:37 by pekatsar      #+#    #+#                 */
+/*   Updated: 2025/05/15 16:23:14 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,38 +75,44 @@ void	update_exit_status(t_env_list *env_list, int status)
  * If in pipe, execve() directly with exec_command,
  * if not: fork and execve(exec_command)
  */
+static int	parent_process(t_env_list *env_list, pid_t pid)
+{
+	int	status;
+
+	if (setup_sigint_ignore() == -1)
+		exit(EXIT_FAILURE);
+	waitpid(pid, &status, 0);
+	if (setup_sigint_prompt() == -1)
+		exit(EXIT_FAILURE);
+	update_exit_status(env_list, status);
+	return (env_list->last_exit_status);
+}
+
 int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 {
 	pid_t	pid;
-	int		status;
 
-	pid = -1;
-	status = -1;
 	if (!is_pipe)
 	{
 		pid = fork();
 		if (pid == -1)
-			return (perror("minishell: fork failed"),
-				env_list->last_exit_status = EXIT_FAILURE, EXIT_FAILURE);
+		{
+			perror("minishell: fork failed");
+			env_list->last_exit_status = EXIT_FAILURE;
+			return (EXIT_FAILURE);
+		}
 		else if (pid == 0)
 		{
 			if (setup_signals_default() == -1)
-				exit(EXIT_FAILURE); //cleanup ?
+				exit(EXIT_FAILURE);
 			if (apply_redirections(curr_cmd, -1) != EXIT_SUCCESS)
 				exit(EXIT_FAILURE);
 			exec_command(env_list, curr_cmd);
 		}
-		else if (pid > 0)
-		{
-			if (setup_sigint_ignore() == -1)
-				exit(EXIT_FAILURE); // cleanup ?
-			waitpid(pid, &status, 0);
-			if (setup_sigint_prompt() == -1)
-				exit(EXIT_FAILURE); // cleanup ? 
-			update_exit_status(env_list, status);
-			return (env_list->last_exit_status);
-		}
+		else
+			return (parent_process(env_list, pid));
 	}
 	exec_command(env_list, curr_cmd);
 	exit(EXIT_CMD_NOT_FOUND);
 }
+
