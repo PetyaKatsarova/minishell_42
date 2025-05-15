@@ -14,10 +14,10 @@
 
 volatile sig_atomic_t	g_signum = 0;
 
-static void handle_input(char *input, t_env_list *env_struct_lst)
+static void	handle_input(char *input, t_env_list *env_struct_lst)
 {
 	int	last_exit_status;
-	
+
 	last_exit_status = env_struct_lst->last_exit_status;
 	if (!input)
 	{
@@ -33,7 +33,7 @@ static void handle_input(char *input, t_env_list *env_struct_lst)
 static int	handle_parsing(t_tree **tree, char **input, t_env_list *env_list)
 {
 	t_token	*token_list;
-	
+
 	token_list = NULL;
 	if (pre_tokenization_syn_check(*input, env_list) != 0)
 		return (2);
@@ -53,7 +53,7 @@ static int	handle_parsing(t_tree **tree, char **input, t_env_list *env_list)
 	return (0);
 }
 
-static void handle_cmds(t_tree *tree, t_env_list *env_struct_lst)
+static void	handle_cmds(t_tree *tree, t_env_list *env_struct_lst)
 {
 	t_node	*cmd_node;
 
@@ -61,14 +61,17 @@ static void handle_cmds(t_tree *tree, t_env_list *env_struct_lst)
 	if (tree->num_pipes > 0)
 		env_struct_lst->last_exit_status = exec_pipeline(env_struct_lst, tree);
 	else if (cmd_node)
-		env_struct_lst->last_exit_status = handle_single_command(env_struct_lst, tree, cmd_node);
+		env_struct_lst->last_exit_status = handle_single_command(
+				env_struct_lst,
+				tree,
+				cmd_node);
 }
 
-static void handle_readline(t_env_list *env_struct_lst)
+static void	handle_readline(t_env_list *env_struct_lst)
 {
-	char 	*input;
+	char	*input;
 	t_tree	*tree;
-	
+
 	tree = NULL;
 	while (1)
 	{
@@ -79,9 +82,8 @@ static void handle_readline(t_env_list *env_struct_lst)
 		{
 			free(input);
 			input = NULL;
-			continue;
+			continue ;
 		}
-		// print_cmd_nodes_readable(tree);
 		handle_cmds(tree, env_struct_lst);
 		free_tree(tree);
 		free(input);
@@ -89,15 +91,6 @@ static void handle_readline(t_env_list *env_struct_lst)
 		input = NULL;
 	}
 }
-
-// cc -Wall -Wextra -Werror main.c -lreadline && ./a.out
-/**
- * valgrind -q --track-fds=yes --trace-children=yes --log-fd=9 9>&2 2>/dev/null ./minishell
- valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./minishell
-
- valgrind -q --track-fds=yes --leak-check=full ./minishell
-
- */
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -113,7 +106,7 @@ int	main(int argc, char **argv, char **envp)
 	env_struct_lst = copy_env(envp);
 	if (!env_struct_lst)
 		return (write(2, "Failed to initialize environment\n", 33),
-		EXIT_FAILURE);
+			EXIT_FAILURE);
 	handle_readline(env_struct_lst);
 	if (g_signum == SIGINT)
 	{
