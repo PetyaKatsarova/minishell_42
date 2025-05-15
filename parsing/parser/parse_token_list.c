@@ -61,9 +61,7 @@ static void	parse_tokens(t_token **token, t_node **node, t_parsing_data *data)
 	while (g_signum != SIGINT && *token != NULL && (*token)->token_type != PIPE)
 	{
 		if (is_redir((*token)->token_type) == true)
-		{
 			add_redir_node(token, node, data, &tail);
-		}
 		else
 		{
 			*((*node)->argv + i) = parse_lexeme((*token)->lexeme, data);
