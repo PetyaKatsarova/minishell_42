@@ -80,7 +80,6 @@ SRCS	 := execution/built_ins/pwd.c \
 			parsing/parser/utils/setup_hd_loop.c \
 			parsing/parser/utils/cleanup_hd_loop.c \
 			signals/signals_heredoc.c \
-			signals/signals_prompt_eof.c \
 			signals/signals_prompt.c \
 			signals/signals_ignore.c \
 			signals/signals_default.c \
