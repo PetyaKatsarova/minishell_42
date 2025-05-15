@@ -50,10 +50,7 @@ int	get_env(char **argv, t_env_list *env_struct)
 		&& ft_strncmp(env_struct->vars[i].key, "PATH", 4))
 		i++;
 	if (argv[1])
-	{
-		write(1, "yup\n", 4);
 		return (write_stderr("mshell: env: No such file or directory\n"), 127);
-	}
 	i = 0;
 	while (i < env_struct->size)
 	{
