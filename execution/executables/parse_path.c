@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:14:07 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/13 15:40:20 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/15 16:12:06 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	**split_path(t_env_list *env_list)
 			arr = ft_split(env[i] + 5, ':');
 			free_arr(env);
 			if (!arr)
-			return (write(2, "Error in splitting PATH.\n", 26),
+				return (write(2, "Error in splitting PATH.\n", 26),
 					free_arr(env), NULL);
 			return (arr);
 		}

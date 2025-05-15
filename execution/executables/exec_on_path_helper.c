@@ -1,29 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   close_fds.c                                        :+:    :+:            */
+/*   exec_on_path_helper.c                              :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: petya <petya@student.42.fr>                  +#+                     */
+/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2025/05/06 16:24:03 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/15 16:11:24 by pekatsar      ########   odam.nl         */
+/*   Created: 2025/05/15 16:05:50 by pekatsar      #+#    #+#                 */
+/*   Updated: 2025/05/15 16:06:36 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/**
- * From fd3 to fd 1024: close all, if already closed: get -1,
- *  as long as i try to open again is acceptable
- */
-void	close_all_pipe_fds(void)
+void	another_execpath_helper(int pid, t_node *curr_cmd, t_env_list *env_list)
 {
-	int	fd;
-
-	fd = 3;
-	while (fd < 1024)
+	if (pid == 0)
 	{
-		close(fd);
-		fd++;
+		if (setup_signals_default() == -1
+			|| apply_redirections(curr_cmd, -1) != EXIT_SUCCESS)
+			free_exit(env_list);
+		exec_command(env_list, curr_cmd);
 	}
 }
