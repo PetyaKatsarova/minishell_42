@@ -24,7 +24,7 @@ int	get_pwd(char **argv)
 			perror("minishell: error pwd");
 			return (EXIT_FAILURE);
 		}
-		len = strlen(buff);
+		len = ft_strlen(buff);
 		write(STDOUT_FILENO, buff, len);
 		write(STDOUT_FILENO, "\n", 1);
 	}

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   exec_pipes_helper.c                                :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: pekatsar <pekatsar@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/02 18:52:59 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/07 17:53:34 by pekatsar      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   exec_pipes_helper.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 18:52:59 by pekatsar          #+#    #+#             */
+/*   Updated: 2025/05/14 17:31:48 by petya            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,25 +49,25 @@ int	wait_all(pid_t *pids, int count)
 	return (128 + WTERMSIG(status));
 }
 
-void	close_all_pipes(int **pipes, int count)
-{
-	int	i;
+// void	close_all_pipes(int **pipes, int count)
+// {
+// 	int	i;
 
-	if (!pipes)
-		return ;
-	i = 0;
-	while (i < count)
-	{
-		if (pipes[i])
-		{
-			close(pipes[i][0]);
-			close(pipes[i][1]);
-			free(pipes[i]);
-		}
-		i++;
-	}
-	free(pipes);
-}
+// 	if (!pipes)
+// 		return ;
+// 	i = 0;
+// 	while (i < count)
+// 	{
+// 		if (pipes[i])
+// 		{
+// 			close(pipes[i][0]);
+// 			close(pipes[i][1]);
+// 			free(pipes[i]);
+// 		}
+// 		i++;
+// 	}
+// 	free(pipes);
+// }
 
 void	handle_child(t_data *data, int i)
 {

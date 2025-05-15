@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>                +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:14:07 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/06 16:44:13 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/13 15:40:20 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	**split_path(t_env_list *env_list)
 
 	env = converted_env(env_list);
 	if (!env)
-		return (perror("Error in converting env."), NULL);
+		return (write(2, "Error in converting env\n", 24), NULL);
 	i = 0;
 	while (env[i])
 	{
@@ -32,13 +32,13 @@ static char	**split_path(t_env_list *env_list)
 			arr = ft_split(env[i] + 5, ':');
 			free_arr(env);
 			if (!arr)
-				return (perror("Error in splitting PATH."),
+			return (write(2, "Error in splitting PATH.\n", 26),
 					free_arr(env), NULL);
 			return (arr);
 		}
 		i++;
 	}
-	return (perror("PATH not found in env."), free_arr(env), NULL);
+	return (write(2, "PATH not found in env.\n", 24), free_arr(env), NULL);
 }
 
 /**
@@ -51,14 +51,11 @@ static char	*build_full_command_path(char *path, char *command_no_flag)
 
 	with_line = ft_strjoin(path, "/");
 	if (!with_line)
-	{
-		perror("ft_strjoin with_line failed");
-		return (NULL);
-	}
+		return (write(2, "ft_strjoin with_line failed\n", 29), NULL);
 	full_path = ft_strjoin(with_line, command_no_flag);
 	free(with_line);
 	if (!full_path)
-		perror("ft_strjoin full_path failed");
+		write(2, "ft_strjoin full_path failed\n", 29);
 	return (full_path);
 }
 
@@ -114,9 +111,6 @@ char	*get_command_path(t_env_list *env, char *cmd_no_flag)
 	full_path = get_full_path(paths, cmd_no_flag, &found);
 	free_dbl_ptr(paths);
 	if (!found && full_path == NULL)
-	{
-		//perror(cmd_no_flag);
 		env->last_exit_status = 127;
-	}
 	return (full_path);
 }

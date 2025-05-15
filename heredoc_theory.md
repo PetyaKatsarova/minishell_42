@@ -1,140 +1,105 @@
-Quoted Delimiters: Remember that quoting the delimiter affects variable expansion within the heredoc.
+cat <<a >a | cat <<b >>a | cat a
 
-Multiple Heredocs: Commands can have multiple heredocs; ensure your parser and executor handle them sequentially.
+Expected Bash behavior:
+Bash sets up all heredocs first, then pipes, then runs commands in parallel.
+Redirections go to files.
+Pipes pass stdout only, not side effects (like writing files).
+Order of execution may lead to race conditions or partial reads.
 
-Nested Heredocs: While rare, be cautious of scenarios where heredocs might appear within other heredocs.
-
-Signal Handling: Properly handle interruptions during heredoc input to prevent resource leaks or undefined behavior.
-
-  cat <<EOF
-  Hello World
-  EOF
-=========================
-  var="World"
-  cat <<EOF
-  Hello $var
-  EOF
-================================
-
-  cat <<'EOF'
-  Hello $var
-  EOF
-==========================
-#!/bin/bash
-
-cat << EOF | base64 -d
-SGVsbG8KV29ybGQK
-EOF
-Copy
-Alternatively, use redirect notation to achieve the same result:
-
-#!/bin/bash
-
-(base64 -d) < cat << EOF
-SGVsbG8KV29ybGQK
-EOF
-
-
+The missing 22 is likely due to timing/buffering or how redirections are flushed.
 =================================
-cat << A << B
-first
-A
-second
-B
+SIGNALS
+=================================
+extern: tells compiler g_signum is defined elsewhere (not here).
 
-Expected output:
+volatile: tells compiler: don’t optimize — value may change anytime (e.g., by signal).
 
-second
-====================================================
-grep foo << A | cat << B
-foo from left
-A
-bar from right
-B
-foo from left
-bar from right
-=====================================================
-This is syntactically allowed, but heredocs can't contain actual inner heredocs. The inner << is just plain text:
-cat << EOF
-inside text
-<< NESTED
-more text
-EOF
-Expected output:
+sig_atomic_t: safe int type for signal access.
+✅ CTRL-C (SIGINT)
+Interactive mode: show a new prompt on a new line
 
-inside text
-<< NESTED
-more text
-Your minishell must treat << inside a heredoc body as plain text.
+Should not exit
 
-======================================================
-Interrupted Input:
-Start a heredoc and press Ctrl+C to ensure it handles the interruption gracefully.
+Should not kill the shell
 
-EOF Handling:
-Start a heredoc and press Ctrl+D before entering the delimiter to test EOF behavior.
-=====================================
+Must set exit code to 130
 
+✅ CTRL-D
+Means: EOF (readline() returns NULL)
 
+Shell must exit gracefully
 
+Free memory, close FDs
 
+Before forking, parent:
 
-A heredoc lets you feed multiline input to a command directly in the shell, until a delimiter word is found.
+Traverses tree
 
-cat << EOF
-hello
-world
-EOF
+For each <<, collects heredoc input
 
-hello
-world
+Stores it (e.g. redir->heredoc_str)
 
+Later, in child:
 
-→ Everything typed between <<DELIMITER and the final DELIMITER becomes stdin for the command.
+apply_heredoc() just redirects from saved string
 
+Your current flow:
+Child forks first
+Then asks for heredoc input
+But pipes, files, or order may already be broken → undefined behavior
+Bash does all input before forking, so:
+All heredoc prompts show first
+No pipe/file conflict
+Works even with complex pipelines
+So yes, change flow:
+Collect in parent → use in child.
+===============================================
+Iterate tree:
+Traverse all command nodes left-to-right (go_first_cmd → go_next_cmd).
 
------------------- TEST CASES -----------------------------------------------------------------------
-minihell$ wc -l <<s
-> sf
-> sadf
-> adsf
-> s
-3
+Within each command node:
+Go through redirection list (redir = go_next_redir(cmd)).
 
-works with: wc, grep, grep, 
-minihell$ pwd << a
-> adfds
-> a
-/home/pekatsar/Desktop/minishell_42
+For each redirection:
+If it's HEREDOC, do:
 
-cat << EOF | cat
-line 1
-line 2
-EOF
-Output: line 1\nline 2
+Prompt user input (readline("> ") loop until delimiter).
 
-grep foo << END | cat
-foo bar
-baz
-END
+Store full heredoc string in redir->heredoc_str.
 
-cat << X | grep hello
-hello world
-bye
-X
+⚠️ All redir->heredoc_str are filled before any fork/exec.
+Setup input/output pipes with dup2.
 
-Multiple heredocs (only the last one counts) ---- TODO..... BUG
-cat << A << B | cat
-ignored
-A
-used
-B
-Output: used
+Apply redirections (apply_redirections()):
 
-cat << X | cat
-X
+For each redirect node:
 
-cat << X | grep test | wc -l
-test line
-X
+HEREDOC → Write redir->heredoc_str to temp file, open it, dup2 to STDIN.
+
+> or >> → Open file, dup2 to STDOUT.
+
+Execute command (exec_on_path() or builtin).
+Setup input/output pipes with dup2.
+
+Apply redirections (apply_redirections()):
+
+For each redirect node:
+
+HEREDOC → Write redir->heredoc_str to temp file, open it, dup2 to STDIN.
+
+> or >> → Open file, dup2 to STDOUT.
+
+Execute command (exec_on_path() or builtin).
+PIPE
+├─ CMD: cat
+│  └─ REDIR: HEREDOC 'a', OUTPUT > a
+├─ CMD: cat
+│  └─ REDIR: HEREDOC 'b', APPEND >> a
+└─ CMD: cat a b
+First redir->heredoc_str = "content for a"
+
+Second redir->heredoc_str = "content for b"
+
+Stored in separate t_node *redir linked lists
+
 

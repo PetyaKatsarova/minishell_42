@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   close_fds.c                                        :+:      :+:    :+:   */
+/*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 16:24:03 by pekatsar          #+#    #+#             */
-/*   Updated: 2025/05/14 16:22:47 by petya            ###   ########.fr       */
+/*   Created: 2025/05/13 17:38:18 by pekatsar          #+#    #+#             */
+/*   Updated: 2025/05/14 17:27:08 by petya            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/**
- * From fd3 to fd 1024: close all, if already closed: get -1, as long as i try to open again is acceptable
- */
-void	close_all_pipe_fds(void)
+void	setup_data_one(t_data *data, int i, int **pipes, t_tree *tree)
 {
-	int	fd;
+	data->i = i;
+	data->pipe_count = get_num_pipes(tree);
+	data->pipes = pipes;
+	data->tree = tree;
+}
 
-	fd = 3;
-	while (fd < 1024)
-	{
-		close(fd);
-		fd++;
-	}
+void	setup_data_two(t_data *data, pid_t *pids,
+				t_node *cmd, t_env_list *env)
+{
+	data->pids = pids;
+	data->cmd = cmd;
+	if (data)
+		data->env = env;
+	else
+		data->env = NULL;
 }

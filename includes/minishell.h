@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: marvin <marvin@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/02 18:42:50 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/10 13:18:38 by pekatsar      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 18:42:50 by pekatsar          #+#    #+#             */
+/*   Updated: 2025/05/14 17:38:31 by petya            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ char		*get_env_value(t_env_list *env, const char *key);
 t_env_list	*copy_env(char **env);
 char		**converted_env(t_env_list *env_struct);
 int			env_len(char **env);
-void		free_env_entry(t_env *entry);
 
 /* utils */
 int			too_many_args(char **args);
@@ -108,11 +107,15 @@ int			print_builtin_error(const char *cmd, const char *arg,
 				const char *msg);
 void		*xalloc(t_alloc_type type, void *a, void *b, size_t size);
 void		close_all_pipe_fds(void);
-
+void		total_liberation(t_tree *tree, t_env_list *env_list_struct, t_data *data, int **pipes);
+void		setup_data_one(t_data *data, int i, int **pipes, t_tree *tree);
+void		setup_data_two(t_data *data, pid_t *pids,
+	t_node *cmd, t_env_list *env);
 /* handle_commands */
 int			execute_builtin(t_node *cmd, t_tree *tree, t_env_list *env);
 int			handle_single_command(t_env_list *env, t_tree *tree,
 				t_node *cmd);
+void		free_data(t_data *data);
 
 /* executables */
 int			exec_on_path(t_env_list *env, t_node *cmd, int is_pipe);

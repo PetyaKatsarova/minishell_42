@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   heredoc.c                                          :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: marvin <marvin@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/06 17:20:14 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/10 13:42:29 by pekatsar      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/06 17:20:14 by pekatsar          #+#    #+#             */
+/*   Updated: 2025/05/15 10:56:36 by petya            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ int	apply_heredoc(t_node *redir, int i)
 		return (perror_and_return(name));
 	unlink(name);
 	if (dup2(fd, STDIN_FILENO) == -1)
-		return (close(fd), perror_and_return("heredoc dup2"));
+	{
+		close(fd);
+		return (EXIT_FAILURE);
+	}
 	close(fd);
 	return (EXIT_SUCCESS);
 }

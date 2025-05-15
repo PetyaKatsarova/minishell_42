@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: marvin <marvin@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/04/21 15:23:34 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/10 12:52:16 by pekatsar      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/21 15:23:34 by pekatsar          #+#    #+#             */
+/*   Updated: 2025/05/15 10:13:29 by petya            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,24 +99,28 @@ static void handle_readline(t_env_list *env_struct_lst)
 
  */
 
-int main(int argc, char **argv, char **envp) {
-	(void) argc;
-	(void) argv;
+int	main(int argc, char **argv, char **envp)
+{
+	t_env_list	*env_struct_lst;
+	t_tree		*tree;
+	t_data		data;
 
-	if (setup_sigint_prompt() == -1)
-	{
+	(void)argc;
+	(void)argv;
+	tree = NULL;
+	if (setup_sigint_prompt() == -1 || setup_sigquit_prompt() == -1)
 		return (EXIT_FAILURE);
-	}
-	if (setup_sigquit_prompt() == -1)
-	{
-		return (EXIT_FAILURE);
-	}
-	t_env_list *env_struct_lst = copy_env(envp); 
-	if (!env_struct_lst) {
-        perror("Failed to initialize environment");
-        return (EXIT_FAILURE);
-    }
+	env_struct_lst = copy_env(envp);
+	if (!env_struct_lst)
+		return (write(2, "Failed to initialize environment\n", 33),
+		EXIT_FAILURE);
 	handle_readline(env_struct_lst);
-	clear_history();
-	return (0);
+	if (g_signum == SIGINT)
+	{
+		total_liberation(tree, env_struct_lst, &data, data.pipes);
+		write(1, "\n", 1);
+		clear_history();
+		exit(130);
+	}
+	return (clear_history(), 0);
 }

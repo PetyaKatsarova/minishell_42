@@ -1,39 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   exec_on_path.c                                     :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: marvin <marvin@student.42.fr>                +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/05/02 13:00:37 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/06 16:34:42 by pekatsar      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   exec_on_path.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 13:00:37 by pekatsar          #+#    #+#             */
+/*   Updated: 2025/05/14 20:07:09 by petya            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-/**
- * Displays error message at fd 2(std err) and exits with code 127
- * Uses write because has single buffer, no random write from child processess
- */
-static int	msg(char *name)
-{
-	size_t	len;
-	char	*full;
-	char	*tmp;
-
-	full = ft_strjoin("Command '", name);
-	if (!full)
-		return (EXIT_CMD_NOT_FOUND);
-	tmp = ft_strjoin(full, "' not found\n");
-	free(full);
-	if (!tmp)
-		return (EXIT_CMD_NOT_FOUND);
-	len = ft_strlen(tmp);
-	write(STDERR_FILENO, tmp, len);
-	free(tmp);
-	return (EXIT_CMD_NOT_FOUND);
-}
 
 static char	**get_env_or_exit(t_env_list *env_list, char *cmd_path)
 {
@@ -67,14 +44,16 @@ static int	exec_command(t_env_list *env_list, t_node *curr_cmd)
 	cmd_path = get_command_path(env_list, curr_cmd->argv[0]);
 	if (!cmd_path)
 	{
+		write(2, "minihell: ", 10);
+		write(2, curr_cmd->argv[0], ft_strlen(curr_cmd->argv[0]));
+		write(2, ": command not found\n", 21);
 		env_list->last_exit_status = EXIT_CMD_NOT_FOUND;
-		msg(curr_cmd->argv[0]);
 		exit(EXIT_CMD_NOT_FOUND);
 	}
 	args = curr_cmd->argv;
 	env = get_env_or_exit(env_list, cmd_path);
 	execve(cmd_path, args, env);
-	perror("execve failed");
+	write(2, "minihell: execve failed\n", 25);
 	free(cmd_path);
 	free_t_env(env_list);
 	exit(EXIT_FAILURE);

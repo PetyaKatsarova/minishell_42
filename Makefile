@@ -33,6 +33,7 @@ SRCS	 := execution/built_ins/pwd.c \
 			execution/utils/utils.c \
 			execution/utils/manage_files.c \
 			execution/utils/close_fds.c \
+			execution/utils/init_data.c \
 			execution/exec_pipes.c \
 			execution/exec_pipes_helper.c \
 			execution/handle_commands.c \
