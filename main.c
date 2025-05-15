@@ -6,7 +6,7 @@
 /*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 15:23:34 by pekatsar          #+#    #+#             */
-/*   Updated: 2025/05/14 20:39:23 by petya            ###   ########.fr       */
+/*   Updated: 2025/05/15 10:13:29 by petya            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,29 +99,6 @@ static void handle_readline(t_env_list *env_struct_lst)
 
  */
 
-// int main(int argc, char **argv, char **envp) {
-// 	(void) argc;
-// 	(void) argv;
-
-// 	if (setup_sigint_prompt() == -1)
-// 	{
-// 		return (EXIT_FAILURE);
-// 	}
-// 	if (setup_sigquit_prompt() == -1)
-// 	{
-// 		return (EXIT_FAILURE);
-// 	}
-// 	t_env_list *env_struct_lst = copy_env(envp); 
-// 	if (!env_struct_lst) {
-//         write(2, "Failed to initialize environment\n", 33);
-// 		//termios_sigquit_on();
-//         return (EXIT_FAILURE);
-//     }
-// 	handle_readline(env_struct_lst);
-// 	clear_history();
-// 	return (0);
-// }
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_env_list	*env_struct_lst;
@@ -132,7 +109,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	tree = NULL;
 	if (setup_sigint_prompt() == -1 || setup_sigquit_prompt() == -1)
-	return (EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	env_struct_lst = copy_env(envp);
 	if (!env_struct_lst)
 		return (write(2, "Failed to initialize environment\n", 33),
