@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 17:20:14 by pekatsar          #+#    #+#             */
-/*   Updated: 2025/05/15 10:56:36 by petya            ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   heredoc.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: petya <petya@student.42.fr>                  +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/06 17:20:14 by pekatsar      #+#    #+#                 */
+/*   Updated: 2025/05/15 17:01:22 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 int	apply_heredoc(t_node *redir, int i)
 {
-	int	fd;
-	char *name= ft_itoa(i);
+	int		fd;
+	char	*name;
 
+	name = ft_itoa(i);
 	fd = open(name, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	if (fd < 0)
 		return (perror_and_return(name));

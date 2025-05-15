@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   freeing.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: petya <petya@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 16:00:28 by pekatsar          #+#    #+#             */
-/*   Updated: 2025/05/14 19:06:11 by petya            ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   freeing.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: petya <petya@student.42.fr>                  +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/02 16:00:28 by pekatsar      #+#    #+#                 */
+/*   Updated: 2025/05/15 16:11:00 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	close_all_pipes(int **pipes, int count)
 	int	i;
 
 	if (!pipes)
-		return;
+		return ;
 	i = 0;
 	while (i < count)
 	{
@@ -77,12 +77,13 @@ void	free_t_env(t_env_list *env_struct)
 }
 
 /**
- * doesnt free data->cmd(shallow cpy), data.env, data.tree: only pointers to mem, allocated elsewhere
+ * Does not free data->cmd (shallow copy),
+ * data->env, data->tree: only pointers to memory allocated elsewhere
  */
 void	free_data(t_data *data)
 {
 	if (!data)
-		return;
+		return ;
 	if (data->pipes)
 	{
 		close_all_pipes(data->pipes, data->pipe_count);
@@ -97,10 +98,11 @@ void	free_data(t_data *data)
 }
 
 /**
- * Frees all if available: t_tree, t_env_list, t_data, int **pipes
- * need always data.pipe_count if i have **pipes!!
+ * Frees all if available: t_tree, t_env_list, t_data, int **pipes.
+ * Needs data->pipe_count if you free **pipes!
  */
-void	total_liberation(t_tree *tree, t_env_list *env_list_struct, t_data *data, int **pipes)
+void	total_liberation(t_tree *tree, t_env_list *env_list_struct,
+		t_data *data, int **pipes)
 {
 	if (pipes)
 		close_all_pipes(pipes, data->pipe_count);
