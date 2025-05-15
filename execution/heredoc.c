@@ -15,7 +15,7 @@
 int	apply_heredoc(t_node *redir, int i)
 {
 	int	fd;
-	char *name = ft_itoa(i);
+	char *name= ft_itoa(i);
 
 	fd = open(name, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	if (fd < 0)
