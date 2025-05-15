@@ -12,6 +12,12 @@
 
 #include "../includes/minishell.h"
 
+static void	free_exit(t_tree *tree, t_env_list *env, t_data *data)
+{
+	total_liberation(tree, env, data, data->pipes);
+	exit(EXIT_FAILURE);
+}
+
 static void	exec_pipeline_fork(t_data *data, int i)
 {
 	data->pids[i] = fork();
@@ -23,7 +29,7 @@ static void	exec_pipeline_fork(t_data *data, int i)
 	if (data->pids[i] == 0)
 	{
 		if (setup_signals_default() == -1)
-			exit(EXIT_FAILURE); // cleanup ?
+			free_exit(NULL, data->env, data);
 		handle_child(data, i);
 	}
 	if (setup_sigint_ignore() == -1)

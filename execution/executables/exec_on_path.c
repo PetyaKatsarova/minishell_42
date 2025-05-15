@@ -6,7 +6,7 @@
 /*   By: petya <petya@student.42.fr>                  +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/02 13:00:37 by pekatsar      #+#    #+#                 */
-/*   Updated: 2025/05/15 16:23:14 by pekatsar      ########   odam.nl         */
+/*   Updated: 2025/05/15 16:24:41 by pekatsar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,4 +115,3 @@ int	exec_on_path(t_env_list *env_list, t_node *curr_cmd, int is_pipe)
 	exec_command(env_list, curr_cmd);
 	exit(EXIT_CMD_NOT_FOUND);
 }
-
