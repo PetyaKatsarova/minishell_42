@@ -14,7 +14,6 @@
 
 void	cleanup_heredoc_loop(int *cpy_stdin, t_parsing_data *data, char **input)
 {
-	rl_eof_found = 0;
 	if (g_signum == SIGINT)
 	{
 		errno = 0;
