@@ -32,5 +32,6 @@ int	apply_heredoc(t_node *redir, int i)
 		return (EXIT_FAILURE);
 	}
 	close(fd);
+	free(name);
 	return (EXIT_SUCCESS);
 }
