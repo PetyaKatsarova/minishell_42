@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                         ::::::::           */
-/*   setup_heredoc_loop.c                                :+:    :+:           */
+/*   setup_hd_loop.c                                :+:    :+:           */
 /*                                                      +:+                   */
 /*   By: jstuhrin <marvin@42.fr>                       +#+                    */
 /*                                                    +#+                     */
@@ -13,7 +13,7 @@
 #include "../../../includes/parsing.h"
 #include "../../../includes/signals.h"
 
-void	setup_heredoc_loop(int *cpy_stdin, t_parsing_data *data, char **cpy_new)
+void	setup_hd_loop(int *cpy_stdin, t_parsing_data *data, char **cpy_new)
 {
 	*cpy_stdin = dup(STDIN_FILENO);
 	if (*cpy_stdin == -1)

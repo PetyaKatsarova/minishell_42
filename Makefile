@@ -77,8 +77,8 @@ SRCS	 := execution/built_ins/pwd.c \
 			parsing/parser/utils/my_strcmp.c \
 			parsing/parser/parse_lexeme.c \
 			parsing/parser/parse_heredoc.c \
-			parsing/parser/utils/setup_heredoc_loop.c \
-			parsing/parser/utils/cleanup_heredoc_loop.c \
+			parsing/parser/utils/setup_hd_loop.c \
+			parsing/parser/utils/cleanup_hd_loop.c \
 			signals/signals_heredoc.c \
 			signals/signals_prompt_eof.c \
 			signals/signals_prompt.c \

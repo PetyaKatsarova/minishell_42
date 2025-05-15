@@ -39,7 +39,7 @@ static void	heredoc_loop(char *delim, t_parsing_data *data, bool exp)
 	char	*cpy_input;
 	int		cpy_stdin;
 
-	setup_heredoc_loop(&cpy_stdin, data, &cpy_new);
+	setup_hd_loop(&cpy_stdin, data, &cpy_new);
 	input = readline("> ");
 	while (input != NULL && my_strcmp(input, delim) != 0)
 	{
@@ -52,7 +52,7 @@ static void	heredoc_loop(char *delim, t_parsing_data *data, bool exp)
 		free(input);
 		input = readline("> ");
 	}
-	cleanup_heredoc_loop(&cpy_stdin, data, &input);
+	cleanup_hd_loop(&cpy_stdin, data, &input);
 }
 
 static void	extract_delim(char *delim, bool *exp)

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                         ::::::::           */
-/*   cleanup_heredoc_loop.c                              :+:    :+:           */
+/*   cleanup_hd_loop.c                              :+:    :+:           */
 /*                                                      +:+                   */
 /*   By: jstuhrin <marvin@42.fr>                       +#+                    */
 /*                                                    +#+                     */
@@ -12,7 +12,7 @@
 
 #include "../../../includes/minishell.h"
 
-void	cleanup_heredoc_loop(int *cpy_stdin, t_parsing_data *data, char **input)
+void	cleanup_hd_loop(int *cpy_stdin, t_parsing_data *data, char **input)
 {
 	if (g_signum == SIGINT)
 	{

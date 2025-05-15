@@ -131,8 +131,8 @@ void	expand(char **cpy, char **lexeme, t_parsing_data *data);
 void	expand_variable(char **cpy, char **lexeme, t_parsing_data *data);
 void	expand_exit_status(char **cpy, char **lexeme, t_parsing_data *data);
 char	*parse_heredoc(char *lexeme, t_parsing_data *data);
-void	cleanup_heredoc_loop(int *cpy_stdin, t_parsing_data *data, char **input);
-void	setup_heredoc_loop(int *cpy_stdin, t_parsing_data *data, char **cpy_new);
+void	cleanup_hd_loop(int *cpy_stdin, t_parsing_data *data, char **input);
+void	setup_hd_loop(int *cpy_stdin, t_parsing_data *data, char **cpy_new);
 
 /* test functions */
 void	printlist(t_token *token_list);
